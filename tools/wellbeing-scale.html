@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Connect the Dots - a map of co-occurring conditions - Neurodivergent Wellbeing Scale</title>
+<style>
+/* ── Reset & base ── */
+*, *::before, *::after { box-sizing: border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 24px;
+    color: #333;
+    line-height: 1.45;
+    background: #fafafa;
+}
+
+/* ── Brand header ── */
+.header { margin: 0 0 8px; display: flex; align-items: flex-end; gap: 24px; }
+.header-left { flex-shrink: 0; }
+.title-wrap { position: relative; display: inline-block; padding: 4px 24px; }
+.title-dots-svg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; overflow: visible; }
+h1 { position: relative; z-index: 1; font-size: 20px; margin: 0; color: #333; line-height: 1.2; }
+.brand-dot {
+    display: inline-block;
+    width: 0.58em;
+    height: 0.58em;
+    border-radius: 50%;
+    background: #0d9488;
+    color: transparent;
+    overflow: hidden;
+    vertical-align: -0.01em;
+}
+.page-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f766e;
+    margin: 6px 0 0;
+}
+.subtitle {
+    color: #888;
+    font-size: 12.5px;
+    font-style: italic;
+    margin: 1px 0 0;
+}
+.header-intro {
+    font-size: 11.5px;
+    color: #555;
+    line-height: 1.5;
+    padding-bottom: 4px;
+}
+.header-intro strong { color: #333; }
+.key-box {
+    background: #f2f8f6;
+    border: 1px solid #d4ece6;
+    border-radius: 8px;
+    padding: 7px 14px;
+    margin: 0 0 8px;
+    font-size: 11.5px;
+    color: #555;
+    line-height: 1.6;
+}
+.key-box strong { color: #0f766e; }
+
+/* ── Combined scale table ── */
+.scale-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    line-height: 1.35;
+    margin: 0 0 10px;
+}
+.scale-table th {
+    background: #f3f4f6;
+    color: #555;
+    font-weight: 600;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    padding: 6px 10px;
+    text-align: left;
+    border-bottom: 2px solid #d1d5db;
+}
+.scale-table th.col-divider {
+    background: transparent;
+    border-bottom: none;
+    width: 28px;
+    padding: 0;
+}
+.scale-table td {
+    padding: 6px 8px;
+    border-bottom: 1px solid #e5e7eb;
+    vertical-align: top;
+}
+.scale-table tr:last-child td { border-bottom: none; }
+.scale-table td.color-strip {
+    width: 6px;
+    padding: 0;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+.scale-table tr:last-child td.color-strip { border-bottom: none; }
+.scale-table td.col-divider {
+    width: 28px;
+    padding: 0;
+    border-bottom: none;
+    background: transparent;
+}
+
+/* Content styling */
+.desc { font-size: 12px; color: #333; line-height: 1.35; }
+.desc strong { font-weight: 600; color: #222; }
+.desc .nd-note {
+    color: #0f766e;
+    font-size: 10.5px;
+    font-style: italic;
+    margin-top: 5px;
+}
+
+/* State level colours */
+.wb-0 { background: #0d9488; }
+.wb-1 { background: #1a9a7e; }
+.wb-2 { background: #3a946a; }
+.wb-3 { background: #5c8d52; }
+.wb-4 { background: #80843a; }
+.wb-5 { background: #a37a24; }
+.wb-6 { background: #c46d14; }
+.wb-7 { background: #d93a2a; }
+
+/* Feeling colours (same gradient as state) */
+.feel-a { background: #0d9488; }
+.feel-b { background: #3a946a; }
+.feel-c { background: #80843a; }
+.feel-d { background: #a37a24; }
+.feel-e { background: #d93a2a; }
+
+/* ── Clinician reference matrix ── */
+.ref-section {
+    margin: 0;
+}
+.ref-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #0f766e;
+    margin: 0 0 3px;
+    font-style: italic;
+}
+.ref-matrix {
+    border-spacing: 0;
+    border: 1px solid #d1d5db;
+    font-size: 9px;
+    line-height: 1.2;
+    width: 100%;
+}
+.ref-matrix th {
+    padding: 5px 6px;
+    font-weight: 600;
+    color: #555;
+    font-size: 8.5px;
+    text-align: center;
+    background: #f3f4f6;
+    border-bottom: 1px solid #d1d5db;
+    border-right: 1px solid #d1d5db;
+}
+.ref-matrix th:last-child { border-right: none; }
+.ref-matrix th.ref-corner {
+    background: white;
+    font-size: 7.5px;
+    color: #999;
+}
+.ref-matrix td.ref-row-header {
+    padding: 5px 6px;
+    font-weight: 600;
+    font-size: 8.5px;
+    color: #555;
+    background: #f3f4f6;
+    border-bottom: 1px solid #d1d5db;
+    border-right: 1px solid #d1d5db;
+}
+.ref-matrix td.ref-cell {
+    padding: 5px 5px;
+    text-align: center;
+    font-size: 8px;
+    font-weight: 500;
+    border-bottom: 1px solid #d1d5db;
+    border-right: 1px solid #d1d5db;
+}
+.ref-matrix td.ref-cell:last-child { border-right: none; }
+
+/* Reference matrix colours */
+.rc-green   { background: #d1fae5; color: #065f46; }
+.rc-yellow  { background: #fef9c3; color: #713f12; }
+.rc-amber   { background: #fee2b8; color: #78350f; }
+.rc-orange  { background: #fed0aa; color: #7c2d12; }
+.rc-salmon  { background: #fca5a5; color: #7f1d1d; }
+.rc-red     { background: #f87171; color: white; }
+.rc-deep    { background: #ef4444; color: white; }
+
+/* Flag note - tfoot row inside matrix */
+.ref-matrix tfoot td.ref-flag-cell {
+    border: none;
+    border-top: 1px solid #d1d5db;
+    background: #fafafa;
+    font-size: 8px;
+    color: #888;
+    font-style: italic;
+    padding: 3px 6px;
+    line-height: 1.1;
+}
+
+/* ── Safety box ── */
+.safety-box {
+    background: #fdf2f2;
+    border: 1px solid #e8a0a0;
+    border-radius: 8px;
+    padding: 8px 14px;
+    margin: 0;
+    font-size: 11px;
+    color: #333;
+    line-height: 1.4;
+}
+.safety-box .safety-title {
+    font-weight: 700;
+    color: #991b1b;
+    font-size: 11.5px;
+    margin: 0 0 3px;
+}
+.safety-box .safety-items {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin: 0 0 4px;
+}
+.safety-box .safety-item {
+    background: white;
+    border: 1px solid #e5c7c7;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+}
+.safety-box .nd-note {
+    color: #0f766e;
+    font-size: 10px;
+    font-style: italic;
+    margin: 0;
+}
+.safety-box .safety-help {
+    font-size: 10px;
+    color: #666;
+    margin: 3px 0 0;
+}
+
+/* ── Bottom section: tfoot rows for titles + safety/matrix ── */
+.scale-table tfoot td.title-cell {
+    padding: 10px 0 3px;
+    border-bottom: none;
+    vertical-align: bottom;
+}
+.scale-table tfoot td.bottom-cell {
+    padding: 0;
+    border-bottom: none;
+    vertical-align: top;
+    height: 1px; /* trick: allows children with height:100% to fill cell */
+}
+.scale-table tfoot td.col-divider {
+    padding: 0;
+}
+.bottom-cell .safety-box {
+    height: 100%;
+    box-sizing: border-box;
+}
+.bottom-cell .ref-matrix {
+    height: 100%;
+}
+
+/* ── Disclaimer ── */
+.disclaimer {
+    background: #fefce8;
+    border: 1px solid #fde68a;
+    border-radius: 8px;
+    padding: 5px 12px;
+    font-size: 10px;
+    color: #854d0e;
+    margin: 0 0 4px;
+}
+
+/* ── Footer ── */
+.footer {
+    margin-top: 4px;
+    padding-top: 4px;
+    border-top: 1px solid #e5e5e5;
+    font-size: 10px;
+    color: #aaa;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+/* ── Print button ── */
+.btn-row {
+    display: flex;
+    gap: 10px;
+    margin: 12px 0;
+}
+.btn-row button {
+    flex: 1;
+    padding: 10px 16px;
+    border: 1.5px solid #9dcbc4;
+    border-radius: 8px;
+    background: #f2f8f6;
+    color: #0f766e;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+}
+.btn-row button:hover {
+    background: #d4ece6;
+    border-color: #0f766e;
+}
+
+/* ── Print styles ── */
+@page {
+    size: A4 landscape;
+    margin: 10mm 10mm 10mm;
+}
+@media print {
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+    body {
+        padding: 0;
+        background: white;
+        max-width: none;
+        font-size: 9.5px;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+    .header { margin: 0 0 10px; gap: 20px; }
+    .page-title { font-size: 20px; margin: 5px 0 0; }
+    .subtitle { font-size: 11.5px; margin: 1px 0 0; }
+    .header-intro { font-size: 11.5px; line-height: 1.45; }
+    .key-box { font-size: 11px; padding: 5px 14px; margin: 0 0 5px; line-height: 1.45; }
+    .scale-table { font-size: 12px; margin: 0 0 5px; }
+    .scale-table th { font-size: 11px; padding: 5px 9px; }
+    .scale-table th.col-divider { width: 24px; }
+    .scale-table td { padding: 7px 9px; }
+    .desc { font-size: 12px; line-height: 1.35; }
+    .desc .nd-note { font-size: 10px; margin-top: 3px; }
+    .scale-table tfoot td.title-cell { padding: 8px 0 2px; }
+    .scale-table tfoot td.bottom-cell { padding: 0; height: 1px; }
+    .ref-title { font-size: 10.5px; margin: 0; }
+    .ref-matrix th { font-size: 8.5px; padding: 4px 5px; }
+    .ref-matrix td.ref-row-header { font-size: 8.5px; padding: 4px 5px; }
+    .ref-matrix td.ref-cell { font-size: 8px; padding: 4px 5px; }
+    .ref-matrix tfoot td.ref-flag-cell { font-size: 7.5px; padding: 3px 5px; }
+    .safety-box { padding: 7px 12px; font-size: 11px; }
+    .safety-box .safety-title { font-size: 11.5px; margin: 0 0 3px; }
+    .safety-box .safety-items { gap: 5px; margin: 0 0 4px; }
+    .safety-box .safety-item { padding: 3px 9px; font-size: 10.5px; }
+    .safety-box .nd-note { font-size: 9.5px; }
+    .safety-box .safety-help { font-size: 9.5px; }
+    .page-footer { margin-top: auto; }
+    .disclaimer { font-size: 9.5px; padding: 4px 11px; margin: 0 0 3px; }
+    .btn-row { display: none !important; }
+    .footer { font-size: 8.5px; margin-top: 3px; padding-top: 3px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Brand header + intro side by side ── -->
+<div class="header">
+    <div class="header-left">
+        <div class="title-wrap">
+            <svg class="title-dots-svg" width="210" height="56" viewBox="-20 -4 210 56">
+                <circle cx="-10" cy="24" r="8.0"  fill="#f97316" opacity="0.17"/>
+                <circle cx="2"   cy="18" r="8.8"  fill="#ef4444" opacity="0.15"/>
+                <circle cx="16"  cy="32" r="10.2" fill="#65a30d" opacity="0.17"/>
+                <circle cx="30"  cy="14" r="9.5"  fill="#10b981" opacity="0.16"/>
+                <circle cx="46"  cy="26" r="12.5" fill="#f59e0b" opacity="0.15"/>
+                <circle cx="67"  cy="16" r="16.1" fill="#7c3aed" opacity="0.17"/>
+                <circle cx="85"  cy="22" r="8.8"  fill="#eab308" opacity="0.15"/>
+                <circle cx="97"  cy="34" r="8.0"  fill="#ec4899" opacity="0.17"/>
+                <circle cx="114" cy="16" r="15.7" fill="#0d9488" opacity="0.16"/>
+                <circle cx="133" cy="28" r="10.8" fill="#3b82f6" opacity="0.15"/>
+                <circle cx="148" cy="14" r="10.8" fill="#a78bfa" opacity="0.15"/>
+                <circle cx="164" cy="30" r="11.4" fill="#06b6d4" opacity="0.16"/>
+                <circle cx="179" cy="24" r="8.8"  fill="#a21caf" opacity="0.15"/>
+            </svg>
+            <h1>C<span class="brand-dot">o</span>nnect the D<span class="brand-dot">o</span>ts</h1>
+            <p style="position:relative;z-index:1;font-size:10px;color:#6b6b6b;margin:0;">A map of co-occurring conditions</p>
+        </div>
+        <p class="page-title">Neurodivergent Wellbeing Scale</p>
+        <p class="subtitle">Two questions are better than one</p>
+    </div>
+    <div class="header-intro">
+        "How are you out of 10?" assumes we can identify how we're feeling and convert it to a number. For many of us, the energy runs out long before it shows on the outside. This scale asks two things: <strong>how we're doing</strong> and <strong>how we feel about it</strong>.
+    </div>
+</div>
+
+<!-- ── Key ── -->
+<div class="key-box">
+    <strong>How to use:</strong> Find the description that matches right now in each column and point to it. If something is hard to say out loud, point to the safety box below the scale.<br>The <span style="color:#0f766e;font-style:italic;">italic notes</span> are for clinicians.
+</div>
+
+<!-- ── Combined two-column scale ── -->
+<table class="scale-table">
+    <thead>
+        <tr>
+            <th colspan="2">How I'm doing</th>
+            <th class="col-divider"></th>
+            <th colspan="2">How I feel about it</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="color-strip wb-0"></td>
+            <td class="desc">
+                <strong>I'm doing well.</strong>
+                I have energy to spare. I'm engaged with things I enjoy. My brain feels clear and things feel manageable.
+                <div class="nd-note">May not recognise this state if it's unfamiliar. May not last, and knowing that can be its own stress.</div>
+            </td>
+            <td class="col-divider"></td>
+            <td class="color-strip feel-a"></td>
+            <td class="desc">
+                <strong>I feel good.</strong> This feels right. I'm where I want to be, or I'm getting there.
+                <div class="nd-note">At lower functional levels, check whether this is genuine acceptance or baseline normalisation.</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="color-strip wb-2"></td>
+            <td class="desc">
+                <strong>I'm getting by.</strong>
+                I'm getting through the day but my energy is stretched. I'm keeping up but I'm aware of the cost.
+                <div class="nd-note">"Okay" may already be lower than a clinician assumes. The mask is holding but the battery is draining.</div>
+            </td>
+            <td class="col-divider"></td>
+            <td class="color-strip feel-b"></td>
+            <td class="desc">
+                <strong>I'm not sure.</strong> Something feels off but I can't name it.
+                <div class="nd-note">This is the alexithymia signature. Not being able to answer IS the answer.</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="color-strip wb-4"></td>
+            <td class="desc">
+                <strong>I'm struggling.</strong>
+                My energy is running out. I'm dropping non-essential tasks. Social interaction costs too much. I need recovery time after everything.
+                <div class="nd-note">May look like avoidance or laziness. It's depletion. Executive function decline may be the only visible sign.</div>
+            </td>
+            <td class="col-divider"></td>
+            <td class="color-strip feel-c"></td>
+            <td class="desc">
+                <strong>I want this to change.</strong> I'm not okay with where I am but I don't know how to shift it.
+                <div class="nd-note">May have been here long enough that wanting change feels hopeless rather than motivating.</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="color-strip wb-5"></td>
+            <td class="desc">
+                <strong>I'm barely coping.</strong>
+                I don't have the energy for basic things. Care tasks are being missed. I can't plan or make decisions.
+                <div class="nd-note">May present as "quiet" rather than distressed. Absence of distress signals doesn't mean absence of distress.</div>
+            </td>
+            <td class="col-divider"></td>
+            <td class="color-strip feel-d"></td>
+            <td class="desc">
+                <strong>It's too much.</strong> I'm overwhelmed and I can't manage how I feel.
+                <div class="nd-note">May present as irritability, rigidity, withdrawal, or increased need for routine, not as distress.</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="color-strip wb-7"></td>
+            <td class="desc">
+                <strong>I have nothing left.</strong>
+                I've disconnected. I may not be able to tell you what's wrong.
+                <div class="nd-note">Shutdown can look like calm. May still answer questions on autopilot. The mask is the last thing to go.</div>
+            </td>
+            <td class="col-divider"></td>
+            <td class="color-strip feel-e"></td>
+            <td class="desc">
+                <strong>I've gone past it.</strong> I'm not engaging with how I feel anymore.
+                <div class="nd-note">This can look like calm or indifference. It's not; it's overload. The feelings haven't gone, they've disconnected.</div>
+            </td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <!-- Row 1: Titles -->
+        <tr>
+            <td colspan="2" class="title-cell">
+                <p class="ref-title">Some things are hard to say out loud:</p>
+            </td>
+            <td class="col-divider"></td>
+            <td colspan="2" class="title-cell">
+                <p class="ref-title">For clinicians - how to read the combination:</p>
+            </td>
+        </tr>
+        <!-- Row 2: Safety box + Matrix -->
+        <tr>
+            <td colspan="2" class="bottom-cell">
+                <div class="safety-box">
+                    <p class="safety-title">I also need to tell you&hellip;</p>
+                    <div class="safety-items">
+                        <span class="safety-item">I'm having thoughts of hurting myself</span>
+                        <span class="safety-item">I'm having thoughts about not wanting to exist</span>
+                        <span class="safety-item">I'm having thoughts about ending my life</span>
+                        <span class="safety-item">I'm having thoughts about hurting someone else</span>
+                    </div>
+                    <p class="nd-note">These thoughts can happen at any level above, including "doing well."<br>Pointing to this box is not dramatic. It is communicating something important.</p>
+                    <p class="safety-help"><strong>Lifeline 13 11 14</strong> &nbsp;|&nbsp; <strong>Beyond Blue 1300 22 4636</strong> &nbsp;|&nbsp; <strong>Kids Helpline 1800 55 1800</strong> &nbsp;|&nbsp; <strong>Emergency 000</strong></p>
+                </div>
+            </td>
+            <td class="col-divider"></td>
+            <td colspan="2" class="bottom-cell">
+                    <table class="ref-matrix">
+                        <thead>
+                            <tr>
+                                <th class="ref-corner"></th>
+                                <th>Good</th>
+                                <th>Unsure</th>
+                                <th>Change</th>
+                                <th>Overwhelm</th>
+                                <th>Past it</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="ref-row-header">Doing well</td>
+                                <td class="ref-cell rc-green">Stable</td>
+                                <td class="ref-cell rc-yellow">Explore</td>
+                                <td class="ref-cell rc-yellow">Explore</td>
+                                <td class="ref-cell rc-amber">Support</td>
+                                <td class="ref-cell rc-orange">Assess&nbsp;⚑</td>
+                            </tr>
+                            <tr>
+                                <td class="ref-row-header">Getting by</td>
+                                <td class="ref-cell rc-green">Stable</td>
+                                <td class="ref-cell rc-yellow">Explore</td>
+                                <td class="ref-cell rc-amber">Support</td>
+                                <td class="ref-cell rc-salmon">Escalate</td>
+                                <td class="ref-cell rc-salmon">Escalate</td>
+                            </tr>
+                            <tr>
+                                <td class="ref-row-header">Struggling</td>
+                                <td class="ref-cell rc-yellow">Explore&nbsp;⚑</td>
+                                <td class="ref-cell rc-amber">Support</td>
+                                <td class="ref-cell rc-amber">Support</td>
+                                <td class="ref-cell rc-salmon">Escalate</td>
+                                <td class="ref-cell rc-red">Urgent</td>
+                            </tr>
+                            <tr>
+                                <td class="ref-row-header">Barely coping</td>
+                                <td class="ref-cell rc-orange">Assess&nbsp;⚑</td>
+                                <td class="ref-cell rc-salmon">Escalate</td>
+                                <td class="ref-cell rc-salmon">Escalate</td>
+                                <td class="ref-cell rc-red">Urgent</td>
+                                <td class="ref-cell rc-deep">Crisis</td>
+                            </tr>
+                            <tr>
+                                <td class="ref-row-header">Nothing left</td>
+                                <td class="ref-cell rc-orange">Assess&nbsp;⚑</td>
+                                <td class="ref-cell rc-red">Urgent</td>
+                                <td class="ref-cell rc-red">Urgent</td>
+                                <td class="ref-cell rc-deep">Crisis</td>
+                                <td class="ref-cell rc-deep">Crisis</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="6" class="ref-flag-cell">⚑ Reported feeling doesn't match functional level. May indicate normalisation, dissociation, or masking.</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+
+<!-- ── Page footer ── -->
+<div class="page-footer">
+    <div class="disclaimer">
+        <strong>This is a communication tool, not a diagnostic instrument.</strong> It does not replace clinical assessment or risk assessment. If you are in crisis, contact a crisis service or go to your nearest emergency department.
+    </div>
+
+    <div class="btn-row">
+        <button onclick="window.print()">Print / Save as PDF</button>
+    </div>
+
+    <div class="footer">
+        <span>Connect the Dots: a map of co-occurring conditions &nbsp;|&nbsp; ctdproject.org</span>
+        <span>CC BY-NC-SA 4.0 &nbsp;|&nbsp; v0.1 &middot; March 2026</span>
+    </div>
+</div>
+
+</body>
+</html>
