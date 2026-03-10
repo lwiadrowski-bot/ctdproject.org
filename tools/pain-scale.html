@@ -31,6 +31,7 @@ h1 { position: relative; z-index: 1; font-size: 20px; margin: 0; color: #333; li
     color: transparent;
     overflow: hidden;
     vertical-align: -0.01em;
+    box-shadow: inset 0 0 0 2.5px #333;
 }
 .page-title {
     font-size: 26px;
@@ -228,19 +229,19 @@ h1 { position: relative; z-index: 1; font-size: 20px; margin: 0; color: #333; li
     <div class="title-wrap">
         <!-- Domain dots background (generated from buildTitleLogoDots algorithm) -->
         <svg class="title-dots-svg" width="210" height="56" viewBox="-20 -4 210 56">
-            <circle cx="-10" cy="24" r="8.0"  fill="#f97316" opacity="0.17"/>
-            <circle cx="2"   cy="18" r="8.8"  fill="#ef4444" opacity="0.15"/>
-            <circle cx="16"  cy="32" r="10.2" fill="#65a30d" opacity="0.17"/>
-            <circle cx="30"  cy="14" r="9.5"  fill="#10b981" opacity="0.16"/>
-            <circle cx="46"  cy="26" r="12.5" fill="#f59e0b" opacity="0.15"/>
-            <circle cx="67"  cy="16" r="16.1" fill="#7c3aed" opacity="0.17"/>
-            <circle cx="85"  cy="22" r="8.8"  fill="#eab308" opacity="0.15"/>
-            <circle cx="97"  cy="34" r="8.0"  fill="#ec4899" opacity="0.17"/>
-            <circle cx="114" cy="16" r="15.7" fill="#0d9488" opacity="0.16"/>
-            <circle cx="133" cy="28" r="10.8" fill="#3b82f6" opacity="0.15"/>
-            <circle cx="148" cy="14" r="10.8" fill="#a78bfa" opacity="0.15"/>
-            <circle cx="164" cy="30" r="11.4" fill="#06b6d4" opacity="0.16"/>
-            <circle cx="179" cy="24" r="8.8"  fill="#a21caf" opacity="0.15"/>
+            <circle cx="0"   cy="24" r="8.0"  fill="#f97316" opacity="0.17"/><!-- Autonomic (5) -->
+            <circle cx="12"  cy="18" r="8.8"  fill="#ef4444" opacity="0.15"/><!-- Connective tissue (6) -->
+            <circle cx="26"  cy="32" r="10.2" fill="#65a30d" opacity="0.17"/><!-- Gastrointestinal (8) -->
+            <circle cx="40"  cy="14" r="9.5"  fill="#10b981" opacity="0.16"/><!-- Genetic (7) -->
+            <circle cx="56"  cy="26" r="13.0" fill="#f59e0b" opacity="0.17"/><!-- Immune (13) -->
+            <circle cx="77"  cy="16" r="16.1" fill="#7c3aed" opacity="0.17"/><!-- Mental health (20) -->
+            <circle cx="95"  cy="22" r="8.0"  fill="#eab308" opacity="0.15"/><!-- Metabolic / Endocrine (5) -->
+            <circle cx="105" cy="34" r="6.2"  fill="#ec4899" opacity="0.17"/><!-- Musculoskeletal (3) -->
+            <circle cx="121" cy="16" r="15.7" fill="#0d9488" opacity="0.16"/><!-- Neurodevelopmental (19) -->
+            <circle cx="140" cy="28" r="10.8" fill="#3b82f6" opacity="0.16"/><!-- Neurological (9) -->
+            <circle cx="154" cy="14" r="9.5"  fill="#a78bfa" opacity="0.15"/><!-- Sensory (7) -->
+            <circle cx="169" cy="30" r="10.8" fill="#06b6d4" opacity="0.16"/><!-- Sleep (9) -->
+            <circle cx="183" cy="24" r="8.8"  fill="#a21caf" opacity="0.15"/><!-- Structural (6) -->
         </svg>
         <h1>C<span class="brand-dot">o</span>nnect the D<span class="brand-dot">o</span>ts</h1>
         <p style="position:relative;z-index:1;font-size:10px;color:#6b6b6b;margin:0;">A map of co-occurring conditions</p>
@@ -383,7 +384,7 @@ h1 { position: relative; z-index: 1; font-size: 20px; margin: 0; color: #333; li
             <td class="experiencing">
                 <strong>Beyond the scale</strong>
                 I've dissociated. Words have stopped working. I may not remember this afterward.
-                <div class="nd-note">Everything below this has been compressed by a lifetime of under-reporting.</div>
+                <div class="nd-note">If this point is reached, it's likely every prior rating was under-reported.</div>
             </td>
             <td class="lvl-11">11</td>
         </tr>
