@@ -24404,6 +24404,7 @@ if (prefersReducedMotion) {
 // ── Zoom ─────────────────────────────────────────────────────────────
 let _zoomGestureTransformed = false;
 let _gestureStartK = null, _gestureStartX = null, _gestureStartY = null;
+const _svgGroups = svg.selectAll(':scope > g');
 const zoom = d3.zoom()
     .scaleExtent([0.03, 3])
     .on('start', (event) => {
@@ -24413,7 +24414,7 @@ const zoom = d3.zoom()
         _gestureStartY = event.transform.y;
     })
     .on('zoom', (event) => {
-        svg.selectAll(':scope > g').attr('transform', event.transform);
+        _svgGroups.attr('transform', event.transform);
         const t = event.transform;
         if (t.k !== _gestureStartK || t.x !== _gestureStartX || t.y !== _gestureStartY) {
             _zoomGestureTransformed = true;
