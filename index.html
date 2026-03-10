@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="An interactive map of co-occurring conditions across neurodivergence, connective tissue, autonomic, immune, and other domains. Explore 128 conditions and 578+ evidence-based connections.">
+    <meta name="description" content="Your health isn't random. Find the connections between your conditions. Research and lived experience made visible.">
     <meta name="theme-color" content="#0f766e">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ctdproject.org/">
     <meta property="og:title" content="Connect the Dots">
-    <meta property="og:description" content="An interactive map of co-occurring conditions across neurodivergence, connective tissue, autonomic, immune, and other domains.">
+    <meta property="og:description" content="Your health isn't random. Find the connections between your conditions. Research and lived experience made visible.">
     <meta property="og:image" content="https://ctdproject.org/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Connect the Dots">
-    <meta name="twitter:description" content="An interactive map of co-occurring conditions across neurodivergence, connective tissue, autonomic, immune, and other domains.">
+    <meta name="twitter:description" content="Your health isn't random. Find the connections between your conditions. Research and lived experience made visible.">
     <meta name="twitter:image" content="https://ctdproject.org/og-image.png">
     <title>Connect the Dots</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -3831,6 +3831,7 @@ body.dark-mode .mobile-persona-grid .persona-btn.active {
     #lens-palette .lens-icon { font-size: 9px; margin: 0 calc((100% / 6 - 36px) / 2); }
     .lens-icon[data-tooltip]:hover::after { display: none; }
     .lens-icon-info { display: none; }
+    .lens-palette-hint { font-size: 10px; color: var(--text-muted); text-align: center; margin: 6px 0 0; padding: 0; }
     /* Mobile search overlay (shown when tapping search icon) */
     #search-wrapper.mobile-search-active {
         display: block;
@@ -4367,9 +4368,9 @@ body.dark-mode.high-contrast .source-ref { color: #fff; }
             </div>
             <h2 style="text-align:center;">Look at you, you lucky duck!</h2>
             <p>You've found your way to the beta version of Connect the Dots: a map of co-occurring conditions.</p>
-            <p>This map was created by a human researcher using AI as a tool. Every decision about what to include, how to structure it, and how to present the evidence was made by a human. AI wrote the code, located papers, and drafted text under direct instruction, the same way a collaborator would work from a brief. All claims are grounded in referenced sources, with documented methodology for how evidence is assessed and presented. The human review process to verify every detail is ongoing.</p>
+            <p>This map was created by a human researcher using AI as an accessibility tool. Every decision about what to include, how to structure it, and how to present the evidence was made by a human. AI wrote the code, located papers, and drafted text under direct instruction, the same way a collaborator would work from a brief. All claims are grounded in referenced sources, with documented methodology for how evidence is assessed and presented. The human review process to verify every detail is ongoing.</p>
             <p>Reviews so far have found the kind of errors you would expect from an early draft, for example a finding from one study applied more broadly than it should be, or a number misread in translation (1 in 5,000 becoming 1 in 5). Nothing has undermined the core claims, and the overall weight of evidence appears robust, but individual statistics may be inaccurate.</p>
-            <p>If something sounds wrong, there is a good chance it is. Nothing here should be quoted or relied upon without verifying the claim from the original source.</p>
+            <p>AI-generated content can be confidently wrong. If something sounds off, there is a good chance it is. Nothing here should be quoted or relied upon without verifying the claim from the original source.</p>
             <p>This is an exploration tool, not medical advice. Always discuss findings with a qualified professional.</p>
             <button class="disclaimer-btn" onclick="dismissDisclaimer()">Got it</button>
         </div>
@@ -11864,12 +11865,19 @@ function _showDebugErrors() {
     if (!d) {
         d = document.createElement('div');
         d.id = '_debugErr';
-        d.style.cssText = 'position:fixed;bottom:10px;left:10px;right:10px;background:#fee;border:2px solid #f44;border-radius:8px;padding:10px 14px;font-size:12px;color:#900;z-index:9999;max-height:150px;overflow:auto;font-family:monospace;cursor:pointer;user-select:text;';
-        d.title = 'Click to dismiss';
-        d.addEventListener('click', () => d.remove());
+        d.style.cssText = 'position:fixed;bottom:10px;left:10px;right:10px;background:#fee;border:2px solid #f44;border-radius:8px;padding:10px 40px 10px 14px;font-size:12px;color:#900;z-index:9999;max-height:150px;overflow:auto;font-family:monospace;user-select:text;';
+        const dismiss = document.createElement('button');
+        dismiss.textContent = '\u00d7';
+        dismiss.style.cssText = 'position:absolute;top:6px;right:8px;background:none;border:none;font-size:20px;color:#900;cursor:pointer;padding:0 4px;line-height:1;';
+        dismiss.setAttribute('aria-label', 'Dismiss error');
+        dismiss.addEventListener('click', () => d.remove());
+        d.appendChild(dismiss);
         document.body.appendChild(d);
     }
+    // Update text content (preserve dismiss button)
+    const dismiss = d.querySelector('button');
     d.textContent = _debugErrors.join('\n');
+    if (dismiss) d.appendChild(dismiss);
 }
 
 // ── Domain colours ──────────────────────────────────────────────────
@@ -23698,6 +23706,7 @@ let connectCategories = null;  // { sharedBoth, onlyA, onlyB, neither }
 let exploreSelectedId = null;  // node currently open in explore info panel
 let currentDomainPanel = null;    // domain name string or null (domain info panel)
 let currentMechanismPanel = null; // mechanism id string or null (mechanism info panel)
+let _currentLensPanel = null;    // lens id string or null (lens info panel)
 
 // ── Navigation stack ──────────────────────────────────────────────────
 let navStack = [];
@@ -23710,6 +23719,7 @@ function getCurrentPanelState() {
     if (constellationMode) return { type: 'constellation', view: constellationView, scrollPos };
     if (currentDomainPanel) return { type: 'domain', domainName: currentDomainPanel, scrollPos };
     if (currentMechanismPanel) return { type: 'mechanism', mechId: currentMechanismPanel, scrollPos };
+    if (_currentLensPanel) return { type: 'lens', lensId: _currentLensPanel, scrollPos };
     return {
         type: modeSelection.length === 2 ? 'two-node' : modeSelection.length === 1 ? 'one-node' : 'none',
         selection: [...modeSelection],
@@ -23742,6 +23752,7 @@ function navigateBack() {
         exploreSelectedId = null;
         currentDomainPanel = null;
         currentMechanismPanel = null;
+        _currentLensPanel = null;
         appMode = 'explore';
         const btn = document.getElementById('constellation-toggle');
         if (btn) btn.classList.add('active');
@@ -24996,6 +25007,7 @@ function clearAllSelections() {
     exploreSelectedId = null;
     currentDomainPanel = null;
     currentMechanismPanel = null;
+    _currentLensPanel = null;
     appMode = 'explore';
     activeTab = 'combined'; // reset so next two-condition opens on Combined
     updateSelectionRings();
@@ -25659,6 +25671,7 @@ function showNodeInfo(event, d) {
     const content = document.getElementById('info-content');
     currentDomainPanel = null;
     currentMechanismPanel = null;
+    _currentLensPanel = null;
 
     // Handle string ID: look up in nodes[]
     if (typeof d === 'string') {
@@ -25980,6 +25993,7 @@ function closeInfo() {
     _currentPanelSources = [];
     currentDomainPanel = null;
     currentMechanismPanel = null;
+    _currentLensPanel = null;
     // Restore focus to trigger element
     const restoreTo = _panelTriggerEl || document.getElementById('search-box');
     _panelTriggerEl = null;
@@ -26908,6 +26922,7 @@ function showDomainInfo(domainName) {
     const color = domainColors[domainName] || '#888';
     currentDomainPanel = domainName;
     currentMechanismPanel = null;
+    _currentLensPanel = null;
 
     _panelTriggerEl = document.activeElement;
     if (!preSelectionTransform && !focusedNode) preSelectionTransform = d3.zoomTransform(svg.node());
@@ -27047,6 +27062,7 @@ function showMechanismInfo(mechId) {
     const pc = getPersonaConfig();
     currentMechanismPanel = mechId;
     currentDomainPanel = null;
+    _currentLensPanel = null;
 
     _panelTriggerEl = document.activeElement;
     if (!preSelectionTransform && !focusedNode) preSelectionTransform = d3.zoomTransform(svg.node());
@@ -28095,7 +28111,8 @@ function renderLensPalette() {
     const container = document.getElementById('lens-palette');
     if (!container) return;
     const sorted = [...lenses].sort((a, b) => a.order - b.order);
-    container.innerHTML = sorted.map(lens => {
+    const mobile = isMobile();
+    let html = sorted.map(lens => {
         const isActive = activeLenses.has(lens.id);
         const iconInner = LENS_ICONS[lens.id] || '';
         return `<button class="island-btn lens-icon${isActive ? ' active' : ''}"
@@ -28107,6 +28124,30 @@ function renderLensPalette() {
             <span class="lens-icon-info" onclick="event.stopPropagation();showLensInfo('${lens.id}')" aria-label="About ${lens.label}" tabindex="0">i</span>
         </button>`;
     }).join('');
+    if (mobile) {
+        html += '<p class="lens-palette-hint">Tap to apply \u00b7 long press to read more</p>';
+    }
+    container.innerHTML = html;
+    // Long-press on mobile opens lens info
+    if (mobile) {
+        container.querySelectorAll('.lens-icon').forEach(btn => {
+            let timer = null;
+            btn.addEventListener('touchstart', function(e) {
+                const lensId = this.getAttribute('data-lens-id');
+                timer = setTimeout(() => {
+                    timer = null;
+                    e.preventDefault();
+                    showLensInfo(lensId);
+                }, 500);
+            }, { passive: false });
+            btn.addEventListener('touchend', function() {
+                if (timer) { clearTimeout(timer); timer = null; }
+            });
+            btn.addEventListener('touchmove', function() {
+                if (timer) { clearTimeout(timer); timer = null; }
+            });
+        });
+    }
 }
 
 function showLensInfo(lensId) {
@@ -28125,7 +28166,10 @@ function showLensInfo(lensId) {
     trapFocus(panel);
     announceToScreenReader('Lens information: ' + lens.label);
 
-    navPush({ type: 'lens', lensId: lens.id });
+    // Track current lens panel for getCurrentPanelState
+    _currentLensPanel = lens.id;
+    currentDomainPanel = null;
+    currentMechanismPanel = null;
 
     // Gather lens-relevant nodes from lensOverlays
     const overlayData = lensOverlays[lens.id] || {};
@@ -28346,12 +28390,8 @@ function renderLensBlock(d) {
         if (overlay.text) {
             content += `<p style="font-size:12px;color:var(--text-secondary);line-height:1.5;margin:0;">${resolvePersonaText(overlay.text)}</p>`;
             if (overlay.sources && overlay.sources.length > 0 && activePersona === 'researcher') {
-                const supHtml = overlay.sources.map(s => {
-                    const resolved = resolveSource(s);
-                    const label = resolved.shortRef || s.key;
-                    return `<sup style="cursor:pointer;color:var(--color-primary);" title="${(s.claim || '').replace(/"/g, '&quot;')}">[${label}]</sup>`;
-                }).join(' ');
-                content += `<div style="margin-top:4px;">${supHtml}</div>`;
+                const sups = getSourceSuperscripts(overlay.sources);
+                if (sups) content += `<div style="margin-top:4px;">${sups}</div>`;
             }
         } else {
             content += '<p class="text-note" style="font-size:12px;">Content not yet documented.</p>';
@@ -28478,6 +28518,9 @@ function activateAmabEasterEgg() {
     applyFilters();
     renderLensPalette();
     updateLensBadge();
+    // Push current panel state (AFAB lens) so back navigation works
+    const current = getCurrentPanelState();
+    if (current) navPush(current);
     // Show the AMAB lens info panel (user clicked from AFAB lens info)
     showLensInfo('amab-advantage');
     announceToScreenReader('AMAB diagnostic advantage lens activated. Almost nothing changes \u2014 and that is the point.');
@@ -31313,6 +31356,16 @@ function precomputeSourceNumbering(d) {
             allSources = allSources.concat(d[field].sources);
         }
     });
+
+    // Lens overlay sources (for active lenses)
+    if (hasActiveLenses()) {
+        getAllActiveLenses().forEach(lensId => {
+            const overlayMap = lensOverlays[lensId];
+            if (overlayMap && overlayMap[d.id] && overlayMap[d.id].sources) {
+                allSources = allSources.concat(overlayMap[d.id].sources);
+            }
+        });
+    }
 
     // Deduplicate
     const seen = new Set();
