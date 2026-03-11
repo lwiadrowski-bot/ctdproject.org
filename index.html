@@ -32835,11 +32835,10 @@ function mobileMenuOutsideClick(e) {
 // Touch: single-finger pan handled by D3's built-in zoom behaviour.
 
 // ── Show opening disclaimer on page load ────────────────────────────
-// DEV OVERRIDE: disclaimer disabled for dev convenience — reinstate before publish
-// const _disclaimerEl = document.getElementById('disclaimer-modal');
-// _disclaimerEl.classList.add('open');
-// _disclaimerEl.removeAttribute('aria-hidden');
-// trapFocus(document.getElementById('disclaimer-modal-card'));
+const _disclaimerEl = document.getElementById('disclaimer-modal');
+_disclaimerEl.classList.add('open');
+_disclaimerEl.removeAttribute('aria-hidden');
+trapFocus(document.getElementById('disclaimer-modal-card'));
 
 
 
