@@ -11858,6 +11858,8 @@ function _debugLog(label, err) {
     }
 }
 window.onerror = function(msg, url, line, col, err) {
+    // ResizeObserver loop warnings are benign browser noise — suppress
+    if (typeof msg === 'string' && msg.includes('ResizeObserver')) return;
     // Include stack trace for diagnosis
     let detail = err && err.message || msg;
     if (err && err.stack) {
