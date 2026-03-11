@@ -11888,51 +11888,80 @@ function _showDebugErrors() {
 }
 
 // ── Domain colours ──────────────────────────────────────────────────
+// Key order = canonical domain order, radiating out from neurodevelopmental:
+//   Constitutive → Shared substrate → Cascade → Bidirectional axes →
+//   Modulatory → Downstream → Contextual → Categorical
+// See DOMAIN_ORDER comment below for rationale.
 const domainColors = {
     'Neurodevelopmental': '#0d9488',
+    'Sensory':            '#a78bfa',
     'Connective tissue':  '#ef4444',
     'Autonomic':          '#f97316',
-    'Immune':             '#f59e0b',
-    'Sensory':            '#a78bfa',
     'Musculoskeletal':    '#ec4899',
+    'Immune':             '#f59e0b',
+    'Gastrointestinal':   '#65a30d',
     'Neurological':       '#3b82f6',
     'Metabolic / Endocrine': '#eab308',
-    'Gastrointestinal':   '#65a30d',
-    'Mental health':      '#7c3aed',
     'Sleep':              '#06b6d4',
     'Structural':         '#a21caf',
+    'Mental health':      '#7c3aed',
     'Genetic':            '#10b981',
     'Immunisation':       '#8a9a8a',
     'Personal':           '#7a7a8a'
 };
 
+// Canonical domain ordering — how each domain relates mechanistically to ND:
+//  1. Neurodevelopmental — core
+//  2. Sensory — constitutive (inseparable from the ND experience)
+//  3. Connective tissue — shared substrate (collagen biology, hEDS)
+//  4. Autonomic — cascade from CT (vascular laxity → dysautonomia)
+//  5. Musculoskeletal — cascade from CT (hypermobility → pain)
+//  6. Immune — cascade (mast cell activation, autoimmune overlap)
+//  7. Gastrointestinal — bidirectional axis (gut-brain, everyday reality)
+//  8. Neurological — bidirectional axis (cortical excitability, migraine)
+//  9. Metabolic / Endocrine — modulatory (hormones amplify/modify ND)
+// 10. Sleep — modulatory (circadian rhythm, some constitutive features)
+// 11. Structural — downstream anatomical consequence (Chiari, CCI)
+// 12. Mental health — contextual (real co-occurrence, largely social/diagnostic)
+// 13. Genetic — categorical (screening utility, different relationship type)
+const DOMAIN_ORDER = Object.keys(domainColors).filter(d => d !== 'Immunisation' && d !== 'Personal');
+
+// Sort comparator for canonical domain order
+function domainSortKey(name) {
+    const idx = DOMAIN_ORDER.indexOf(name);
+    return idx >= 0 ? idx : 999;
+}
+
 // High contrast palette - darker variants for ≥4.5:1 contrast on white
 const _normalDomainColors = { ...domainColors };
 const _hcDomainColors = {
-    'Neurodevelopmental': '#115e59', 'Connective tissue': '#b91c1c',
-    'Autonomic': '#c2410c', 'Immune': '#92400e', 'Sensory': '#6d28d9',
-    'Musculoskeletal': '#be185d', 'Neurological': '#1d4ed8',
-    'Metabolic / Endocrine': '#a16207', 'Gastrointestinal': '#4d7c0f',
-    'Mental health': '#5b21b6', 'Sleep': '#0e7490', 'Structural': '#86198f',
+    'Neurodevelopmental': '#115e59', 'Sensory': '#6d28d9',
+    'Connective tissue': '#b91c1c', 'Autonomic': '#c2410c',
+    'Musculoskeletal': '#be185d', 'Immune': '#92400e',
+    'Gastrointestinal': '#4d7c0f', 'Neurological': '#1d4ed8',
+    'Metabolic / Endocrine': '#a16207', 'Sleep': '#0e7490',
+    'Structural': '#86198f', 'Mental health': '#5b21b6',
     'Genetic': '#047857', 'Immunisation': '#8a9a8a', 'Personal': '#7a7a8a'
 };
 
 // Dark mode palette - brighter variants for contrast on dark backgrounds (Tailwind -400 shades)
 const _darkDomainColors = {
-    'Neurodevelopmental': '#45c4b0', 'Connective tissue': '#f87171',
-    'Autonomic': '#fb923c', 'Immune': '#fbbf24', 'Sensory': '#c4b5fd',
-    'Musculoskeletal': '#f472b6', 'Neurological': '#60a5fa',
-    'Metabolic / Endocrine': '#facc15', 'Gastrointestinal': '#a3e635',
-    'Mental health': '#a78bfa', 'Sleep': '#22d3ee', 'Structural': '#d946ef',
+    'Neurodevelopmental': '#45c4b0', 'Sensory': '#c4b5fd',
+    'Connective tissue': '#f87171', 'Autonomic': '#fb923c',
+    'Musculoskeletal': '#f472b6', 'Immune': '#fbbf24',
+    'Gastrointestinal': '#a3e635', 'Neurological': '#60a5fa',
+    'Metabolic / Endocrine': '#facc15', 'Sleep': '#22d3ee',
+    'Structural': '#d946ef', 'Mental health': '#a78bfa',
     'Genetic': '#34d399', 'Immunisation': '#a3b3a3', 'Personal': '#9a9aaa'
 };
 // Dark mode + high contrast palette - even brighter for maximum readability on dark
 const _darkHcDomainColors = {
-    'Neurodevelopmental': '#5eead4', 'Connective tissue': '#fca5a5',
-    'Autonomic': '#fdba74', 'Immune': '#fcd34d', 'Sensory': '#ddd6fe',
-    'Musculoskeletal': '#f9a8d4', 'Neurological': '#93c5fd',
-    'Metabolic / Endocrine': '#fde68a', 'Gastrointestinal': '#bef264',
-    'Mental health': '#c4b5fd', 'Sleep': '#67e8f9', 'Structural': '#f0abfc',
+    'Neurodevelopmental': '#5eead4', 'Sensory': '#ddd6fe',
+    'Connective tissue': '#fca5a5', 'Autonomic': '#fdba74',
+    'Musculoskeletal': '#f9a8d4', 'Immune': '#fcd34d',
+    'Gastrointestinal': '#bef264', 'Neurological': '#93c5fd',
+    'Metabolic / Endocrine': '#fde68a', 'Sleep': '#67e8f9',
+    'Structural': '#f0abfc', 'Mental health': '#c4b5fd',
     'Genetic': '#6ee7b7', 'Immunisation': '#8a9a8a', 'Personal': '#7a7a8a'
 };
 
@@ -12100,21 +12129,69 @@ const domainDescriptions = {
 };
 
 // ── Mechanism Taxonomy ──────────────────────────────────────────────────
+// Canonical mechanism order: neurochemical → sensory → stress → domain cascade → niche
 const mechanismTaxonomy = [
-    { id: 'mast-cell', label: 'Mast Cell Activation', short: 'Mast Cell', color: '#e07050',
-        description: { technical: 'Mast cells are immune sentinel cells that release histamine, prostaglandins, and other mediators in response to perceived threats. In mast cell activation syndrome (MCAS), these cells degranulate inappropriately, producing multi-system symptoms including flushing, GI disturbance, tachycardia, neurological effects, and in severe cases, anaphylaxis. Mast cell dysfunction may be primary or secondary to connective tissue instability.', lay: 'Mast cells are part of the immune system that release chemicals like histamine when they sense danger. In mast cell activation, these cells overreact to triggers that shouldn\'t be threatening, causing symptoms across many body systems, flushing, gut problems, racing heart, brain fog, and in severe cases, life-threatening anaphylaxis.', layValidated: false, sources: [
-                    { key: '10.1007/s12016-018-8720-1', claim: 'Mast cell immune orchestration: release of histamine, prostaglandins, and mediators via allergen-IgE cross-linking' },
-                    { key: '10.1002/ajmg.c.31944', claim: 'MCAS involves inappropriate mast cell degranulation producing multi-system symptoms; may underlie some hEDS cases' },
-                    { key: '10.1007/s12026-022-09280-1', claim: '24% of EDS patients had MCAS diagnosis; mast cell dysfunction may be secondary to connective tissue instability' }
+    { id: 'dopamine', label: 'Dopamine / Reward Pathways', short: 'Dopamine', color: '#cc8833',
+        description: { technical: 'Dopaminergic pathways regulate executive function, motivation, reward processing, motor control, and circadian rhythms. Key circuits include the mesocorticolimbic (reward/motivation), nigrostriatal (motor), and tuberoinfundibular (hormonal) pathways. Genetic variants in dopamine receptors (DRD4, DRD2), transporters (DAT1), and synthetic enzymes (TH, DDC) contribute to ADHD, tic disorders, and reward sensitivity differences.', lay: 'Dopamine is a brain chemical involved in motivation, focus, reward, movement, and sleep-wake cycles. Differences in how the brain uses dopamine are central to ADHD and also play a role in tic conditions, addiction vulnerability, and why some people need more stimulation to feel engaged.', layValidated: false, sources: [
+                    { key: '10.3389/fpsyt.2022.837424', claim: 'Genetic overlap between ASD and ADHD (~72% shared additive genetic variance); dopaminergic pathway differences' },
+                    { key: '10.1080/07420528.2020.1835943', claim: 'Dopaminergic circadian regulation: delayed DLMO in ADHD+DSPS (mean 23:43)' }
                 ] },
-        notes: { technical: 'Mast cell activation provides a key mechanistic bridge between connective tissue, autonomic, immune, and neurological domains. Mast cell mediators directly affect vascular tone (POTS), gut motility (IBS), neuroinflammation (migraine, brain fog), and pain sensitisation. Elevated mast cell activation is documented in hEDS/HSD and autistic populations, suggesting a proposed shared upstream pathway. IgE-mediated anaphylaxis represents the acute extreme of mast cell activation: 30–60% of idiopathic anaphylaxis cases are attributed to underlying MCAS on investigation.', lay: 'Mast cell problems help explain why so many different symptoms can travel together. The chemicals released by overactive mast cells affect blood vessels, the gut, the brain, and pain processing, which is why mast cell activation can cause such a wide range of seemingly unrelated symptoms. At the severe end, mast cell activation drives life-threatening allergic reactions (anaphylaxis), and investigating unexplained anaphylaxis often reveals an underlying mast cell condition.', layValidated: false, sources: [
-                    { key: '10.1161/JAHA.121.021002', claim: 'Mast cell histamine release causes tachycardia via H2 receptor activation on sinoatrial node (vascular tone/POTS)' },
-                    { key: 'ref:fc-mcas-mast-cell-gi-dysmotility', claim: 'Mast cells regulate GI motility; aberrant activation disrupts peristaltic coordination' },
-                    { key: '10.3892/etm.2020.8789', claim: 'Mast cell neuroinflammation via dopaminergic/noradrenergic pathways (migraine, brain fog)' },
-                    { key: 'ref:mast-cell-central-sensitisation-fibromyalgia', claim: 'Mast cell mediators (histamine, tryptase, TNF-\u03b1, IL-6) contribute to peripheral and central pain sensitisation' },
-                    { key: '10.1007/s12026-022-09280-1', claim: 'Elevated mast cell activation documented in hEDS/HSD (24% MCAS prevalence)' },
-                    { key: '10.3390/ijms25052651', claim: 'Elevated mast cell activation in autistic populations (3.75% ASD prevalence in mastocytosis cohort)' },
-                    { key: '10.1016/j.jaci.2017.06.007', claim: '30-60% of idiopathic anaphylaxis attributed to underlying MCAS; IgE-mediated anaphylaxis as acute mast cell degranulation event' }
+        notes: { technical: 'Dopaminergic differences are the primary neurochemical mechanism in ADHD and a significant contributor to tic disorders, restless legs syndrome, and circadian disruption. Dopamine-serotonin interactions link this pathway to mood disorders and OCD. The reward pathway explains patterns of hyperfocus, novelty-seeking, and variable motivation that are characteristic of neurodivergent experience.', lay: 'Dopamine differences connect ADHD to sleep problems, tic conditions, mood, and the intense focus or motivation patterns many neurodivergent people experience. Understanding dopamine helps explain why stimulant medications work, and why motivation can be so variable from day to day.', layValidated: false, sources: [
+                    { key: '10.1093/brain/awh434', claim: 'Shared dopaminergic dysfunction underlies both PLMD and ADHD; contributes to restless legs syndrome' },
+                    { key: '10.1080/07420528.2020.1835943', claim: 'Circadian disruption in ADHD mediated by dopaminergic pathways' },
+                    { key: '10.2147/PRBM.S526615', claim: 'Depression-ADHD comorbidity with earlier onset; dopamine-serotonin interaction' },
+                    { key: 'ref:sud-bed-shared-reward-pathway', claim: 'Shared dopaminergic mesolimbic reward circuitry dysfunction explains hyperfocus, novelty-seeking, and variable motivation' },
+                    { key: '10.3389/fpsyt.2022.837424', claim: 'Dopaminergic differences are primary neurochemical mechanism in ADHD and significant contributor to tic disorders' }
+                ] }
+    },
+    { id: 'serotonin', label: 'Serotonin Pathways', short: 'Serotonin', color: '#d4527a',
+        description: { technical: 'Serotonergic pathways modulate mood, anxiety, sensory gating, pain perception, GI motility, and sleep. The serotonin transporter (5-HTT/SLC6A4), receptors (5-HT1A/2A/3), and synthesis enzyme (TPH2) are implicated in depression, anxiety, OCD, migraine, and IBS. Critically, tryptophan is metabolised via two competing routes: serotonin synthesis (via TPH) and the kynurenine pathway (via IDO/TDO). When inflammation upregulates the kynurenine pathway, less tryptophan is available for serotonin, and neurotoxic metabolites (quinolinic acid, a glutamate agonist) are produced, bridging serotonin depletion to neuroinflammation and excitation/inhibition imbalance.', lay: 'Serotonin is a brain and body chemical that affects mood, anxiety, pain, gut function, and sleep. Differences in how the body makes, uses, or recycles serotonin contribute to depression, anxiety, OCD, migraine, and irritable bowel syndrome. Most serotonin is actually made in the gut, not the brain. Importantly, when the body is inflamed, it diverts the building blocks for serotonin down a different pathway, which depletes serotonin and produces chemicals that can overstimulate the brain.', layValidated: false, sources: [
+                    { key: '10.1089/thy.2012.0142', claim: 'Serotonergic pathways modulate mood and are impaired by hypothyroidism; thyroid-brain interaction via serotonin' },
+                    { key: '10.1212/CPJ.0000000000000433', claim: 'Serotonin transporter and receptor involvement; serotonergic modulation of brainstem motor nuclei' },
+                    { key: '10.1016/j.maturitas.2017.04.016', claim: 'Oestrogen fluctuations affect serotonergic neurotransmission; tryptophan metabolism links inflammation to serotonin depletion' }
+                ] },
+        notes: { technical: 'Serotonergic differences bridge mental health, neurological, GI, and sensory domains. Altered serotonin signalling is documented in autism (platelet hyperserotonemia), depression, OCD, migraine, and fibromyalgia (low CNS serotonin). The tryptophan-kynurenine metabolic shift is a key mechanism: inflammation-driven IDO upregulation depletes serotonin while producing quinolinic acid (linking to E/I imbalance) and is regulated by clock genes (linking to circadian disruption). The serotonin-dopamine interaction is relevant to ADHD–mood disorder co-occurrence. Gut serotonin production links GI dysfunction to mood and pain presentations, making this pathway a key pharmacological target across the cluster.', lay: 'Serotonin connects mood, gut, pain, and sensory conditions across this map. It\'s why treatments that target serotonin (like SSRIs) can affect both mood and gut symptoms, and why gut problems and depression so often travel together. The link between inflammation and low serotonin is increasingly understood, when the body is fighting inflammation, it uses up the raw materials needed to make serotonin, which helps explain why physical illness worsens mood and pain.', layValidated: false, sources: [
+                    { key: '10.1089/thy.2012.0142', claim: 'Altered serotonin signalling in depression; hypothyroidism impairs serotonergic neurotransmission' },
+                    { key: '10.1590/1516-4446-2019-0471', claim: 'Serotonergic CSTC loop dysfunction shared by OCD, BFRBs, and tic disorders' },
+                    { key: 'ref:gut-brain-constipation-depression', claim: 'Gut serotonin production links GI dysfunction to mood and pain presentations via serotonergic pathways' },
+                    { key: '10.1016/j.maturitas.2017.04.016', claim: 'Oestrogen modulates serotonin synthesis; serotonin-dopamine interaction relevant to mood disorder comorbidity' },
+                    { key: 'ref:diagnostic-crossover-literature-eating-disorder-spectrum', claim: 'Serotonergic mechanisms in eating disorder spectrum; restrictive and binge patterns involve serotonin dysregulation' }
+                ] }
+    },
+    { id: 'cortical-excitability', label: 'Cortical Hyperexcitability', short: 'Cortical', color: '#b87030',
+        description: { technical: 'Cortical hyperexcitability reflects an imbalance between excitatory (glutamatergic) and inhibitory (GABAergic) neurotransmission, lowering the threshold for neuronal firing. This excitation/inhibition imbalance is documented in epilepsy, migraine with aura, and autism. Manifests as increased susceptibility to cortical spreading depression (migraine), seizures (epilepsy), and sensory over-responsivity (autism, visual snow syndrome).', lay: 'Cortical hyperexcitability means the brain is more easily triggered than usual, the balance between "go" and "stop" signals in the brain is tipped toward "go." This can lead to migraine, epilepsy, and heightened sensory sensitivity, because the brain responds more intensely to stimulation.', layValidated: false, sources: [
+                    { key: '10.1002/ana.26745', claim: 'Abnormal glutamatergic and serotonergic network connectivity; excitation/inhibition imbalance in VSS overlaps with migraine' },
+                    { key: '10.1523/JNEUROSCI.3461-12.2013', claim: 'Central auditory gain model: increased auditory sensitivity supports cortical hyperexcitability mechanism in tinnitus' }
+                ] },
+        notes: { technical: 'Cortical excitability differences provide a shared mechanism between epilepsy, migraine, sensory processing differences, and autism. The excitation/inhibition imbalance hypothesis is a leading framework for understanding autistic sensory experience. This mechanism also connects to visual snow syndrome and tinnitus via thalamocortical dysrhythmia, to tic disorders and OCD via cortico-striato-thalamic circuit dysfunction, and to depression via GABA deficits in prefrontal cortex and hippocampus (ketamine\'s rapid antidepressant mechanism acts on E/I balance).', lay: 'Cortical hyperexcitability connects conditions that might seem very different, migraine, epilepsy, sensory sensitivity, visual snow, and tinnitus, through a shared pattern of the brain being more reactive than usual. It\'s one of the key mechanisms that explains the overlap between neurological and sensory conditions.', layValidated: false, sources: [
+                    { key: '10.1177/03331024241312666', claim: 'Migraine polygenic scores associated with autism; shared genetic basis for cortical excitability' },
+                    { key: '10.1093/braincomms/fcab296', claim: 'Shared thalamocortical dysrhythmia signatures in VSS and tinnitus (MEG study)' },
+                    { key: '10.1016/j.jocn.2015.12.001', claim: 'Thalamocortical dysrhythmia hypothesis linking visual snow and tinnitus via shared pathway' },
+                    { key: '10.3389/fneur.2021.724072', claim: 'VSS as network disorder with multi-sensory hypersensitivity; central sensitisation overlap' },
+                    { key: '10.1038/srep41155', claim: 'Atypical sensory sensitivity shared between synaesthesia and autism; heightened cortical excitability' }
+                ] }
+    },
+    { id: 'interoception', label: 'Interoceptive Dysfunction', short: 'Interoception', color: '#3a95b8',
+        description: { technical: 'Interoception is the perception of internal bodily states, hunger, thirst, heart rate, bladder fullness, pain, temperature, and emotional arousal. Interoceptive differences involve altered sensitivity, accuracy, or awareness of these signals. Mediated by insular cortex, anterior cingulate, and vagal afferents, interoceptive processing is integral to emotional regulation, self-awareness, and homeostatic control.', lay: 'Interoception is your sense of what\'s happening inside your body, things like hunger, thirst, needing the toilet, heart rate, temperature, and emotions. When this sense works differently, it can be hard to read your body\'s signals, which affects eating, emotional awareness, and knowing when you\'re becoming overwhelmed.', layValidated: false, sources: [
+                    { key: '10.1016/j.copsyc.2017.04.020', claim: 'Interoception mediates emotion, anxiety, and physiological self-regulation via insular cortex, anterior cingulate, and vagal afferents' }
+                ] },
+        notes: { technical: 'Interoceptive differences are documented in autism, ADHD, eating disorders, alexithymia, and anxiety conditions. Altered interoception links to autonomic awareness (contributing to unrecognised POTS symptoms), pain processing (delayed or absent pain response in hEDS), and emotional regulation (difficulty identifying emotions). This mechanism provides a transdiagnostic bridge between neurodevelopmental, mental health, and autonomic domains.', lay: 'Interoception differences connect many conditions on this map. Not reading body signals clearly can mean missing hunger cues (linked to eating difficulties), not recognising emotions until they\'re overwhelming (linked to alexithymia and anxiety), or not noticing autonomic symptoms like a racing heart until they\'re severe.', layValidated: false, sources: [
+                    { key: '10.1016/j.biopsycho.2015.12.003', claim: 'Reduced interoceptive accuracy in autistic adults alongside exaggerated interoceptive sensibility' },
+                    { key: '10.1016/j.cortex.2015.11.018', claim: 'Alexithymia predicts reduced interoceptive accuracy; links to difficulty identifying emotions' },
+                    { key: '10.1111/jcpp.13670', claim: 'Sensory processing differences drive the sensory-aversive ARFID subtype via interoceptive food aversion' },
+                    { key: '10.3389/fpsyt.2021.786916', claim: 'Interoceptive model: >50% of hypermobility patients neurodivergent; altered autonomic awareness contributes to unrecognised POTS' },
+                    { key: '10.1007/s12402-018-0252-2', claim: 'Interoceptive pathway linking hEDS to ADHD; altered pain processing and delayed pain response in connective tissue conditions' }
+                ] }
+    },
+    { id: 'hpa-axis', label: 'HPA Axis Dysregulation', short: 'HPA Axis', color: '#5a8c35',
+        description: { technical: 'The hypothalamic-pituitary-adrenal (HPA) axis is the body\'s primary stress response system. Dysregulation, involving altered cortisol rhythms, blunted or exaggerated stress reactivity, and impaired negative feedback, is documented in chronic stress, trauma, burnout, and multiple neurodevelopmental conditions. Chronic HPA activation affects immune function, sleep architecture, pain processing, and metabolic regulation.', lay: 'The HPA axis is your body\'s stress response system; it controls cortisol (the stress hormone) and helps you respond to challenges. When this system gets stuck in overdrive or stops working properly, it can affect sleep, immunity, pain, energy, and mood. This is common after chronic stress or burnout.', layValidated: false, sources: [
+                    { key: '10.1111/head.14870', claim: 'HPA axis dysfunction with altered cortisol rhythms; affects immune function, sleep, pain processing, and metabolic regulation' }
+                ] },
+        notes: { technical: 'HPA axis dysregulation is a convergence mechanism linking chronic stress exposures (masking, minority stress, diagnostic delay) to physiological outcomes. Altered cortisol profiles are documented in autism, ADHD, PTSD, and chronic fatigue syndrome. This mechanism connects the lived experience of neurodivergent individuals to measurable biological changes in immune, metabolic, and neurological function.', lay: 'HPA axis problems help explain how the stress of being neurodivergent in a neurotypical world, the exhaustion of masking, years without diagnosis, and constant adaptation, gets into the body and affects physical health. Chronic stress doesn\'t just feel bad; it changes how the body functions.', layValidated: false, sources: [
+                    { key: '10.1016/j.cpr.2021.102113', claim: 'Minority stress (distal stress, expectations of rejection, internalised stigma) linked to physiological and mental health outcomes' },
+                    { key: 'ref:mechanistic-inference-hpa-axis-and-dopamine-overlap-literature', claim: 'HPA axis dysregulation documented in ME/CFS and ADHD; altered cortisol profiles in neurodevelopmental conditions' },
+                    { key: 'url:pubmed.ncbi.nlm.nih.gov/39038862', claim: 'Children showing autistic traits were significantly more likely to experience chronic stress and burnout' },
+                    { key: '10.1177/15248380231218288', claim: 'Gender minority stress linked to mental health impacts via sustained HPA activation' }
                 ] }
     },
     { id: 'connective-tissue', label: 'Connective Tissue Laxity', short: 'Conn. Tissue', color: '#8b7355',
@@ -12144,6 +12221,19 @@ const mechanismTaxonomy = [
                     { key: '10.1016/j.cnp.2020.01.003', claim: '~90% of ME/CFS patients showed abnormal cerebral blood flow reduction; autonomic dysfunction drives fatigue and exercise intolerance' }
                 ] }
     },
+    { id: 'gut-brain', label: 'Gut-Brain Axis', short: 'Gut-Brain', color: '#2a9e8e',
+        description: { technical: 'The gut-brain axis encompasses bidirectional communication between the enteric nervous system and CNS via vagal afferents, circulating cytokines, microbial metabolites (short-chain fatty acids, tryptophan derivatives), and the enteric serotonergic system. The gut microbiome modulates neurotransmitter production, immune maturation, and HPA axis reactivity. Approximately 90% of serotonin and a substantial proportion of dopamine are produced in the gut.', lay: 'The gut-brain axis is the two-way communication system between the gut and the brain. They talk to each other through nerves, immune signals, and chemicals made by gut bacteria. Remarkably, most of the body\'s serotonin and a large amount of dopamine, brain chemicals that affect mood and focus, are actually made in the gut.', layValidated: false, sources: [
+                    { key: '10.1093/gastro/goaf009', claim: 'Vagal afferents mediate bidirectional gut-brain communication; regulate GI motility and visceral sensitivity' },
+                    { key: '10.1038/nrgastro.2012.32', claim: 'Enteric nervous system mediates gut-brain signalling; enteric serotonergic system and neurotransmitter production' },
+                    { key: '10.1007/s10620-020-06133-5', claim: 'Gut microbiome modulates neurotransmitter production and immune maturation; serotonin and dopamine produced in the gut' }
+                ] },
+        notes: { technical: 'Gut-brain interactions are relevant across the neurodivergent cluster via serotonergic modulation (mood, sensory processing), microbiome-immune crosstalk (neuroinflammation), and vagal signalling (autonomic regulation). Altered gut microbiome profiles are documented in autism, ADHD, and depression. GI symptoms are among the most common co-occurring complaints in neurodevelopmental conditions, making this axis a key therapeutic target.', lay: 'The gut-brain connection helps explain why digestive problems are so common alongside neurodivergent conditions, and why gut health can affect mood, focus, and sensory sensitivity. The bacteria living in the gut influence the brain chemicals that matter most for these conditions.', layValidated: false, sources: [
+                    { key: '10.1007/s10620-020-06133-5', claim: 'Altered gut microbiome profiles documented in autism; brain-gut-microbiome axis disorder model' },
+                    { key: 'ref:gut-brain-constipation-depression', claim: 'Bidirectional gut-brain axis: serotonergic pathways link GI dysfunction to mood presentations' },
+                    { key: '10.1053/j.gastro.2019.12.021', claim: 'Functional bowel disorders (constipation, IBS-C) share gut-brain axis dysfunction mechanisms' },
+                    { key: '10.1016/j.cell.2014.09.032', claim: 'Neural crest development genes shared between Hirschsprung disease and autism; enteric nervous system link' }
+                ] }
+    },
     { id: 'central-sensitisation', label: 'Central Sensitisation', short: 'Sensitisation', color: '#a04ec0',
         description: { technical: 'Central sensitisation is a neuroplastic process where the central nervous system amplifies sensory and nociceptive signals, lowering pain thresholds and expanding receptive fields. Involves altered NMDA receptor activity, glial cell activation, and reduced descending inhibition. Results in allodynia, hyperalgesia, and amplified responses to non-painful stimuli across multiple sensory modalities.', lay: 'Central sensitisation is when the nervous system turns up the volume on pain and sensory signals. The brain starts treating normal sensations as painful or overwhelming, and pain signals get amplified. This helps explain why people with chronic pain conditions are often more sensitive to touch, sound, and light too.', layValidated: false, sources: [
                     { key: '10.1007/s00702-019-02099-x', claim: 'Central sensitisation involves amplification of nociceptive signalling, altered NMDA receptor activity, and reduced descending inhibition' },
@@ -12158,38 +12248,20 @@ const mechanismTaxonomy = [
                     { key: '10.3389/fneur.2021.724072', claim: 'VSS, fibromyalgia, and tinnitus grouped as perceptual disorders sharing central sensitisation mechanism' }
                 ] }
     },
-    { id: 'dopamine', label: 'Dopamine / Reward Pathways', short: 'Dopamine', color: '#cc8833',
-        description: { technical: 'Dopaminergic pathways regulate executive function, motivation, reward processing, motor control, and circadian rhythms. Key circuits include the mesocorticolimbic (reward/motivation), nigrostriatal (motor), and tuberoinfundibular (hormonal) pathways. Genetic variants in dopamine receptors (DRD4, DRD2), transporters (DAT1), and synthetic enzymes (TH, DDC) contribute to ADHD, tic disorders, and reward sensitivity differences.', lay: 'Dopamine is a brain chemical involved in motivation, focus, reward, movement, and sleep-wake cycles. Differences in how the brain uses dopamine are central to ADHD and also play a role in tic conditions, addiction vulnerability, and why some people need more stimulation to feel engaged.', layValidated: false, sources: [
-                    { key: '10.3389/fpsyt.2022.837424', claim: 'Genetic overlap between ASD and ADHD (~72% shared additive genetic variance); dopaminergic pathway differences' },
-                    { key: '10.1080/07420528.2020.1835943', claim: 'Dopaminergic circadian regulation: delayed DLMO in ADHD+DSPS (mean 23:43)' }
+    { id: 'mast-cell', label: 'Mast Cell Activation', short: 'Mast Cell', color: '#e07050',
+        description: { technical: 'Mast cells are immune sentinel cells that release histamine, prostaglandins, and other mediators in response to perceived threats. In mast cell activation syndrome (MCAS), these cells degranulate inappropriately, producing multi-system symptoms including flushing, GI disturbance, tachycardia, neurological effects, and in severe cases, anaphylaxis. Mast cell dysfunction may be primary or secondary to connective tissue instability.', lay: 'Mast cells are part of the immune system that release chemicals like histamine when they sense danger. In mast cell activation, these cells overreact to triggers that shouldn\'t be threatening, causing symptoms across many body systems, flushing, gut problems, racing heart, brain fog, and in severe cases, life-threatening anaphylaxis.', layValidated: false, sources: [
+                    { key: '10.1007/s12016-018-8720-1', claim: 'Mast cell immune orchestration: release of histamine, prostaglandins, and mediators via allergen-IgE cross-linking' },
+                    { key: '10.1002/ajmg.c.31944', claim: 'MCAS involves inappropriate mast cell degranulation producing multi-system symptoms; may underlie some hEDS cases' },
+                    { key: '10.1007/s12026-022-09280-1', claim: '24% of EDS patients had MCAS diagnosis; mast cell dysfunction may be secondary to connective tissue instability' }
                 ] },
-        notes: { technical: 'Dopaminergic differences are the primary neurochemical mechanism in ADHD and a significant contributor to tic disorders, restless legs syndrome, and circadian disruption. Dopamine-serotonin interactions link this pathway to mood disorders and OCD. The reward pathway explains patterns of hyperfocus, novelty-seeking, and variable motivation that are characteristic of neurodivergent experience.', lay: 'Dopamine differences connect ADHD to sleep problems, tic conditions, mood, and the intense focus or motivation patterns many neurodivergent people experience. Understanding dopamine helps explain why stimulant medications work, and why motivation can be so variable from day to day.', layValidated: false, sources: [
-                    { key: '10.1093/brain/awh434', claim: 'Shared dopaminergic dysfunction underlies both PLMD and ADHD; contributes to restless legs syndrome' },
-                    { key: '10.1080/07420528.2020.1835943', claim: 'Circadian disruption in ADHD mediated by dopaminergic pathways' },
-                    { key: '10.2147/PRBM.S526615', claim: 'Depression-ADHD comorbidity with earlier onset; dopamine-serotonin interaction' },
-                    { key: 'ref:sud-bed-shared-reward-pathway', claim: 'Shared dopaminergic mesolimbic reward circuitry dysfunction explains hyperfocus, novelty-seeking, and variable motivation' },
-                    { key: '10.3389/fpsyt.2022.837424', claim: 'Dopaminergic differences are primary neurochemical mechanism in ADHD and significant contributor to tic disorders' }
-                ] }
-    },
-    { id: 'phonological', label: 'Phonological Processing', short: 'Phonological', color: '#3a9e60',
-        description: { technical: 'Phonological processing encompasses the ability to perceive, manipulate, and store speech sounds. Involves temporal auditory processing, phonemic awareness, and phonological working memory. Differences in left-lateralised perisylvian regions (superior temporal gyrus, inferior frontal gyrus) and cerebellar contributions to timing are implicated in dyslexia, developmental language disorder, and speech sound disorders.', lay: 'Phonological processing is how the brain handles speech sounds, hearing the differences between similar sounds, breaking words into their sound parts, and holding sounds in memory. Differences in this skill are at the core of dyslexia and speech-language conditions.', layValidated: false, sources: [
-                    { key: '10.1037/0033-2909.130.6.858', claim: 'Shared phonological processing differences underlie auditory processing disorder and dyslexia; involves temporal auditory processing and phonological awareness' }
-                ] },
-        notes: { technical: 'Phonological processing differences link the specific learning disability cluster (dyslexia, developmental language disorder) to broader neurodevelopmental conditions via shared genetic risk loci and cerebellar contributions. Co-occurrence of phonological and motor coordination differences (dyslexia–dyspraxia overlap) suggests shared neurodevelopmental substrates affecting timing and sequencing.', lay: 'Phonological processing differences connect reading, speech, and language conditions to the broader neurodevelopmental picture. The brain regions involved in processing sounds also contribute to coordination and timing, which helps explain why dyslexia and dyspraxia often occur together.', layValidated: false, sources: [
-                    { key: '10.1177/09567976241293999', claim: 'Genetic analysis of dyslexia-autism link suggests shared neurodevelopmental substrates via non-phonological pathways' },
-                    { key: '10.1037/0033-2909.130.6.858', claim: 'Phonological and motor coordination differences share underlying timing and sequencing mechanisms' }
-                ] }
-    },
-    { id: 'interoception', label: 'Interoceptive Dysfunction', short: 'Interoception', color: '#3a95b8',
-        description: { technical: 'Interoception is the perception of internal bodily states, hunger, thirst, heart rate, bladder fullness, pain, temperature, and emotional arousal. Interoceptive differences involve altered sensitivity, accuracy, or awareness of these signals. Mediated by insular cortex, anterior cingulate, and vagal afferents, interoceptive processing is integral to emotional regulation, self-awareness, and homeostatic control.', lay: 'Interoception is your sense of what\'s happening inside your body, things like hunger, thirst, needing the toilet, heart rate, temperature, and emotions. When this sense works differently, it can be hard to read your body\'s signals, which affects eating, emotional awareness, and knowing when you\'re becoming overwhelmed.', layValidated: false, sources: [
-                    { key: '10.1016/j.copsyc.2017.04.020', claim: 'Interoception mediates emotion, anxiety, and physiological self-regulation via insular cortex, anterior cingulate, and vagal afferents' }
-                ] },
-        notes: { technical: 'Interoceptive differences are documented in autism, ADHD, eating disorders, alexithymia, and anxiety conditions. Altered interoception links to autonomic awareness (contributing to unrecognised POTS symptoms), pain processing (delayed or absent pain response in hEDS), and emotional regulation (difficulty identifying emotions). This mechanism provides a transdiagnostic bridge between neurodevelopmental, mental health, and autonomic domains.', lay: 'Interoception differences connect many conditions on this map. Not reading body signals clearly can mean missing hunger cues (linked to eating difficulties), not recognising emotions until they\'re overwhelming (linked to alexithymia and anxiety), or not noticing autonomic symptoms like a racing heart until they\'re severe.', layValidated: false, sources: [
-                    { key: '10.1016/j.biopsycho.2015.12.003', claim: 'Reduced interoceptive accuracy in autistic adults alongside exaggerated interoceptive sensibility' },
-                    { key: '10.1016/j.cortex.2015.11.018', claim: 'Alexithymia predicts reduced interoceptive accuracy; links to difficulty identifying emotions' },
-                    { key: '10.1111/jcpp.13670', claim: 'Sensory processing differences drive the sensory-aversive ARFID subtype via interoceptive food aversion' },
-                    { key: '10.3389/fpsyt.2021.786916', claim: 'Interoceptive model: >50% of hypermobility patients neurodivergent; altered autonomic awareness contributes to unrecognised POTS' },
-                    { key: '10.1007/s12402-018-0252-2', claim: 'Interoceptive pathway linking hEDS to ADHD; altered pain processing and delayed pain response in connective tissue conditions' }
+        notes: { technical: 'Mast cell activation provides a key mechanistic bridge between connective tissue, autonomic, immune, and neurological domains. Mast cell mediators directly affect vascular tone (POTS), gut motility (IBS), neuroinflammation (migraine, brain fog), and pain sensitisation. Elevated mast cell activation is documented in hEDS/HSD and autistic populations, suggesting a proposed shared upstream pathway. IgE-mediated anaphylaxis represents the acute extreme of mast cell activation: 30–60% of idiopathic anaphylaxis cases are attributed to underlying MCAS on investigation.', lay: 'Mast cell problems help explain why so many different symptoms can travel together. The chemicals released by overactive mast cells affect blood vessels, the gut, the brain, and pain processing, which is why mast cell activation can cause such a wide range of seemingly unrelated symptoms. At the severe end, mast cell activation drives life-threatening allergic reactions (anaphylaxis), and investigating unexplained anaphylaxis often reveals an underlying mast cell condition.', layValidated: false, sources: [
+                    { key: '10.1161/JAHA.121.021002', claim: 'Mast cell histamine release causes tachycardia via H2 receptor activation on sinoatrial node (vascular tone/POTS)' },
+                    { key: 'ref:fc-mcas-mast-cell-gi-dysmotility', claim: 'Mast cells regulate GI motility; aberrant activation disrupts peristaltic coordination' },
+                    { key: '10.3892/etm.2020.8789', claim: 'Mast cell neuroinflammation via dopaminergic/noradrenergic pathways (migraine, brain fog)' },
+                    { key: 'ref:mast-cell-central-sensitisation-fibromyalgia', claim: 'Mast cell mediators (histamine, tryptase, TNF-\u03b1, IL-6) contribute to peripheral and central pain sensitisation' },
+                    { key: '10.1007/s12026-022-09280-1', claim: 'Elevated mast cell activation documented in hEDS/HSD (24% MCAS prevalence)' },
+                    { key: '10.3390/ijms25052651', claim: 'Elevated mast cell activation in autistic populations (3.75% ASD prevalence in mastocytosis cohort)' },
+                    { key: '10.1016/j.jaci.2017.06.007', claim: '30-60% of idiopathic anaphylaxis attributed to underlying MCAS; IgE-mediated anaphylaxis as acute mast cell degranulation event' }
                 ] }
     },
     { id: 'atopic', label: 'Atopic / Allergic Cascade', short: 'Atopic', color: '#c04480',
@@ -12204,17 +12276,6 @@ const mechanismTaxonomy = [
                     { key: '10.1016/j.jaci.2010.06.007', claim: 'Mast cell activation disorders and allergic rhinitis share mast cell degranulation pathways' },
                     { key: '10.1007/s12016-018-8720-1', claim: 'Shared mast cell-mediated immune orchestration underlies allergic and neuroinflammatory pathways' },
                     { key: 'title:xu-et-al-2018-food-allergy-asd-adhd-meta-analysis', claim: 'Meta-analysis: food allergy OR 2.45 in ASD and OR 1.72 in ADHD vs controls' }
-                ] }
-    },
-    { id: 'hpa-axis', label: 'HPA Axis Dysregulation', short: 'HPA Axis', color: '#5a8c35',
-        description: { technical: 'The hypothalamic-pituitary-adrenal (HPA) axis is the body\'s primary stress response system. Dysregulation, involving altered cortisol rhythms, blunted or exaggerated stress reactivity, and impaired negative feedback, is documented in chronic stress, trauma, burnout, and multiple neurodevelopmental conditions. Chronic HPA activation affects immune function, sleep architecture, pain processing, and metabolic regulation.', lay: 'The HPA axis is your body\'s stress response system; it controls cortisol (the stress hormone) and helps you respond to challenges. When this system gets stuck in overdrive or stops working properly, it can affect sleep, immunity, pain, energy, and mood. This is common after chronic stress or burnout.', layValidated: false, sources: [
-                    { key: '10.1111/head.14870', claim: 'HPA axis dysfunction with altered cortisol rhythms; affects immune function, sleep, pain processing, and metabolic regulation' }
-                ] },
-        notes: { technical: 'HPA axis dysregulation is a convergence mechanism linking chronic stress exposures (masking, minority stress, diagnostic delay) to physiological outcomes. Altered cortisol profiles are documented in autism, ADHD, PTSD, and chronic fatigue syndrome. This mechanism connects the lived experience of neurodivergent individuals to measurable biological changes in immune, metabolic, and neurological function.', lay: 'HPA axis problems help explain how the stress of being neurodivergent in a neurotypical world, the exhaustion of masking, years without diagnosis, and constant adaptation, gets into the body and affects physical health. Chronic stress doesn\'t just feel bad; it changes how the body functions.', layValidated: false, sources: [
-                    { key: '10.1016/j.cpr.2021.102113', claim: 'Minority stress (distal stress, expectations of rejection, internalised stigma) linked to physiological and mental health outcomes' },
-                    { key: 'ref:mechanistic-inference-hpa-axis-and-dopamine-overlap-literature', claim: 'HPA axis dysregulation documented in ME/CFS and ADHD; altered cortisol profiles in neurodevelopmental conditions' },
-                    { key: 'url:pubmed.ncbi.nlm.nih.gov/39038862', claim: 'Children showing autistic traits were significantly more likely to experience chronic stress and burnout' },
-                    { key: '10.1177/15248380231218288', claim: 'Gender minority stress linked to mental health impacts via sustained HPA activation' }
                 ] }
     },
     { id: 'autoimmune', label: 'Autoimmune Clustering', short: 'Autoimmune', color: '#c03030',
@@ -12242,30 +12303,18 @@ const mechanismTaxonomy = [
                     { key: '10.1186/1471-2377-11-62', claim: 'Depression in ME/CFS driven by shared neuroinflammatory and IO&NS pathways, not primary mood disorder' }
                 ] }
     },
-    { id: 'gut-brain', label: 'Gut-Brain Axis', short: 'Gut-Brain', color: '#2a9e8e',
-        description: { technical: 'The gut-brain axis encompasses bidirectional communication between the enteric nervous system and CNS via vagal afferents, circulating cytokines, microbial metabolites (short-chain fatty acids, tryptophan derivatives), and the enteric serotonergic system. The gut microbiome modulates neurotransmitter production, immune maturation, and HPA axis reactivity. Approximately 90% of serotonin and a substantial proportion of dopamine are produced in the gut.', lay: 'The gut-brain axis is the two-way communication system between the gut and the brain. They talk to each other through nerves, immune signals, and chemicals made by gut bacteria. Remarkably, most of the body\'s serotonin and a large amount of dopamine, brain chemicals that affect mood and focus, are actually made in the gut.', layValidated: false, sources: [
-                    { key: '10.1093/gastro/goaf009', claim: 'Vagal afferents mediate bidirectional gut-brain communication; regulate GI motility and visceral sensitivity' },
-                    { key: '10.1038/nrgastro.2012.32', claim: 'Enteric nervous system mediates gut-brain signalling; enteric serotonergic system and neurotransmitter production' },
-                    { key: '10.1007/s10620-020-06133-5', claim: 'Gut microbiome modulates neurotransmitter production and immune maturation; serotonin and dopamine produced in the gut' }
+    { id: 'hormonal', label: 'Hormonal Neuromodulation', short: 'Hormonal', color: '#c06898',
+        description: { technical: 'Sex hormones (oestrogen, progesterone, testosterone) modulate neurotransmitter systems, neuroplasticity, pain processing, and immune function. Oestrogen enhances serotonergic and dopaminergic signalling and is neuroprotective. Progesterone metabolites (allopregnanolone) are potent GABA-A receptor modulators. Testosterone influences excitatory neurotransmission and social cognition. Cyclical fluctuations explain menstrual exacerbation of many conditions, and prenatal sex steroid exposure influences neurodevelopmental trajectories.', lay: 'Sex hormones, oestrogen, progesterone, and testosterone, affect how the brain and body work in many ways beyond reproduction. They influence mood, pain sensitivity, energy, immunity, and how the brain processes information. This is why many conditions get worse or better at certain times of the menstrual cycle, during puberty, pregnancy, or menopause.', layValidated: false, sources: [
+                    { key: '10.1177/10870547211027321', claim: 'Oestrogen enhances serotonergic and dopaminergic signalling; modulates neurotransmitter systems' },
+                    { key: '10.1016/j.maturitas.2017.04.016', claim: 'Progesterone metabolites (allopregnanolone) are GABA-A receptor modulators; cyclical fluctuations explain menstrual symptom exacerbation' },
+                    { key: '10.1155/2015/351829', claim: 'Sex hormones (estradiol, progesterone, testosterone) at physiological concentrations modulate mast cell activation and immune function' }
                 ] },
-        notes: { technical: 'Gut-brain interactions are relevant across the neurodivergent cluster via serotonergic modulation (mood, sensory processing), microbiome-immune crosstalk (neuroinflammation), and vagal signalling (autonomic regulation). Altered gut microbiome profiles are documented in autism, ADHD, and depression. GI symptoms are among the most common co-occurring complaints in neurodevelopmental conditions, making this axis a key therapeutic target.', lay: 'The gut-brain connection helps explain why digestive problems are so common alongside neurodivergent conditions, and why gut health can affect mood, focus, and sensory sensitivity. The bacteria living in the gut influence the brain chemicals that matter most for these conditions.', layValidated: false, sources: [
-                    { key: '10.1007/s10620-020-06133-5', claim: 'Altered gut microbiome profiles documented in autism; brain-gut-microbiome axis disorder model' },
-                    { key: 'ref:gut-brain-constipation-depression', claim: 'Bidirectional gut-brain axis: serotonergic pathways link GI dysfunction to mood presentations' },
-                    { key: '10.1053/j.gastro.2019.12.021', claim: 'Functional bowel disorders (constipation, IBS-C) share gut-brain axis dysfunction mechanisms' },
-                    { key: '10.1016/j.cell.2014.09.032', claim: 'Neural crest development genes shared between Hirschsprung disease and autism; enteric nervous system link' }
-                ] }
-    },
-    { id: 'cortical-excitability', label: 'Cortical Hyperexcitability', short: 'Cortical', color: '#b87030',
-        description: { technical: 'Cortical hyperexcitability reflects an imbalance between excitatory (glutamatergic) and inhibitory (GABAergic) neurotransmission, lowering the threshold for neuronal firing. This excitation/inhibition imbalance is documented in epilepsy, migraine with aura, and autism. Manifests as increased susceptibility to cortical spreading depression (migraine), seizures (epilepsy), and sensory over-responsivity (autism, visual snow syndrome).', lay: 'Cortical hyperexcitability means the brain is more easily triggered than usual, the balance between "go" and "stop" signals in the brain is tipped toward "go." This can lead to migraine, epilepsy, and heightened sensory sensitivity, because the brain responds more intensely to stimulation.', layValidated: false, sources: [
-                    { key: '10.1002/ana.26745', claim: 'Abnormal glutamatergic and serotonergic network connectivity; excitation/inhibition imbalance in VSS overlaps with migraine' },
-                    { key: '10.1523/JNEUROSCI.3461-12.2013', claim: 'Central auditory gain model: increased auditory sensitivity supports cortical hyperexcitability mechanism in tinnitus' }
-                ] },
-        notes: { technical: 'Cortical excitability differences provide a shared mechanism between epilepsy, migraine, sensory processing differences, and autism. The excitation/inhibition imbalance hypothesis is a leading framework for understanding autistic sensory experience. This mechanism also connects to visual snow syndrome and tinnitus via thalamocortical dysrhythmia, to tic disorders and OCD via cortico-striato-thalamic circuit dysfunction, and to depression via GABA deficits in prefrontal cortex and hippocampus (ketamine\'s rapid antidepressant mechanism acts on E/I balance).', lay: 'Cortical hyperexcitability connects conditions that might seem very different, migraine, epilepsy, sensory sensitivity, visual snow, and tinnitus, through a shared pattern of the brain being more reactive than usual. It\'s one of the key mechanisms that explains the overlap between neurological and sensory conditions.', layValidated: false, sources: [
-                    { key: '10.1177/03331024241312666', claim: 'Migraine polygenic scores associated with autism; shared genetic basis for cortical excitability' },
-                    { key: '10.1093/braincomms/fcab296', claim: 'Shared thalamocortical dysrhythmia signatures in VSS and tinnitus (MEG study)' },
-                    { key: '10.1016/j.jocn.2015.12.001', claim: 'Thalamocortical dysrhythmia hypothesis linking visual snow and tinnitus via shared pathway' },
-                    { key: '10.3389/fneur.2021.724072', claim: 'VSS as network disorder with multi-sensory hypersensitivity; central sensitisation overlap' },
-                    { key: '10.1038/srep41155', claim: 'Atypical sensory sensitivity shared between synaesthesia and autism; heightened cortical excitability' }
+        notes: { technical: 'Hormonal neuromodulation bridges endocrine, neurodevelopmental, and pain domains. Oestrogen withdrawal triggers menstrual migraine and may unmask latent ADHD in perimenopausal people. Progesterone withdrawal drives PMDD via abnormal CNS sensitivity to normal allopregnanolone fluctuations. Prenatal oestradiol elevation is associated with increased autism likelihood. Endometriosis and PCOS involve oestrogen-progesterone imbalance with downstream effects on pain sensitisation and metabolic regulation. This mechanism intersects with HPA axis (cortisol-sex hormone interactions), serotonin (oestrogen modulates 5-HT synthesis), and circadian pathways (melatonin-gonadotropin interactions).', lay: 'Hormonal changes affect many conditions on this map. ADHD symptoms often worsen when oestrogen drops (before periods, during menopause). Migraine is triggered by oestrogen withdrawal. Many autistic people report significant symptom changes across the menstrual cycle. This mechanism helps explain why the same condition can look different in people with different hormonal profiles, and why life stages like puberty, pregnancy, and menopause are often turning points.', layValidated: false, sources: [
+                    { key: '10.1177/10870547211027321', claim: 'Oestrogen deficiency in menopause worsens ADHD symptoms via reduced dopaminergic neurotransmission' },
+                    { key: 'ref:clinical-endocrinology-literature-on-shared-hormonal-pathways', claim: 'Endometriosis and PMDD involve aberrant responses to oestrogen/progesterone fluctuations; both respond to hormonal suppression' },
+                    { key: '10.3389/fendo.2024.1359236', claim: 'Shared genetic architecture between endometriosis and PCOS; downstream effects on pain sensitisation and metabolic regulation' },
+                    { key: '10.1038/nrdp.2018.33', claim: 'Testosterone deficiency in Klinefelter syndrome associated with metabolic dysregulation; hormonal effects on neurodevelopment' },
+                    { key: '10.1016/j.maturitas.2017.04.016', claim: 'Perimenopause triggers mood symptoms via oestrogen-serotonin interaction; melatonin-gonadotropin interactions affect circadian pathways' }
                 ] }
     },
     { id: 'circadian', label: 'Circadian Dysregulation', short: 'Circadian', color: '#3858c0',
@@ -12281,32 +12330,13 @@ const mechanismTaxonomy = [
                     { key: '10.1186/s13034-023-00644-5', claim: 'Bidirectional associations between sleep problems and substance use; circadian misalignment exacerbates vulnerability' }
                 ] }
     },
-    { id: 'serotonin', label: 'Serotonin Pathways', short: 'Serotonin', color: '#d4527a',
-        description: { technical: 'Serotonergic pathways modulate mood, anxiety, sensory gating, pain perception, GI motility, and sleep. The serotonin transporter (5-HTT/SLC6A4), receptors (5-HT1A/2A/3), and synthesis enzyme (TPH2) are implicated in depression, anxiety, OCD, migraine, and IBS. Critically, tryptophan is metabolised via two competing routes: serotonin synthesis (via TPH) and the kynurenine pathway (via IDO/TDO). When inflammation upregulates the kynurenine pathway, less tryptophan is available for serotonin, and neurotoxic metabolites (quinolinic acid, a glutamate agonist) are produced, bridging serotonin depletion to neuroinflammation and excitation/inhibition imbalance.', lay: 'Serotonin is a brain and body chemical that affects mood, anxiety, pain, gut function, and sleep. Differences in how the body makes, uses, or recycles serotonin contribute to depression, anxiety, OCD, migraine, and irritable bowel syndrome. Most serotonin is actually made in the gut, not the brain. Importantly, when the body is inflamed, it diverts the building blocks for serotonin down a different pathway, which depletes serotonin and produces chemicals that can overstimulate the brain.', layValidated: false, sources: [
-                    { key: '10.1089/thy.2012.0142', claim: 'Serotonergic pathways modulate mood and are impaired by hypothyroidism; thyroid-brain interaction via serotonin' },
-                    { key: '10.1212/CPJ.0000000000000433', claim: 'Serotonin transporter and receptor involvement; serotonergic modulation of brainstem motor nuclei' },
-                    { key: '10.1016/j.maturitas.2017.04.016', claim: 'Oestrogen fluctuations affect serotonergic neurotransmission; tryptophan metabolism links inflammation to serotonin depletion' }
+    { id: 'phonological', label: 'Phonological Processing', short: 'Phonological', color: '#3a9e60',
+        description: { technical: 'Phonological processing encompasses the ability to perceive, manipulate, and store speech sounds. Involves temporal auditory processing, phonemic awareness, and phonological working memory. Differences in left-lateralised perisylvian regions (superior temporal gyrus, inferior frontal gyrus) and cerebellar contributions to timing are implicated in dyslexia, developmental language disorder, and speech sound disorders.', lay: 'Phonological processing is how the brain handles speech sounds, hearing the differences between similar sounds, breaking words into their sound parts, and holding sounds in memory. Differences in this skill are at the core of dyslexia and speech-language conditions.', layValidated: false, sources: [
+                    { key: '10.1037/0033-2909.130.6.858', claim: 'Shared phonological processing differences underlie auditory processing disorder and dyslexia; involves temporal auditory processing and phonological awareness' }
                 ] },
-        notes: { technical: 'Serotonergic differences bridge mental health, neurological, GI, and sensory domains. Altered serotonin signalling is documented in autism (platelet hyperserotonemia), depression, OCD, migraine, and fibromyalgia (low CNS serotonin). The tryptophan-kynurenine metabolic shift is a key mechanism: inflammation-driven IDO upregulation depletes serotonin while producing quinolinic acid (linking to E/I imbalance) and is regulated by clock genes (linking to circadian disruption). The serotonin-dopamine interaction is relevant to ADHD–mood disorder co-occurrence. Gut serotonin production links GI dysfunction to mood and pain presentations, making this pathway a key pharmacological target across the cluster.', lay: 'Serotonin connects mood, gut, pain, and sensory conditions across this map. It\'s why treatments that target serotonin (like SSRIs) can affect both mood and gut symptoms, and why gut problems and depression so often travel together. The link between inflammation and low serotonin is increasingly understood, when the body is fighting inflammation, it uses up the raw materials needed to make serotonin, which helps explain why physical illness worsens mood and pain.', layValidated: false, sources: [
-                    { key: '10.1089/thy.2012.0142', claim: 'Altered serotonin signalling in depression; hypothyroidism impairs serotonergic neurotransmission' },
-                    { key: '10.1590/1516-4446-2019-0471', claim: 'Serotonergic CSTC loop dysfunction shared by OCD, BFRBs, and tic disorders' },
-                    { key: 'ref:gut-brain-constipation-depression', claim: 'Gut serotonin production links GI dysfunction to mood and pain presentations via serotonergic pathways' },
-                    { key: '10.1016/j.maturitas.2017.04.016', claim: 'Oestrogen modulates serotonin synthesis; serotonin-dopamine interaction relevant to mood disorder comorbidity' },
-                    { key: 'ref:diagnostic-crossover-literature-eating-disorder-spectrum', claim: 'Serotonergic mechanisms in eating disorder spectrum; restrictive and binge patterns involve serotonin dysregulation' }
-                ] }
-    },
-    { id: 'hormonal', label: 'Hormonal Neuromodulation', short: 'Hormonal', color: '#c06898',
-        description: { technical: 'Sex hormones (oestrogen, progesterone, testosterone) modulate neurotransmitter systems, neuroplasticity, pain processing, and immune function. Oestrogen enhances serotonergic and dopaminergic signalling and is neuroprotective. Progesterone metabolites (allopregnanolone) are potent GABA-A receptor modulators. Testosterone influences excitatory neurotransmission and social cognition. Cyclical fluctuations explain menstrual exacerbation of many conditions, and prenatal sex steroid exposure influences neurodevelopmental trajectories.', lay: 'Sex hormones, oestrogen, progesterone, and testosterone, affect how the brain and body work in many ways beyond reproduction. They influence mood, pain sensitivity, energy, immunity, and how the brain processes information. This is why many conditions get worse or better at certain times of the menstrual cycle, during puberty, pregnancy, or menopause.', layValidated: false, sources: [
-                    { key: '10.1177/10870547211027321', claim: 'Oestrogen enhances serotonergic and dopaminergic signalling; modulates neurotransmitter systems' },
-                    { key: '10.1016/j.maturitas.2017.04.016', claim: 'Progesterone metabolites (allopregnanolone) are GABA-A receptor modulators; cyclical fluctuations explain menstrual symptom exacerbation' },
-                    { key: '10.1155/2015/351829', claim: 'Sex hormones (estradiol, progesterone, testosterone) at physiological concentrations modulate mast cell activation and immune function' }
-                ] },
-        notes: { technical: 'Hormonal neuromodulation bridges endocrine, neurodevelopmental, and pain domains. Oestrogen withdrawal triggers menstrual migraine and may unmask latent ADHD in perimenopausal people. Progesterone withdrawal drives PMDD via abnormal CNS sensitivity to normal allopregnanolone fluctuations. Prenatal oestradiol elevation is associated with increased autism likelihood. Endometriosis and PCOS involve oestrogen-progesterone imbalance with downstream effects on pain sensitisation and metabolic regulation. This mechanism intersects with HPA axis (cortisol-sex hormone interactions), serotonin (oestrogen modulates 5-HT synthesis), and circadian pathways (melatonin-gonadotropin interactions).', lay: 'Hormonal changes affect many conditions on this map. ADHD symptoms often worsen when oestrogen drops (before periods, during menopause). Migraine is triggered by oestrogen withdrawal. Many autistic people report significant symptom changes across the menstrual cycle. This mechanism helps explain why the same condition can look different in people with different hormonal profiles, and why life stages like puberty, pregnancy, and menopause are often turning points.', layValidated: false, sources: [
-                    { key: '10.1177/10870547211027321', claim: 'Oestrogen deficiency in menopause worsens ADHD symptoms via reduced dopaminergic neurotransmission' },
-                    { key: 'ref:clinical-endocrinology-literature-on-shared-hormonal-pathways', claim: 'Endometriosis and PMDD involve aberrant responses to oestrogen/progesterone fluctuations; both respond to hormonal suppression' },
-                    { key: '10.3389/fendo.2024.1359236', claim: 'Shared genetic architecture between endometriosis and PCOS; downstream effects on pain sensitisation and metabolic regulation' },
-                    { key: '10.1038/nrdp.2018.33', claim: 'Testosterone deficiency in Klinefelter syndrome associated with metabolic dysregulation; hormonal effects on neurodevelopment' },
-                    { key: '10.1016/j.maturitas.2017.04.016', claim: 'Perimenopause triggers mood symptoms via oestrogen-serotonin interaction; melatonin-gonadotropin interactions affect circadian pathways' }
+        notes: { technical: 'Phonological processing differences link the specific learning disability cluster (dyslexia, developmental language disorder) to broader neurodevelopmental conditions via shared genetic risk loci and cerebellar contributions. Co-occurrence of phonological and motor coordination differences (dyslexia–dyspraxia overlap) suggests shared neurodevelopmental substrates affecting timing and sequencing.', lay: 'Phonological processing differences connect reading, speech, and language conditions to the broader neurodevelopmental picture. The brain regions involved in processing sounds also contribute to coordination and timing, which helps explain why dyslexia and dyspraxia often occur together.', layValidated: false, sources: [
+                    { key: '10.1177/09567976241293999', claim: 'Genetic analysis of dyslexia-autism link suggests shared neurodevelopmental substrates via non-phonological pathways' },
+                    { key: '10.1037/0033-2909.130.6.858', claim: 'Phonological and motor coordination differences share underlying timing and sequencing mechanisms' }
                 ] }
     },
 ];
@@ -12339,24 +12369,24 @@ const sexLinkedTaxonomy = [
 // Used in the mechanism awareness step so users can identify pathways already discussed
 // with clinicians without needing to know technical mechanism names.
 const constellationMechGroups = [
-    { id: 'immune-allergy', label: 'Immune & allergy problems',
-      description: 'Overactive immune system, allergies, inflammation',
-      mechIds: ['mast-cell', 'atopic', 'autoimmune', 'neuroinflammation'] },
+    { id: 'brain-chemistry', label: 'Brain chemistry & focus',
+      description: 'Attention, motivation, mood, sleep-wake cycles',
+      mechIds: ['dopamine', 'serotonin', 'circadian', 'phonological'] },
+    { id: 'pain-sensory', label: 'Pain & sensory sensitivity',
+      description: 'Chronic pain, heightened senses, sensory overwhelm',
+      mechIds: ['central-sensitisation', 'interoception', 'cortical-excitability'] },
+    { id: 'stress', label: 'Stress & hormonal',
+      description: 'Burnout, chronic stress effects, hormonal cycles and changes',
+      mechIds: ['hpa-axis', 'hormonal'] },
     { id: 'connective', label: 'Joint & connective tissue',
       description: 'Hypermobility, joint pain, stretchy or fragile tissue',
       mechIds: ['connective-tissue'] },
     { id: 'nervous-regulation', label: 'Nervous system regulation',
       description: 'Blood pressure, heart rate, temperature, digestion control',
       mechIds: ['autonomic', 'gut-brain'] },
-    { id: 'pain-sensory', label: 'Pain & sensory sensitivity',
-      description: 'Chronic pain, heightened senses, sensory overwhelm',
-      mechIds: ['central-sensitisation', 'interoception', 'cortical-excitability'] },
-    { id: 'brain-chemistry', label: 'Brain chemistry & focus',
-      description: 'Attention, motivation, mood, sleep-wake cycles',
-      mechIds: ['dopamine', 'serotonin', 'circadian', 'phonological'] },
-    { id: 'stress', label: 'Stress & hormonal',
-      description: 'Burnout, chronic stress effects, hormonal cycles and changes',
-      mechIds: ['hpa-axis', 'hormonal'] }
+    { id: 'immune-allergy', label: 'Immune & allergy problems',
+      description: 'Overactive immune system, allergies, inflammation',
+      mechIds: ['mast-cell', 'atopic', 'autoimmune', 'neuroinflammation'] }
 ];
 
 // combinedProfiles removed in v17 (dead code - data lives in coPresentations)
@@ -12904,7 +12934,7 @@ const lenses = [
         searchTerms: ['prison', 'incarceration', 'police', 'forensic', 'offending', 'court', 'detention'],
         description: {
             technical: 'Neurodivergent individuals are over-represented in the criminal justice system, both as victims and as accused persons. Communication differences, executive function challenges, sensory overload in custody/courtroom settings, and misinterpretation of neurodivergent behaviour by police create systemic disadvantage. ADHD is present in an estimated 25–30% of incarcerated populations (vs 5% general population). Intellectual disability and foetal alcohol spectrum disorder further compound vulnerability.',
-            lay: 'Neurodivergent people are over-represented in the criminal justice system, often because the system doesn\'t understand or accommodate how they communicate, process information, or behave under stress. Police, lawyers, and courts may misread neurodivergent behaviour as suspicious, uncooperative, or lacking remorse. ADHD is found in roughly 1 in 4 prisoners, compared to 1 in 20 in the general population.',
+            lay: 'Neurodivergent people are over-represented in the criminal justice system, often because the system misreads how they communicate and behave under stress. Police, lawyers, and courts may interpret neurodivergent behaviour as suspicious, uncooperative, or lacking remorse. ADHD is found in roughly 1 in 4 prisoners, compared to 1 in 20 in the general population.',
             layValidated: false,
             sources: [
                 { key: '10.1017/S0033291714000762', claim: 'Meta-analysis: ADHD prevalence in incarcerated populations estimated at 25.5%, approximately 5× the general population rate' },
@@ -12927,7 +12957,7 @@ const lenses = [
         searchTerms: ['housing instability', 'rough sleeping', 'shelter', 'unhoused', 'housing insecurity'],
         description: {
             technical: 'Neurodivergent individuals are disproportionately represented in homeless populations. Executive function challenges (ADHD), social communication differences (autism), and the downstream effects of late diagnosis and co-occurring mental health conditions all contribute to housing instability. Homelessness in turn removes the stability needed to manage chronic conditions, access healthcare, and maintain medication regimens, creating a vicious cycle.',
-            lay: 'Neurodivergent people are more likely to experience homelessness, partly because the executive function, social, and mental health challenges that come with neurodivergence can make it harder to maintain stable housing, especially without support. Once someone is homeless, managing health conditions becomes vastly harder, creating a cycle that\'s difficult to break.',
+            lay: 'Neurodivergent people are more likely to experience homelessness, and managing health conditions without stable housing becomes vastly harder. Executive function, social, and mental health challenges can make it harder to maintain housing, especially without support, and once that stability is lost the cycle is difficult to break.',
             layValidated: false,
             sources: [
                 { key: '10.1177/1362361318768484', claim: 'Autistic traits significantly more prevalent in homeless populations than in the general population' }
@@ -12949,7 +12979,7 @@ const lenses = [
         searchTerms: ['transgender', 'trans', 'nonbinary', 'gender diverse', 'gender identity', 'LGBTQ'],
         description: {
             technical: 'Neurodivergent populations show higher rates of gender diversity than the general population. Autistic individuals are 3–6× more likely to be transgender or gender-diverse. Gender-diverse individuals seeking healthcare face additional barriers: gatekeeping, pathologisation of identity, and providers who lack competence in both gender-affirming care and neurodivergent-informed practice. Hormonal interventions interact with connective tissue, autonomic function, and immune regulation, relevant clinical considerations often overlooked.',
-            lay: 'Neurodivergent people are more likely to be transgender or gender-diverse. This isn\'t a problem to be explained, it\'s a pattern to be understood. Gender-diverse neurodivergent people face extra barriers in healthcare: finding providers who understand both their gender needs and their neurodivergent needs is exceptionally difficult. Hormone treatments can also affect connective tissue, autonomic function, and immune responses, interactions that are rarely considered.',
+            lay: 'Gender-diverse neurodivergent people face extra barriers in healthcare, and hormone treatments can interact with connective tissue, autonomic function, and immune conditions. Neurodivergent people are more likely to be transgender or gender-diverse; this isn\'t a problem to be explained, it\'s a pattern to be understood. Finding providers who understand both gender needs and neurodivergent needs is exceptionally difficult, and these clinical interactions are rarely considered.',
             layValidated: false,
             sources: [
                 { key: '10.1038/s41467-020-17794-1', claim: 'Large-scale study (n>500,000): transgender and gender-diverse individuals have elevated rates of autism diagnosis and autistic traits; autistic individuals 3–6× more likely to be gender-diverse' },
@@ -21236,11 +21266,8 @@ const helpPages = {
         <p><strong>${PERSONA_ICON_CARER} Carer or family member</strong>: Click on your person\u2019s diagnosis to understand what conditions often accompany it, useful for advocating for thorough assessment. Use the info panels for plain-language descriptions you can share with their support network.</p>
 
         <h3>Contextual lenses</h3>
-        <p>The map includes contextual lenses that highlight how structural and social factors shape the experience of co-occurring conditions. Lenses work like filters: toggle one or more from the sidebar palette to see which conditions are affected and how. Each lens includes sourced explanations of the specific impact on relevant conditions.</p>
-        <p>Available lenses include diagnostic overshadowing, hormonal influence, sex-based research gaps, healthcare access barriers, masking, stigma, sensory environment, socioeconomic factors, and more. These aren\u2019t separate from the medical reality \u2014 they shape it. A condition that is systematically underdiagnosed in certain populations isn\u2019t less real; the diagnostic system is less effective.</p>
-
-        <h3>Intersectionality</h3>
-        <p>The lenses are designed to be used together. Activating multiple lenses reveals how factors compound: a condition affected by both diagnostic overshadowing and sex-based research gaps faces a double barrier to recognition. The map highlights nodes affected by your active lenses and shows which factors converge on each condition, making visible the structural patterns that clinical encounters often address one at a time.</p>
+        <p>The map includes contextual lenses that highlight how structural and social factors shape the experience of co-occurring conditions. These aren\u2019t separate from the medical reality; they shape it. A condition that is systematically underdiagnosed in certain populations isn\u2019t less real; the diagnostic system is less effective.</p>
+        <p>Toggle lenses from the sidebar palette to see which conditions are affected and how. Lenses can be combined: activating multiple lenses reveals how factors compound, making visible the structural patterns that clinical encounters often address one at a time.</p>
 
         <h3>Not a diagnostic tool</h3>
         <p>This map shows population-level patterns of co-occurrence. It does not predict what any individual person will experience. Always discuss findings with a qualified clinician.</p>
@@ -21259,7 +21286,7 @@ const helpPages = {
             <li><strong>Genetic studies (GWAS)</strong> - genome-wide association studies that identify shared genetic architecture between conditions, providing evidence for biological links independent of clinical observation</li>
             <li><strong>Community and grey literature</strong> - patient surveys, advocacy research, preprints, and clinical observations (see below)</li>
         </ul>
-        <p>Each connection cites its sources, and each source records the specific claim it supports and the type of evidence it provides (co-occurrence data, mechanism, or negative/contradictory finding). Source validation is ongoing; most sources have not yet been independently human-verified. A structured validation process checks DOIs, claims, retraction status, and whether the cited claim is accurately represented.</p>
+        <p>Each connection cites its sources, and each source records the specific claim it supports and the type of evidence it provides (co-occurrence data, mechanism, or negative/contradictory finding). Source validation is ongoing: each source is read in full and assessed for suitability as a reference, whether the paper is sound, relevant, and whether the claims drawn from it are accurately represented. Most sources have not yet been through this process; validated sources are marked in the interface.</p>
 
         <h3>Community knowledge and grey literature</h3>
         <p>This map treats community knowledge as real evidence, not a fallback for when "proper" research is absent, but a distinct evidence type that has repeatedly identified patterns years or decades before formal research confirmed them. The POTS-hEDS-MCAS trifecta, PMDD worsening in ADHD, and the autism-fibromyalgia link were all community-recognised long before peer-reviewed studies caught up.</p>
@@ -22225,7 +22252,7 @@ function buildTitleLogoDots() {
             domainCounts[n.domain] = (domainCounts[n.domain] || 0) + 1;
         }
     });
-    // Deterministic domain order (alphabetical) for consistent layout
+    // Alphabetical domain order for consistent, visually balanced dot layout
     const domains = Object.entries(domainCounts)
         .sort((a, b) => a[0].localeCompare(b[0]));
     // Scale: radius = sqrt(count) * scaleFactor, tuned to match original hand-placed logo
@@ -22774,7 +22801,6 @@ function panToNodeIfNeeded(d) {
 const legend = d3.select('#legend');
 Object.entries(domainColors)
     .filter(([domain]) => !EASTER_EGG_DOMAINS.has(domain))
-    .sort((a, b) => a[0].localeCompare(b[0]))
     .forEach(([domain, color]) => {
     const domainCount = nodes.filter(n => n.domain === domain && !n.isComposite).length;
     const item = legend.append('div')
@@ -23036,7 +23062,8 @@ function renderLensTagSection(d) {
 }
 
 function renderMechTagSection(mechIds) {
-    const mechTags = [...new Set(mechIds)].map(getMechById).filter(Boolean);
+    const mechTags = [...new Set(mechIds)].map(getMechById).filter(Boolean)
+        .sort((a, b) => mechanismTaxonomy.indexOf(a) - mechanismTaxonomy.indexOf(b));
     if (mechTags.length === 0) return '';
     let html = '<div class="section-label">Mechanism</div>';
     html += '<div class="mech-tags-wrapper tags-row tags-row-center" style="max-height:52px;overflow:hidden;">';
@@ -23484,17 +23511,16 @@ function renderPanelFilterDropdownContent() {
         <span class="filter-helper-text">Click to include · again to exclude</span>
         <button class="reset-filters-btn" onclick="resetPanelFilters()">Reset</button>
     </div>`;
-    // Domain section — alphabetical, matching global filter
+    // Domain section — canonical domain order (mechanistic proximity to ND)
     const domainEntries = Object.entries(domainColors)
-        .filter(([k]) => !EASTER_EGG_DOMAINS.has(k))
-        .sort((a, b) => a[0].localeCompare(b[0]));
+        .filter(([k]) => !EASTER_EGG_DOMAINS.has(k));
     html += renderPanelFilterSection('Domain', 'domain', domainEntries.map(([id, color]) => ({
         id, label: id, color,
         state: getPanelItemState(id, panelIncludedDomains, panelExcludedDomains, includedDomains, excludedDomains)
     })));
-    // Mechanism section — alphabetical by label
+    // Mechanism section — canonical mechanism order
     html += renderPanelFilterSection('Mechanism', 'mechanism',
-        [...mechanismTaxonomy].sort((a, b) => a.label.localeCompare(b.label)).map(m => ({
+        mechanismTaxonomy.map(m => ({
             id: m.id, label: m.label, color: m.color,
             state: getPanelItemState(m.id, panelIncludedMechanisms, panelExcludedMechanisms, includedMechanisms, excludedMechanisms)
         })));
@@ -26878,7 +26904,7 @@ function renderMechanismSidebar() {
     const container = document.getElementById('mechanism-list');
     if (!container) return;
     const hasFilter = includedMechanisms.size > 0 || excludedMechanisms.size > 0;
-    container.innerHTML = [...mechanismTaxonomy].sort((a, b) => a.label.localeCompare(b.label)).map(mech => {
+    container.innerHTML = mechanismTaxonomy.map(mech => {
         const count = links.filter(l => l.mechanismTags && l.mechanismTags.includes(mech.id)).length;
         const isEmpty = count === 0;
         const isIncluded = includedMechanisms.has(mech.id);
@@ -27238,7 +27264,7 @@ function showMechanismInfo(mechId) {
 
     // Conditions section (expanded)
     {
-        const sortedNodes = [...mechNodes].sort((a, b) => a.domain.localeCompare(b.domain) || a.label.localeCompare(b.label));
+        const sortedNodes = [...mechNodes].sort((a, b) => domainSortKey(a.domain) - domainSortKey(b.domain) || a.label.localeCompare(b.label));
         let condHtml = '<p class="panel-subtext">Conditions that share this mechanism.</p>';
         condHtml += '<div class="tags-row">';
         sortedNodes.forEach(n => {
@@ -27258,7 +27284,7 @@ function showMechanismInfo(mechId) {
                 domainCounts[n.domain] = (domainCounts[n.domain] || 0) + 1;
             }
         });
-        const sortedDomains = Object.entries(domainCounts).sort((a, b) => b[1] - a[1]);
+        const sortedDomains = Object.entries(domainCounts).sort((a, b) => domainSortKey(a[0]) - domainSortKey(b[0]));
         if (sortedDomains.length > 0) {
             let domHtml = '<p class="panel-subtext">Domains containing conditions that use this mechanism.</p>';
             domHtml += '<div class="tags-row">';
@@ -27321,7 +27347,7 @@ function renderMechanismPanel() {
     } else {
         // Conditions involved
         html += '<div class="info-section"><h4>Conditions Involved</h4>';
-        const sortedNodes = [...mechNodes].sort((a, b) => a.domain.localeCompare(b.domain) || a.label.localeCompare(b.label));
+        const sortedNodes = [...mechNodes].sort((a, b) => domainSortKey(a.domain) - domainSortKey(b.domain) || a.label.localeCompare(b.label));
         html += '<div class="tags-row" style="margin-top:6px;">';
         sortedNodes.forEach(n => {
             html += `<span style="padding:3px 8px;border-radius:12px;font-size:var(--font-sm);font-weight:500;cursor:pointer;
@@ -28371,7 +28397,7 @@ function showLensInfo(lensId) {
             html += sectionWrapper(condHeading, emptyMsg, false);
         } else {
             const sortedNodes = [...lensNodes].sort((a, b) => {
-                return a.domain.localeCompare(b.domain) || a.label.localeCompare(b.label);
+                return domainSortKey(a.domain) - domainSortKey(b.domain) || a.label.localeCompare(b.label);
             });
             let condHtml = `<p class="panel-subtext">Conditions where this lens changes the picture.</p>`;
             condHtml += '<div class="tags-row">';
@@ -28396,7 +28422,7 @@ function showLensInfo(lensId) {
         lensNodes.forEach(n => {
             domainCounts[n.domain] = (domainCounts[n.domain] || 0) + 1;
         });
-        const sortedDomains = Object.entries(domainCounts).sort((a, b) => b[1] - a[1]);
+        const sortedDomains = Object.entries(domainCounts).sort((a, b) => domainSortKey(a[0]) - domainSortKey(b[0]));
         if (sortedDomains.length === 0 && lens.isEasterEgg) {
             html += sectionWrapper(domHeading, '<p class="panel-subtext" style="font-style:italic;">All of them — because this is the baseline every other lens is measured against.</p>', false);
         } else if (sortedDomains.length > 0) {
@@ -28692,12 +28718,7 @@ function enterConstellationMode() {
         }
     });
     constellationQDomains = Object.entries(domainNodeCounts)
-        .sort((a, b) => {
-            // Neurodevelopmental always first, then by node count descending
-            if (a[0] === 'Neurodevelopmental') return - 1;
-            if (b[0] === 'Neurodevelopmental') return 1;
-            return b[1] - a[1];
-        })
+        .sort((a, b) => domainSortKey(a[0]) - domainSortKey(b[0]))
         .map(e => e[0]);
     // Always start questionnaire fresh (no localStorage pre-fill)
     constellationQStep = 0;
@@ -28913,8 +28934,6 @@ function renderConstellationQuestionnaireView(content) {
             const stateClass = isYes ? ' yes' : isNotSure ? ' not-sure' : '';
             const stateIcon = isYes ? '<span style="color:var(--color-primary);">&#10003;</span>' : isNotSure ? '<span style="color:#71717a;">?</span>' : '';
             html += `<div class="constellation-chip${stateClass}" onclick="toggleConstellationMechGroup('${g.id}')" style="padding:8px 10px;">`;
-            const mechDotStyle = isNotSure ? 'background:transparent;border:2.5px solid var(--color-primary);opacity:0.6;' : `background:var(--color-primary);opacity:${isYes ? '1' : '0.3'};`;
-            html += `<span class="constellation-chip-dot" style="${mechDotStyle}"></span>`;
             html += `<span style="flex:1;"><span style="font-weight:500;">${g.label}</span><br><span style="font-size:11px;color:#888;">${g.description}</span></span>`;
             html += `<span class="constellation-chip-state">${stateIcon}</span>`;
             html += '</div>';
@@ -28945,7 +28964,6 @@ function renderConstellationQuestionnaireView(content) {
             const firstSentence = layDesc.split(/\.\s/)[0] || '';
             const dotStyle = `background:${l.color};`;
             html += `<div class="constellation-chip${stateClass}" onclick="toggleConstellationLens('${l.id}')" style="padding:8px 10px;">`;
-            html += `<span class="constellation-chip-dot" style="${dotStyle}"></span>`;
             html += `<span style="flex:1;"><span style="font-weight:500;">${l.label}</span><br><span style="font-size:11px;color:#888;">${firstSentence}${firstSentence && !firstSentence.endsWith('.') ? '.' : ''}</span></span>`;
             html += `<span class="constellation-chip-state">${stateIcon}</span>`;
             html += '</div>';
@@ -29190,7 +29208,7 @@ function computeConstellationReport() {
         domainCounts[n.domain] = (domainCounts[n.domain] || 0) + 1;
     });
     const domainBreakdown = Object.entries(domainCounts)
-        .sort((a, b) => b[1] - a[1])
+        .sort((a, b) => domainSortKey(a[0]) - domainSortKey(b[0]))
         .map(([domain, count]) => ({ domain, count, color: domainColors[domain] }));
 
     // Internal edges (both endpoints in confirmed set)
@@ -30043,7 +30061,8 @@ function buildReportGPSection(report, titleDotsSvg, dateStr, sharedLayout) {
         if (!gpGroupedByDomain[n.domain]) gpGroupedByDomain[n.domain] = [];
         gpGroupedByDomain[n.domain].push(n);
     });
-    const gpDomainEntries = Object.entries(gpGroupedByDomain);
+    const gpDomainEntries = Object.entries(gpGroupedByDomain)
+        .sort((a, b) => domainSortKey(a[0]) - domainSortKey(b[0]));
     const gpMid = Math.ceil(gpDomainEntries.length / 2);
     html += '<div class="gp-cols">';
     [gpDomainEntries.slice(0, gpMid), gpDomainEntries.slice(gpMid)].forEach(col => {
@@ -32264,7 +32283,7 @@ function collectSearchMatches(q) {
         const score = fuzzyMatch(q, d);
         if (score >= 50) domainMatches.push({ domain: d, score });
     });
-    domainMatches.sort((a, b) => b.score !== a.score ? b.score - a.score : a.domain.localeCompare(b.domain));
+    domainMatches.sort((a, b) => b.score !== a.score ? b.score - a.score : domainSortKey(a.domain) - domainSortKey(b.domain));
 
     // Mechanisms
     const mechMatches = [];
@@ -32272,7 +32291,7 @@ function collectSearchMatches(q) {
         const best = Math.max(fuzzyMatch(q, m.label), fuzzyMatch(q, m.short), fuzzyMatch(q, m.id));
         if (best >= 50) mechMatches.push({ mech: m, score: best });
     });
-    mechMatches.sort((a, b) => b.score !== a.score ? b.score - a.score : a.mech.label.localeCompare(b.mech.label));
+    mechMatches.sort((a, b) => b.score !== a.score ? b.score - a.score : mechanismTaxonomy.indexOf(a.mech) - mechanismTaxonomy.indexOf(b.mech));
 
     // Glossary
     const glossaryMatches = [];
@@ -32810,10 +32829,11 @@ function mobileMenuOutsideClick(e) {
 // Touch: single-finger pan handled by D3's built-in zoom behaviour.
 
 // ── Show opening disclaimer on page load ────────────────────────────
-const _disclaimerEl = document.getElementById('disclaimer-modal');
-_disclaimerEl.classList.add('open');
-_disclaimerEl.removeAttribute('aria-hidden');
-trapFocus(document.getElementById('disclaimer-modal-card'));
+// DEV OVERRIDE: disclaimer disabled for dev convenience — reinstate before publish
+// const _disclaimerEl = document.getElementById('disclaimer-modal');
+// _disclaimerEl.classList.add('open');
+// _disclaimerEl.removeAttribute('aria-hidden');
+// trapFocus(document.getElementById('disclaimer-modal-card'));
 
 
 
