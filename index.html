@@ -26,6 +26,7 @@
 :root {
     --color-primary: #0f766e;
     --color-primary-dark: #0a5c56;
+    --color-lens: #64748b;
     --color-primary-bg: #f2f8f6;
     --color-primary-border: #9dcbc4;
     --color-primary-tint: #d4ece6;
@@ -771,9 +772,12 @@ details.info-section:not([open]) > summary {
     border: 1px solid color-mix(in srgb, var(--tag-color) 31%, transparent);
 }
 .domain-tags-wrapper .domain-tag,
-.mech-tags-wrapper .domain-tag {
+.mech-tags-wrapper .domain-tag,
+.lens-tags-wrapper .domain-tag {
     margin: 0;
 }
+.lens-tag { transition: opacity 0.15s; }
+.lens-tag:hover { opacity: 0.65; }
 
 .legend {
     display: flex;
@@ -2094,8 +2098,8 @@ a.connect-social-btn:hover {
 }
 
 /* ── Domain / mechanism info links (clickable tags in panels) ── */
-.domain-info-link, .mech-info-link { cursor: pointer; transition: opacity 0.15s; }
-.domain-info-link:hover, .mech-info-link:hover { opacity: 0.75; }
+.domain-info-link, .mech-info-link, .lens-info-link { cursor: pointer; transition: opacity 0.15s; }
+.domain-info-link:hover, .mech-info-link:hover, .lens-info-link:hover { opacity: 0.75; }
 
 /* ── Accessibility: focus-visible ── */
 :focus-visible {
@@ -2613,6 +2617,8 @@ a.connect-social-btn:hover {
     display: none;
     flex-direction: column;
     gap: 6px;
+    padding: 8px;
+    margin: -8px;
 }
 #lens-palette.visible {
     display: flex;
@@ -3297,6 +3303,7 @@ body.dark-mode #main-footer .footer-social-icon[data-tooltip]:hover::after { bac
 body.dark-mode {
     --color-primary: #45c4b0;
     --color-primary-dark: #38b2a0;
+    --color-lens: #94a3b8;
     --color-primary-bg: #0d2f2b;
     --color-primary-border: #2a7a6f;
     --color-primary-tint: #1a3f3a;
@@ -16410,23 +16417,20 @@ const nodes = [
       searchTerms: ['Lesley', 'Wiadrowski'],
       isPersonal: true,
       myConditions: [
-          'autism', 'adhd', 'dyspraxia', 'spd', 'giftedness', 'alexithymia', 'pda',
-          'anxiety', 'social_anxiety', 'dysthymia', 'cptsd', 'rsd', 'nd_burnout', 'selective_mutism', 'bfrb',
-          'interoception', 'misophonia', 'apd', 'visual_snow', 'hyperacusis',
-          'pmdd', 'premature_menopause', 'endometriosis',
-          'ibs', 'arfid', 'gord',
-          'heds', 'stress_incontinence',
-          'pots', 'vasovagal',
-          'eczema', 'allergic_rhinitis',
-          'migraine', 'tinnitus',
-          'hypertonic_pelvic',
-          'insomnia', 'sleep_apnoea', 'sleep_bruxism'
+          'adhd', 'alexithymia', 'allergic_rhinitis', 'anxiety', 'apd', 'arfid', 'autism', 'bfrb',
+          'cptsd', 'depression', 'dyspraxia', 'dysthymia', 'eczema', 'endometriosis', 'giftedness',
+          'gord', 'hyperacusis', 'heds', 'hypertonic_pelvic', 'ibs', 'insomnia', 'interoception',
+          'migraine', 'misophonia', 'nd_burnout', 'pda', 'pmdd', 'pots', 'premature_menopause',
+          'rsd', 'selective_mutism', 'sleep_apnoea', 'sleep_bruxism', 'social_anxiety', 'spd',
+          'stress_incontinence', 'tinnitus', 'vasovagal', 'visual_snow'
       ],
       mySuspected: [
-          'depression', 'fibromyalgia', 'mecfs', 'mcas', 'dyscalculia',
-          'abdominal_migraine', 'dysautonomia', 'prosopagnosia', 'convergence_insuff'
+          'abdominal_migraine', 'convergence_insuff', 'dysautonomia', 'dyscalculia',
+          'fibromyalgia', 'mcas', 'mecfs', 'prosopagnosia'
       ],
-      about: 'Connect the Dots was built by someone who lives at the intersection of 38 confirmed and 9 suspected conditions across 11 domains, almost all of them late-diagnosed.\n\nThis project began ten months into recovery from autistic burnout. I needed something to keep my mind from churning over all the things I felt like I was failing at. As a scientist by training, and someone who is endlessly curious about the world, working with AI to map the connections between my own conditions turned out to be something I could manage.\n\nI\u2019m also a parent to three multiply neurodivergent children. I know what it\u2019s like to advocate for your kids while you\u2019re still figuring out the same things about yourself, navigating systems that weren\u2019t designed with any of you in mind.\n\nHealthcare is organised by specialty, not by the whole person. Every line on this graph represents a connection that gets missed because of that.\n\nI built this for myself, but if you\u2019ve ever left an appointment feeling like your doctor only saw one piece of a bigger puzzle, or seen a patient and suspected there was more going on, or wondered why the literature hasn\u2019t caught up with what patients already know, or not known what to push for on behalf of someone you love, I hope it\u2019s useful to you too.',
+      myLenses: ['afab', 'late-diagnosis', 'invisible-disability', 'aces'],
+      myLensesText: 'Almost every condition I have was slower to be identified and more likely to be dismissed because I am a woman. By the time each diagnosis arrived, I had years of being treated for anxiety and depression that were actually the downstream effects of conditions nobody had recognised. I look fine. I sound articulate. None of that means I am fine, and the energy it takes to maintain that gap is part of what put me in burnout. Being an undiagnosed neurodivergent child in environments that did not accommodate me was itself a form of chronic adversity, with lasting effects on my stress system, immune function, and mental health. These experiences also led, indirectly but consistently, to a persistent feeling of being on the outside. That shaped how I learned to mask and camouflage, and how long it took me to understand why.',
+      about: 'Connect the Dots was built by someone who lives at the intersection of 39 confirmed and 8 suspected conditions across 11 domains, almost all of them late-diagnosed.\n\nThis project began ten months into recovery from autistic burnout. I needed something to keep my mind from churning over all the things I felt like I was failing at. As a scientist by training, and someone who is endlessly curious about the world, working with AI to map the connections between my own conditions turned out to be something I could manage.\n\nI\u2019m also a parent to three multiply neurodivergent children. I know what it\u2019s like to advocate for your kids while you\u2019re still figuring out the same things about yourself, navigating systems that weren\u2019t designed with any of you in mind.\n\nHealthcare is organised by specialty, not by the whole person. Every line on this graph represents a connection that gets missed because of that.\n\nI built this for myself, but if you\u2019ve ever left an appointment feeling like your doctor only saw one piece of a bigger puzzle, or seen a patient and suspected there was more going on, or wondered why the literature hasn\u2019t caught up with what patients already know, or not known what to push for on behalf of someone you love, I hope it\u2019s useful to you too.',
       prevalence: 'Completely unique',
       contested: false,
       emerging: false,
@@ -23012,6 +23016,25 @@ function renderOverflowToggle(wrapperClass, toggleClass) {
 
 // ── Mechanism tag chip rendering ────────────────────────────────────
 // Renders mechanism tag chips + overflow toggle from an array of mech IDs
+function renderLensTagSection(d) {
+    if (!hasActiveLenses()) return '';
+    if (d && (d.isEasterEgg || d.isPersonal)) return '';
+    const allActive = getAllActiveLenses();
+    const relevantLenses = [];
+    allActive.forEach(lensId => {
+        const lens = lensId === 'amab-advantage' ? AMAB_EASTER_EGG_LENS : lenses.find(l => l.id === lensId);
+        if (lens) relevantLenses.push(lens);
+    });
+    if (relevantLenses.length === 0) return '';
+    let html = '<div class="section-label">Lens</div>';
+    html += '<div class="lens-tags-wrapper tags-row tags-row-center" style="max-height:52px;overflow:hidden;">';
+    relevantLenses.forEach(lens => {
+        html += `<div class="domain-tag lens-info-link" data-lens-id="${lens.id}" style="--tag-color:var(--color-lens);">${lens.shortLabel || lens.label}</div>`;
+    });
+    html += '</div>';
+    return html;
+}
+
 function renderMechTagSection(mechIds) {
     const mechTags = [...new Set(mechIds)].map(getMechById).filter(Boolean);
     if (mechTags.length === 0) return '';
@@ -25857,7 +25880,9 @@ function renderPersonalPanel(d) {
             constContent += `<div style="margin:10px 0 6px;">
                 <div style="font-size:var(--font-sm);font-weight:600;color:${dc};text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;">${domain} (${total})</div>
                 <div class="tags-row">`;
-            // Confirmed conditions first (solid border)
+            // Confirmed conditions first (alphabetical), then suspected (alphabetical)
+            confirmed.sort((a, b) => a.label.localeCompare(b.label));
+            suspected.sort((a, b) => a.label.localeCompare(b.label));
             confirmed.forEach(c => {
                 constContent += `<span class="condition-link" data-node-id="${c.id}"
                     style="display:inline-block;padding:3px 8px;border-radius:12px;
@@ -25874,10 +25899,35 @@ function renderPersonalPanel(d) {
         html += sectionWrapper(ICON_CONNECTIONS + ' My Constellation', constContent, true);
     }
 
+    // My Lenses section
+    if (d.myLenses && d.myLenses.length > 0) {
+        let lensContent = '';
+        if (d.myLensesText) {
+            lensContent += `<p style="font-size:var(--font-base);color:var(--text-secondary);line-height:1.6;margin:0 0 12px;">${d.myLensesText}</p>`;
+        }
+        lensContent += '<div class="tags-row">';
+        d.myLenses.forEach(lensId => {
+            const lens = lenses.find(l => l.id === lensId);
+            if (!lens) return;
+            lensContent += `<span class="lens-tag" data-lens-id="${lens.id}" style="display:inline-block;padding:3px 10px;border-radius:4px;font-size:12px;font-weight:500;cursor:pointer;background:color-mix(in srgb, var(--color-lens) 8%, transparent);color:var(--color-lens);border:1px solid color-mix(in srgb, var(--color-lens) 25%, transparent);">${lens.label}</span>`;
+        });
+        lensContent += '</div>';
+        html += sectionWrapper(ICON_LENSES + ' My Context', lensContent, true);
+    }
+
     content.innerHTML = html;
     content.scrollTop = 0;
     attachConditionLinkListeners(content);
     attachGlossaryListeners(content);
+    // Lens tag click handlers
+    content.querySelectorAll('.lens-tag[data-lens-id]').forEach(tag => {
+        tag.addEventListener('click', () => {
+            const current = getCurrentPanelState();
+            if (current) navPush(current);
+            const lensId = tag.getAttribute('data-lens-id');
+            showLensInfo(lensId);
+        });
+    });
 }
 
 function toggleShowMore(btn, hiddenCount) {
@@ -26896,6 +26946,26 @@ function attachMechInfoLinkListeners(container) {
     });
 }
 
+function attachLensInfoLinkListeners(container) {
+    if (!container) return;
+    container.querySelectorAll('.lens-info-link').forEach(el => {
+        const lensId = el.getAttribute('data-lens-id');
+        if (!lensId) return;
+        el.setAttribute('tabindex', '0');
+        el.setAttribute('role', 'link');
+        el.setAttribute('aria-label', el.textContent.trim() + ' lens info');
+        el.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const current = getCurrentPanelState();
+            if (current) navPush(current);
+            showLensInfo(lensId);
+        });
+        el.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); }
+        });
+    });
+}
+
 function jumpToDomain(domainName) {
     const current = getCurrentPanelState();
     if (current) navPush(current);
@@ -27834,7 +27904,7 @@ function toggleLensPalette() {
 }
 
 function lensPaletteMouseLeave() {
-    _lensPaletteLeaveTimer = setTimeout(closeLensPalette, 250);
+    _lensPaletteLeaveTimer = setTimeout(closeLensPalette, 500);
 }
 
 function lensPaletteMouseEnter() {
@@ -28213,7 +28283,7 @@ function showLensInfo(lensId) {
     html += `<div class="panel-sticky-header">
         ${renderBackButton()}
         <div class="flex-row flex-row-8" style="margin-bottom:4px;">
-            <span class="header-pill anchor" style="background:#88888815;color:#666;border:2px solid #88888850;">
+            <span class="header-pill anchor" style="background:color-mix(in srgb, var(--color-lens) 8%, transparent);color:var(--color-lens);border:2px solid color-mix(in srgb, var(--color-lens) 31%, transparent);">
                 ${lensIconSvg}
                 ${lens.label}
             </span>
@@ -28222,16 +28292,27 @@ function showLensInfo(lensId) {
 
     // Heading + badge
     html += `<h2 class="panel-title" style="margin:4px 0 2px;">${lens.label}</h2>`;
-    html += `<div class="domain-tag" style="--tag-color:#888;margin-bottom:8px;">Lens</div>`;
+    html += `<div class="domain-tag" style="--tag-color:var(--color-lens);margin-bottom:8px;">Lens</div>`;
 
     // Stats line
     {
         let statsHtml = '<div class="tags-row tags-row-center" style="gap:6px;margin:4px 0 14px;">';
-        statsHtml += `<span class="timing-tag" style="background:#888;color:#fff;" data-tooltip="${lensNodes.length} condition${lensNodes.length !== 1 ? 's' : ''}">${lensNodes.length}</span>`;
+        statsHtml += `<span class="timing-tag" style="background:var(--color-lens);color:#fff;" data-tooltip="${lensNodes.length} condition${lensNodes.length !== 1 ? 's' : ''}">${lensNodes.length}</span>`;
         const domainCount = new Set(lensNodes.map(n => n.domain)).size;
-        statsHtml += `<span class="timing-tag" style="background:#bbb;color:#fff;" data-tooltip="${domainCount} domain${domainCount !== 1 ? 's' : ''}">${domainCount}</span>`;
+        statsHtml += `<span class="timing-tag" style="background:color-mix(in srgb, var(--color-lens) 65%, transparent);color:#fff;" data-tooltip="${domainCount} domain${domainCount !== 1 ? 's' : ''}">${domainCount}</span>`;
         statsHtml += '</div>';
         html += statsHtml;
+    }
+
+    // Apply/Remove prompt (not for AMAB easter egg)
+    if (lens.id !== 'amab-advantage') {
+        const isActive = activeLenses.has(lens.id) || panelActiveLenses.has(lens.id);
+        const btnLabel = isActive ? 'Remove from map' : 'Apply to map';
+        const glassesIcon = `<svg width="14" height="10" viewBox="0 0 16 9" fill="none" stroke="currentColor" stroke-width="1.25" style="flex-shrink:0;"><rect x="0.5" y="2" width="6" height="5.5" rx="2" fill="none"/><rect x="9.5" y="2" width="6" height="5.5" rx="2" fill="none"/><path d="M6.5 3.5 Q8 1.5 9.5 3.5" fill="none"/></svg>`;
+        html += `<p class="lens-apply-btn" data-lens-id="${lens.id}" style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--color-lens);margin:0 0 8px;cursor:pointer;">
+            ${glassesIcon}
+            <span>${isActive ? 'Remove' : 'Apply'} <strong>${lens.shortLabel || lens.label}</strong> ${isActive ? 'from' : 'to'} map \u2192</span>
+        </p>`;
     }
 
     // Description section
@@ -28340,6 +28421,16 @@ function showLensInfo(lensId) {
     attachGlossaryListeners(content);
     attachDomainInfoLinkListeners(content);
     attachSourceRefListeners(content);
+    // Apply/Remove button handler
+    const applyBtn = content.querySelector('.lens-apply-btn');
+    if (applyBtn) {
+        applyBtn.addEventListener('click', () => {
+            const id = applyBtn.getAttribute('data-lens-id');
+            toggleLens(id);
+            // Re-render to update button state
+            showLensInfo(id);
+        });
+    }
 }
 
 function renderLensBlock(d) {
@@ -29423,7 +29514,7 @@ function generateLensLegendHTML(lensAnalysis) {
     const sorted = [...lensAnalysis.selectedLenses].sort((a, b) => (orderMap[a.id] || 99) - (orderMap[b.id] || 99));
     const items = sorted.map(lens => {
         const icon = tinyLensIconSVG(lens.id);
-        return `<span style="display:inline-flex;align-items:center;gap:3px;font-size:10px;color:#666;margin:1px 6px 1px 0;">${icon} ${lens.label}</span>`;
+        return `<span style="display:inline-flex;align-items:center;gap:3px;font-size:10px;color:#64748b;margin:1px 6px 1px 0;">${icon} ${lens.label}</span>`; /* constellation report is light-mode only; #64748b intentional */
     }).join('');
     return `<div style="margin:2px 0 4px;line-height:1.6;">${items}</div>`;
 }
@@ -30317,6 +30408,7 @@ function renderNodeTab(node, otherNode) {
     attachGlossaryListeners(content);
     attachDomainInfoLinkListeners(content);
     attachMechInfoLinkListeners(content);
+    attachLensInfoLinkListeners(content);
     attachSourceRefListeners(content);
     setupMechTagOverflow(content);
     panel.style.display = 'flex';
@@ -30693,6 +30785,11 @@ function renderCombinedPanel(nodeA, nodeB) {
         html += renderMechTagSection(mechIds);
     }
 
+    // ── Row 3: Lens tags (when lenses are active) ──
+    if (!nodeA.isEasterEgg && !nodeB.isEasterEgg) {
+        html += renderLensTagSection(null);
+    }
+
     html += '<div style="margin-top:10px;"></div>';
 
     // ── Section 1: Direct connection ──
@@ -30814,6 +30911,7 @@ function renderCombinedPanel(nodeA, nodeB) {
     attachSourceRefListeners(content);
     attachDomainInfoLinkListeners(content);
     attachMechInfoLinkListeners(content);
+    attachLensInfoLinkListeners(content);
     setupMechTagOverflow(content);
     panel.style.display = 'flex';
     mobilePushPanelState();
@@ -31151,6 +31249,9 @@ function renderIdentityBlock(d) {
         nodeEdges.forEach(l => { if (l.mechanismTags) l.mechanismTags.forEach(t => mechIds.push(t)); });
         html += renderMechTagSection(mechIds);
     }
+
+    // Lens tags (when lenses are active)
+    html += renderLensTagSection(d);
 
     html += '<div style="margin-top:10px;"></div>';
     return html;
@@ -31626,9 +31727,10 @@ function buildConditionPeekHtml(nd) {
         </div>`;
     }
 
+    const peekTitle = (nd.description && nd.description !== nd.label) ? nd.description : nd.label;
     const header = `<div class="flex-row" style="margin-bottom:4px;">
         <div class="color-dot" style="background:${domainColor};"></div>
-        <strong style="font-size:var(--font-base);color:var(--text-primary);">${nd.label}</strong>`;
+        <strong style="font-size:var(--font-base);color:var(--text-primary);">${peekTitle}</strong>`;
 
     switch (activePersona) {
         case 'carer': {
