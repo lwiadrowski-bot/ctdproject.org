@@ -4047,7 +4047,7 @@ body.dark-mode.high-contrast .clinician-lookup-links {
 .validation-badge[data-tooltip]:hover::after {
     content: attr(data-tooltip);
     position: absolute;
-    left: 0;
+    right: 0;
     top: calc(100% + 6px);
     background: white;
     color: var(--text-secondary);
@@ -25844,7 +25844,13 @@ function renderPersonalPanel(d) {
         html += sectionWrapper(ICON_NOTES + ' About', aboutContent, true);
     }
 
-    // My Constellation section - grouped by domain, confirmed then suspected
+    // My Context section (lenses) — placed after About, before Constellation
+    if (d.myLenses && d.myLenses.length > 0 && d.myLensesText) {
+        let lensContent = `<p style="font-size:var(--font-base);color:var(--text-secondary);line-height:1.6;margin:0 0 0;">${d.myLensesText}</p>`;
+        html += sectionWrapper(ICON_LENSES + ' My Context', lensContent, true);
+    }
+
+    // My Constellation section - grouped by domain, confirmed then suspected, with lenses
     {
         const confirmedByDomain = {};
         const suspectedByDomain = {};
@@ -25866,8 +25872,9 @@ function renderPersonalPanel(d) {
         const allDomains = new Set([...Object.keys(confirmedByDomain), ...Object.keys(suspectedByDomain)]);
         const confirmedCount = d.myConditions.length;
         const suspectedCount = (d.mySuspected || []).length;
+        const lensCount = (d.myLenses || []).length;
 
-        let constContent = `<p style="font-size:12px;color:var(--text-secondary);margin:0 0 12px;">${confirmedCount} confirmed and ${suspectedCount} suspected conditions across ${allDomains.size} domains</p>`;
+        let constContent = `<p style="font-size:12px;color:var(--text-secondary);margin:0 0 12px;">${confirmedCount} confirmed and ${suspectedCount} suspected conditions across ${allDomains.size} domains and ${lensCount} lenses</p>`;
 
         // Domain order follows the domainColors key order for consistency
         const domainOrder = Object.keys(domainColors);
@@ -25896,23 +25903,21 @@ function renderPersonalPanel(d) {
             });
             constContent += '</div></div>';
         });
-        html += sectionWrapper(ICON_CONNECTIONS + ' My Constellation', constContent, true);
-    }
 
-    // My Lenses section
-    if (d.myLenses && d.myLenses.length > 0) {
-        let lensContent = '';
-        if (d.myLensesText) {
-            lensContent += `<p style="font-size:var(--font-base);color:var(--text-secondary);line-height:1.6;margin:0 0 12px;">${d.myLensesText}</p>`;
+        // Lens tags at the end, same subheading style as domains
+        if (d.myLenses && d.myLenses.length > 0) {
+            constContent += `<div style="margin:10px 0 6px;">
+                <div style="font-size:var(--font-sm);font-weight:600;color:var(--color-lens);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;">Lens (${d.myLenses.length})</div>
+                <div class="tags-row">`;
+            d.myLenses.forEach(lensId => {
+                const lens = lenses.find(l => l.id === lensId);
+                if (!lens) return;
+                constContent += `<span class="lens-tag" data-lens-id="${lens.id}" style="display:inline-block;padding:3px 10px;border-radius:4px;font-size:12px;font-weight:500;cursor:pointer;background:color-mix(in srgb, var(--color-lens) 8%, transparent);color:var(--color-lens);border:1px solid color-mix(in srgb, var(--color-lens) 25%, transparent);">${lens.label}</span>`;
+            });
+            constContent += '</div></div>';
         }
-        lensContent += '<div class="tags-row">';
-        d.myLenses.forEach(lensId => {
-            const lens = lenses.find(l => l.id === lensId);
-            if (!lens) return;
-            lensContent += `<span class="lens-tag" data-lens-id="${lens.id}" style="display:inline-block;padding:3px 10px;border-radius:4px;font-size:12px;font-weight:500;cursor:pointer;background:color-mix(in srgb, var(--color-lens) 8%, transparent);color:var(--color-lens);border:1px solid color-mix(in srgb, var(--color-lens) 25%, transparent);">${lens.label}</span>`;
-        });
-        lensContent += '</div>';
-        html += sectionWrapper(ICON_LENSES + ' My Context', lensContent, true);
+
+        html += sectionWrapper(ICON_CONNECTIONS + ' My Constellation', constContent, true);
     }
 
     content.innerHTML = html;
