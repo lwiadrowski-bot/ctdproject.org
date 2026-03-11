@@ -30156,6 +30156,9 @@ function buildReportGPSection(report, titleDotsSvg, dateStr, sharedLayout) {
 
 function downloadConstellationReport() {
     if (constellationYes.size === 0) return;
+    // Open window immediately on user gesture (before computation)
+    // to avoid mobile popup blockers
+    const newTab = window.open('', '_blank');
     const report = computeConstellationReport();
     const dateStr = new Date().toLocaleDateString('en-AU', { year: 'numeric', month: 'long', day: 'numeric' });
     const stats = selectTopStats(report);
@@ -30393,13 +30396,9 @@ ${getConstellationReportCSS()}
 </body>
 </html>`;
 
-    const blob = new Blob([html], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
-    const newTab = window.open(url, '_blank');
     if (newTab) {
-        newTab.addEventListener('load', () => URL.revokeObjectURL(url));
-    } else {
-        URL.revokeObjectURL(url);
+        newTab.document.write(html);
+        newTab.document.close();
     }
 }
 
