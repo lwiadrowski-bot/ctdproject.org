@@ -1413,7 +1413,7 @@ body.dark-mode .safety-card-close:hover { color: #b0b0c8; }
     inset: 0;
     background: var(--overlay-bg);
     z-index: 250;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
@@ -1423,14 +1423,16 @@ body.dark-mode .safety-card-close:hover { color: #b0b0c8; }
 #disclaimer-modal-card {
     background: white;
     border-radius: var(--radius-xl);
-    padding: 28px;
-    width: 440px;
+    padding: 24px 28px;
+    width: 460px;
     max-width: calc(100vw - 40px);
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
     flex-shrink: 0;
     box-shadow: var(--shadow-modal);
 }
-#disclaimer-modal-card h2 { margin: 0 0 16px; font-size: 18px; color: var(--text-primary); }
-#disclaimer-modal-card p { font-size: var(--font-base); color: var(--text-secondary); line-height: 1.6; margin: 0 0 12px; }
+#disclaimer-modal-card h2 { margin: 0 0 12px; font-size: 18px; color: var(--text-primary); }
+#disclaimer-modal-card p { font-size: var(--font-base); color: var(--text-secondary); line-height: 1.55; margin: 0 0 10px; }
 
 /* ---- Welcome tutorial modal ---- */
 #tutorial-modal {
@@ -2803,6 +2805,14 @@ a.connect-social-btn:hover {
 .persona-action-link + .persona-action-link {
     border-top: 1px solid #f0f0f0;
 }
+.persona-action-divider {
+    height: 0;
+    border-top: 1.5px solid #e0e0e0;
+    margin: 4px 0;
+}
+.persona-action-divider + .persona-action-link {
+    border-top: none;
+}
 .persona-action-label {
     display: flex;
     align-items: center;
@@ -2887,6 +2897,7 @@ a.connect-social-btn:hover {
     user-select: none;
     line-height: 1;
     -webkit-backdrop-filter: blur(4px);
+    -webkit-tap-highlight-color: transparent;
 }
 
 /* Info button overlaid on lens icon */
@@ -3774,6 +3785,7 @@ body.dark-mode .panel-filter-header { border-bottom-color: #3a3a5c; }
 body.dark-mode .panel-filter-section-header:hover { background: #252542; }
 body.dark-mode #persona-action-dropdown { border-color: #3a3a5c; }
 body.dark-mode .persona-action-link + .persona-action-link { border-top-color: #3a3a5c; }
+body.dark-mode .persona-action-divider { border-top-color: #3a3a5c; }
 body.dark-mode .help-sidebar { border-right-color: #3a3a5c; }
 body.dark-mode .help-sidebar-divider { background: #3a3a5c; }
 body.dark-mode .glossary-entry { border-bottom-color: #3a3a5c; }
@@ -4090,6 +4102,8 @@ body.dark-mode .mobile-persona-grid .persona-btn.active {
     #tutorial-modal-card { max-width: calc(100vw - 40px); padding: 24px 20px; }
     .tutorial-illustration { height: 64px; }
     /* Lens palette: centred grid at bottom on mobile (!important overrides JS inline styles) */
+    #lens-palette { padding: 0; margin: 0; }
+    #lens-palette .lens-icon { -webkit-backdrop-filter: none; backdrop-filter: none; }
     #lens-palette.visible {
         top: auto !important;
         bottom: 36px !important;
@@ -4131,7 +4145,7 @@ body.dark-mode .mobile-persona-grid .persona-btn.active {
         border-width: 1px;
         border-color: var(--border-light);
         font-size: 16px; /* ≥16px prevents iOS auto-zoom on focus */
-        padding: 10px 40px 10px 32px;
+        padding: 10px 90px 10px 32px;
     }
     #search-wrapper.mobile-search-active #search-box:focus {
         border-color: var(--color-primary);
@@ -4140,8 +4154,12 @@ body.dark-mode .mobile-persona-grid .persona-btn.active {
     }
     /* Align search icon inside the input (offset by wrapper padding) */
     #search-wrapper.mobile-search-active .search-icon { left: 20px; }
-    /* Hide trailing filter/reset icons in mobile overlay - filter accessible from toolbar */
-    #search-wrapper.mobile-search-active .search-trailing-icons { display: none; }
+    /* Show filter + composites in mobile search bar; hide reset, clear, dividers */
+    #search-wrapper.mobile-search-active .search-trailing-icons { display: flex; gap: 2px; right: 36px; }
+    #search-wrapper.mobile-search-active .search-trailing-divider { display: none; }
+    #search-wrapper.mobile-search-active #reset-view-btn { display: none; }
+    #search-wrapper.mobile-search-active #search-clear-btn { display: none; }
+    #search-wrapper.mobile-search-active #search-clear-divider { display: none; }
     body.dark-mode #search-wrapper.mobile-search-active { background: #1e1e36; }
     #search-wrapper.mobile-search-active #search-autocomplete {
         position: fixed;
@@ -4219,12 +4237,15 @@ body.dark-mode .mobile-persona-grid .persona-btn.active {
     body.dark-mode .mobile-filter-close { color: #b0b0c8; }
     body.dark-mode .mobile-filter-close:hover { background: #252542; }
     /* Help modal */
-    #help-modal-card { width: calc(100vw - 40px); max-width: 640px; max-height: calc(100vh - 60px); display: flex; flex-direction: column; padding: 16px; }
+    #help-modal { padding: 0; align-items: stretch; }
+    #help-modal-card { width: 100%; max-width: 100%; max-height: 100%; height: 100%; border-radius: 0; display: flex; flex-direction: column; padding: 16px; padding-bottom: env(safe-area-inset-bottom, 16px); }
     .help-modal-header { margin-bottom: 8px; }
     .help-modal-logo-wrap { overflow: visible; }
-    #disclaimer-modal-card { width: calc(100vw - 40px); max-width: 440px; }
+    #disclaimer-modal { padding: 0; align-items: stretch; }
+    #disclaimer-modal-card { width: 100%; max-width: 100%; max-height: 100%; border-radius: 0; padding: 24px 28px; padding-bottom: env(safe-area-inset-bottom, 28px); box-sizing: border-box; }
     /* Safety modal */
-    #safety-modal-card { width: calc(100vw - 40px); max-width: 640px; max-height: calc(100vh - 60px); display: flex; flex-direction: column; padding: 16px; }
+    #safety-modal { padding: 0; align-items: stretch; }
+    #safety-modal-card { width: 100%; max-width: 100%; max-height: 100%; height: 100%; border-radius: 0; display: flex; flex-direction: column; padding: 16px; padding-bottom: env(safe-area-inset-bottom, 16px); }
     .safety-modal-header { margin-bottom: 8px; }
     .safety-modal-logo-wrap { overflow: visible; }
     .safety-content { max-height: none; flex: 1; min-height: 0; overflow-y: auto; padding-top: 12px; padding-bottom: env(safe-area-inset-bottom, 20px); }
@@ -4273,17 +4294,17 @@ body.dark-mode .mobile-persona-grid .persona-btn.active {
 
 /* ── Responsive: Narrow phone (≤480px) ── */
 @media (max-width: 480px) {
-    #help-modal-card { width: calc(100vw - 16px); }
-    #safety-modal-card { width: calc(100vw - 16px); padding: 12px; }
+    #help-modal-card { width: 100%; padding: 12px; }
+    #safety-modal-card { width: 100%; padding: 12px; }
 }
 
 /* ── Touch devices: suppress hover tooltips + sticky hover states ── */
 @media (hover: none) {
     [data-tooltip]:hover::after,
     [data-tooltip]:hover::before { display: none !important; }
-    /* Prevent sticky :hover highlight on touch (hamburger, search, etc.) */
-    .island-btn:hover { border-color: rgba(156, 163, 175, 0.25); color: inherit; background: rgba(255,255,255,0.5); }
-    body.dark-mode .island-btn:hover { border-color: rgba(82, 82, 110, 0.6); color: #7a7a96; background: #1e1e36; }
+    /* Prevent sticky :hover highlight on touch (hamburger, search, etc.) but not lens icons */
+    .island-btn:hover:not(.lens-icon) { border-color: rgba(156, 163, 175, 0.25); color: inherit; background: rgba(255,255,255,0.5); }
+    body.dark-mode .island-btn:hover:not(.lens-icon) { border-color: rgba(82, 82, 110, 0.6); color: #7a7a96; background: #1e1e36; }
 }
 
 /* ── Clinician database search links ── */
@@ -23429,7 +23450,7 @@ const lenses = [
     {
         id: 'socioeconomic',
         label: 'Socioeconomic disadvantage',
-        shortLabel: 'SES',
+        shortLabel: 'Socioeconomic',
         searchTerms: ['poverty', 'income', 'deprivation', 'inequality', 'class'],
         description: {
             technical: 'Socioeconomic disadvantage amplifies the impact of neurodivergent and co-occurring conditions through reduced access to timely diagnosis, specialist care, allied health services, and workplace accommodations. Lower income correlates with higher allostatic load, nutritional deficiency, housing instability, and chronic stress, each of which can worsen autonomic, immune, and mental health presentations. Diagnostic delay is longer, misdiagnosis more common, and self-advocacy harder when financial and social capital are limited.',
@@ -23460,7 +23481,7 @@ const lenses = [
     {
         id: 'aces',
         label: 'Adverse childhood experiences',
-        shortLabel: 'ACEs',
+        shortLabel: 'Adverse childhood',
         searchTerms: ['trauma', 'abuse', 'neglect', 'childhood trauma', 'ACE score', 'maltreatment'],
         description: {
             technical: 'Adverse childhood experiences (abuse, neglect, household dysfunction) produce lasting changes in HPA axis regulation, immune function, and neural architecture. ACE scores correlate with elevated rates of autoimmune conditions, chronic pain, cardiovascular disease, and mental health disorders in a dose-response relationship. In neurodivergent populations, the interaction is bidirectional: neurodivergent children are at higher risk of experiencing adversity, and adversity compounds existing neurobiological vulnerabilities.',
@@ -23522,7 +23543,7 @@ const lenses = [
     {
         id: 'late-diagnosis',
         label: 'Late diagnosis',
-        shortLabel: 'Late Dx',
+        shortLabel: 'Late dx',
         searchTerms: ['adult diagnosis', 'late identified', 'undiagnosed', 'missed diagnosis', 'delayed diagnosis'],
         description: {
             technical: 'Late diagnosis (identification in adulthood of conditions present from childhood or adolescence) is associated with elevated rates of mental health co-occurrence, identity disruption, grief, and burnout. This applies to neurodevelopmental conditions (autism, ADHD) and to chronic conditions with long diagnostic delays, including EDS (average 12+ years to diagnosis), endometriosis (7-10 years), and POTS. Years of unrecognised conditions lead to maladaptive coping strategies (masking, overcompensation), chronic stress, and accumulated health burden. Late-diagnosed individuals often present with the downstream consequences (anxiety, depression, burnout, chronic pain) before the underlying condition is identified.',
@@ -23550,7 +23571,7 @@ const lenses = [
     {
         id: 'invisible-disability',
         label: 'Invisible disability',
-        shortLabel: 'Invisible',
+        shortLabel: 'Invisible disability',
         searchTerms: ['hidden disability', 'non-visible', 'but you look fine', 'you dont look sick', 'disbelief'],
         description: {
             technical: 'Invisible disabilities, those not immediately apparent to observers, create a specific pattern of disbelief, invalidation, and access barriers. Neurodivergent conditions, chronic pain, fatigue syndromes, dysautonomia, and many immune conditions are invisible by nature. The inconsistency of symptoms ("but you looked fine yesterday") is particularly poorly understood. This leads to reduced social support, workplace discrimination, and internalised self-doubt that compounds the direct impact of the condition.',
@@ -23577,7 +23598,7 @@ const lenses = [
     {
         id: 'minority-stress',
         label: 'Minority stress',
-        shortLabel: 'Minority',
+        shortLabel: 'Minority stress',
         searchTerms: ['discrimination', 'stigma', 'prejudice', 'ableism', 'LGBTQ', 'marginalisation'],
         description: {
             technical: 'Minority stress theory posits that stigmatised groups experience chronic, socially-based stress from discrimination, prejudice, and the expectation of rejection. For neurodivergent people and those with chronic conditions, this includes ableism, medical dismissal, and navigating systems not designed for them. Black, Indigenous, and other racially marginalised people face compounded minority stress through systemic racism in healthcare, including diagnostic bias, pain undertreatment, and reduced access to specialist care. LGBTQIA+ neurodivergent individuals face additional axes of marginalisation. Chronic minority stress elevates allostatic load, HPA axis dysregulation, and inflammation: physiological mechanisms that directly worsen many conditions on this map.',
@@ -23606,7 +23627,7 @@ const lenses = [
     {
         id: 'visible-difference',
         label: 'Visible difference',
-        shortLabel: 'Visible',
+        shortLabel: 'Visible difference',
         searchTerms: ['appearance', 'tics', 'stimming', 'mobility aid', 'disfigurement', 'body difference'],
         description: {
             technical: 'Visible differences, including tics, stimming, mobility aids, skin conditions, and body differences, attract social attention, stigma, and bullying. For neurodivergent individuals, visible manifestations (Tourette tics, autistic stimming, atypical gait from hypermobility) can trigger social exclusion and hypervigilance. The stress of managing social perception compounds autonomic, immune, and mental health presentations.',
@@ -23633,7 +23654,7 @@ const lenses = [
     {
         id: 'victimisation',
         label: 'Victimisation',
-        shortLabel: 'Victim.',
+        shortLabel: 'Victimisation',
         searchTerms: ['bullying', 'abuse', 'exploitation', 'intimate partner violence', 'IPV', 'sexual abuse'],
         description: {
             technical: 'Neurodivergent individuals and those with chronic conditions experience elevated rates of bullying, abuse, exploitation, and victimisation across the lifespan. Autistic people are 3× more likely to experience sexual victimisation and 7× more likely to experience peer victimisation. ADHD increases risk of intimate partner violence. People dependent on carers for chronic conditions face additional vulnerability to coercive control and financial abuse. Victimisation compounds C-PTSD risk, autonomic dysregulation, and chronic pain via sustained threat-system activation.',
@@ -23661,7 +23682,7 @@ const lenses = [
     {
         id: 'criminal-justice',
         label: 'Criminal justice contact',
-        shortLabel: 'CJ',
+        shortLabel: 'Criminal justice',
         searchTerms: ['prison', 'incarceration', 'police', 'forensic', 'offending', 'court', 'detention'],
         description: {
             technical: 'Neurodivergent individuals are over-represented in the criminal justice system, both as victims and as accused persons. Communication differences, executive function challenges, sensory overload in custody/courtroom settings, and misinterpretation of neurodivergent behaviour by police create systemic disadvantage. ADHD is present in an estimated 25–30% of incarcerated populations (vs 5% general population). Intellectual disability and foetal alcohol spectrum disorder further compound vulnerability.',
@@ -23688,7 +23709,7 @@ const lenses = [
     {
         id: 'homelessness',
         label: 'Homelessness',
-        shortLabel: 'Housing',
+        shortLabel: 'Homelessness',
         searchTerms: ['housing instability', 'rough sleeping', 'shelter', 'unhoused', 'housing insecurity'],
         description: {
             technical: 'Neurodivergent individuals are disproportionately represented in homeless populations. Executive function challenges (ADHD), social communication differences (autism), and the downstream effects of late diagnosis and co-occurring mental health conditions all contribute to housing instability. Homelessness in turn removes the stability needed to manage chronic conditions, access healthcare, and maintain medication regimens, creating a vicious cycle.',
@@ -24609,9 +24630,9 @@ const _sharedResources = {
         { label: 'Ask for help', action: 'downloadSafetyCard()', note: 'Crisis communication card' },
         { label: 'Neurodivergent Pain Scale', action: "window.open('tools/pain-scale.pdf', '_blank')" },
         { label: 'Neurodivergent Wellbeing Scale', action: "window.open('tools/wellbeing-scale.pdf', '_blank')" },
-        { label: 'Nodes data (.csv)', action: 'downloadNodesCSV()' },
-        { label: 'Edges data (.csv)', action: 'downloadEdgesCSV()' },
-        { label: 'Lens overlays (.csv)', action: 'downloadLensOverlaysCSV()' }
+        { divider: true },
+        { label: 'Map data (.xlsx)', action: "window.open('tools/connect-the-dots-data.xlsx', '_blank')", note: 'Nodes, edges and lens overlays' },
+        { label: 'Sources (.xlsx)', action: "window.open('tools/connect-the-dots-sources.xlsx', '_blank')", note: 'Bibliography and source usage' }
     ]
 };
 const personaResources = {
@@ -30352,15 +30373,6 @@ function triggerDownload(content, filename, mimeType) {
     URL.revokeObjectURL(url);
 }
 
-function csvEscape(value) {
-    if (value == null) return '';
-    const s = String(value);
-    if (s.includes(',') || s.includes('"') || s.includes('\n')) {
-        return '"' + s.replace(/"/g, '""') + '"';
-    }
-    return s;
-}
-
 // ── Persona action button (replaces export-only button) ─────────────
 
 const PERSONA_ACTION_ICONS = {
@@ -30383,10 +30395,15 @@ function renderPersonaActionDropdown() {
     const res = personaResources[activePersona];
     if (!res) return '';
     return res.items.map(item => {
+        if (item.divider) {
+            return '<div class="persona-action-divider"></div>';
+        }
         if (item.action) {
-            // action-based item (researcher export buttons)
+            // action-based item (download buttons, file links)
+            const note = item.note ? `<span class="action-note">${item.note}</span>` : '';
             return `<button class="persona-action-link" onclick="${item.action}">
                 <span class="persona-action-label">${item.label}</span>
+                ${note}
             </button>`;
         }
         // key-based item - resolve from externalLinks registry
@@ -30448,130 +30465,6 @@ document.querySelectorAll('#persona-cluster .persona-btn').forEach(btn => {
         iconSpan.innerHTML = PERSONA_CLUSTER_ICONS[persona];
     }
 });
-
-function downloadSourceDOIs() {
-    closePersonaActionMenu();
-    const dois = [];
-    Object.values(sourceRegistry).forEach(entry => {
-        if (entry.doi) dois.push(entry.doi);
-    });
-    dois.sort();
-    const unique = [...new Set(dois)];
-    const date = new Date().toISOString().split('T')[0];
-    const content = `# Connect the Dots - Source DOIs\n` +
-        `# Exported ${date} | ${unique.length} unique DOIs\n` +
-        `#\n` +
-        `# Each DOI resolves to a source paper at https://doi.org/<DOI>\n` +
-        `# To bulk-import into a reference manager (Zotero, Mendeley, EndNote),\n` +
-        `# use its "import by DOI" or "add by identifier" feature.\n` +
-        `\n` +
-        unique.join('\n') + '\n';
-    triggerDownload(content, 'connect-the-dots-source-dois.txt', 'text/plain');
-}
-
-function downloadNodesCSV() {
-    closePersonaActionMenu();
-    const header = ['id', 'label', 'domains', 'mechanisms', 'developmentalTiming', 'diagnosticTiming', 'sexLinkedPresentation', 'diagnosticStatus', 'connectionCount'];
-    const rows = [header.join(',')];
-    nodes.forEach(n => {
-        if (n.isEasterEgg || n.isPersonal || n.isComposite) return;
-        // Collect all domains: node's own + unique domains from its edges
-        const nodeLinks = links.filter(l =>
-            (l.source.id === n.id || l.target.id === n.id) && !l._compositeEdge
-        );
-        const allDomains = new Set([n.domain]);
-        nodeLinks.forEach(l => {
-            const other = l.source.id === n.id ? l.target : l.source;
-            if (other.domain) allDomains.add(other.domain);
-        });
-        // Collect all mechanism tags from the node's edges
-        const allMechs = new Set();
-        nodeLinks.forEach(l => {
-            if (l.mechanismTags) l.mechanismTags.forEach(m => allMechs.add(m));
-        });
-        rows.push([
-            csvEscape(n.id),
-            csvEscape(n.label),
-            csvEscape([...allDomains].sort().join('|')),
-            csvEscape([...allMechs].sort().join('|')),
-            csvEscape((n.developmentalTiming || []).join('|')),
-            csvEscape((n.diagnosticTiming || []).join('|')),
-            csvEscape((n.sexLinkedPresentation || []).join('|')),
-            csvEscape(n.diagnosticStatus || ''),
-            nodeLinks.length
-        ].join(','));
-    });
-    triggerDownload(rows.join('\n') + '\n', 'connect-the-dots-nodes.csv', 'text/csv');
-}
-
-function downloadEdgesCSV() {
-    closePersonaActionMenu();
-    const header = ['source', 'target', 'type', 'strength', 'directionality', 'mechanismTags', 'communityRecognised', 'mechanismContested', 'coOccurrenceContested', 'sourceCount'];
-    const rows = [header.join(',')];
-    links.forEach(l => {
-        if (l._compositeEdge) return;
-        const srcId = edgeSourceId(l);
-        const tgtId = edgeTargetId(l);
-        const mechs = (l.mechanismTags || []).join('|');
-        const srcCount = (l.sources || []).length;
-        rows.push([
-            csvEscape(srcId),
-            csvEscape(tgtId),
-            csvEscape(l.type || ''),
-            csvEscape(l.strength || ''),
-            csvEscape(l.directionality || ''),
-            csvEscape(mechs),
-            csvEscape(l.communityRecognised ? 'true' : 'false'),
-            csvEscape(l.mechanismContested ? 'true' : 'false'),
-            csvEscape(l.coOccurrenceContested ? 'true' : 'false'),
-            srcCount
-        ].join(','));
-    });
-    triggerDownload(rows.join('\n') + '\n', 'connect-the-dots-edges.csv', 'text/csv');
-}
-
-function downloadSourceRegistryCSV() {
-    closePersonaActionMenu();
-    const header = ['key', 'doi', 'title', 'authors', 'year', 'journal', 'type'];
-    const rows = [header.join(',')];
-    Object.entries(sourceRegistry).forEach(([key, entry]) => {
-        rows.push([
-            csvEscape(key),
-            csvEscape(entry.doi || ''),
-            csvEscape(entry.title || ''),
-            csvEscape(entry.authors || ''),
-            csvEscape(entry.year || ''),
-            csvEscape(entry.journal || ''),
-            csvEscape(entry.type || '')
-        ].join(','));
-    });
-    triggerDownload(rows.join('\n') + '\n', 'connect-the-dots-sources.csv', 'text/csv');
-}
-
-function downloadLensOverlaysCSV() {
-    closePersonaActionMenu();
-    const header = ['lens', 'lensLabel', 'nodeId', 'nodeLabel', 'relevance', 'technicalText', 'sourceCount'];
-    const rows = [header.join(',')];
-    lenses.forEach(lens => {
-        const overlays = lensOverlays[lens.id] || {};
-        Object.entries(overlays).forEach(([nodeId, overlay]) => {
-            const node = nodes.find(n => n.id === nodeId);
-            const nodeLabel = node ? node.label : nodeId;
-            const techText = overlay.text ? (overlay.text.technical || '') : '';
-            const srcCount = (overlay.sources || []).length;
-            rows.push([
-                csvEscape(lens.id),
-                csvEscape(lens.label),
-                csvEscape(nodeId),
-                csvEscape(nodeLabel),
-                csvEscape(overlay.relevance || ''),
-                csvEscape(techText),
-                srcCount
-            ].join(','));
-        });
-    });
-    triggerDownload(rows.join('\n') + '\n', 'connect-the-dots-lens-overlays.csv', 'text/csv');
-}
 
 function renderPanelSourceExportButton() {
     if (activePersona !== 'researcher') return '';
@@ -30930,7 +30823,21 @@ function toggleLens(lensId) {
     } else {
         activeLenses.add(lensId);
     }
-    renderLensPalette();
+    // On mobile, update button states in-place (avoids innerHTML rebuild).
+    // On desktop, full rebuild keeps tooltip/info button state clean.
+    if (isMobile()) {
+        const palette = document.getElementById('lens-palette');
+        if (palette) {
+            palette.querySelectorAll('.lens-icon').forEach(btn => {
+                const id = btn.getAttribute('data-lens-id');
+                const isActive = activeLenses.has(id);
+                if (isActive) btn.classList.add('active'); else btn.classList.remove('active');
+                btn.setAttribute('aria-pressed', String(isActive));
+            });
+        }
+    } else {
+        renderLensPalette();
+    }
     updateLensBadge();
     rebuildLensRelevance();
     if (hasActiveLenses()) {
@@ -32871,7 +32778,7 @@ function selectTopStats(report) {
         { label: 'Connections', value: report.internalEdges.length, color: '#71717a' }
     ];
     if (report.lensAnalysis && report.lensAnalysis.totalAffected > 0) {
-        fixed.push({ label: 'Shaped by context', value: report.lensAnalysis.totalAffected, color: '#6366f1' });
+        fixed.push({ label: 'Shaped by context', value: report.lensAnalysis.totalAffected, color: '#64748b' });
     }
     // Pick the most informative highlight stat
     const highlights = [];
@@ -33241,7 +33148,7 @@ ${getConstellationReportCSS()}
         topLenses.forEach(lens => {
             const layDesc = (lens.description && lens.description.lay) ? lens.description.lay : '';
             const firstSentence = layDesc.split(/\.\s/)[0] || '';
-            html += `<div class="hub-card" style="border-top-color:${lens.color};">`;
+            html += `<div class="hub-card" style="border-top-color:#64748b;">`;
             html += `<h3>${lens.label}</h3>`;
             html += `<p class="subtitle">Affects ${lens.affectedCount} of your conditions</p>`;
             if (firstSentence) html += `<p>${firstSentence}${firstSentence.endsWith('.') ? '' : '.'}</p>`;
@@ -34375,16 +34282,37 @@ function renderConnectionsBlock(d) {
 }
 
 // ── Inline citation numbering (researcher) ──────────────────────────
+// Show the #condition-peek tooltip positioned near an element, with optional auto-dismiss
+function showPeekAt(el, html, opts) {
+    const peek = document.getElementById('condition-peek');
+    if (!peek) return;
+    peek.innerHTML = html;
+    const rect = el.getBoundingClientRect();
+    const height = (opts && opts.height) || 60;
+    let top = rect.bottom + 6;
+    let left = rect.left + ((opts && opts.offsetLeft) || 0);
+    if (top + height > window.innerHeight) top = rect.top - height;
+    if (left + 280 > window.innerWidth) left = window.innerWidth - 290;
+    peek.style.top = top + 'px';
+    peek.style.left = Math.max(10, left) + 'px';
+    peek.classList.add('visible');
+    if (opts && opts.autoDismiss) {
+        setTimeout(() => peek.classList.remove('visible'), opts.autoDismiss);
+    }
+}
+
+function hidePeek() {
+    const peek = document.getElementById('condition-peek');
+    if (peek) peek.classList.remove('visible');
+}
+
 function sourceDedupeKey(s) {
     return s.key || s.doi || s.ref || s.title || s.url || JSON.stringify(s);
 }
 
-function precomputeSourceNumbering(d) {
-    _sourceNumbering = new Map();
-    _numberedSources = [];
-    if (activePersona !== 'researcher') return;
-
-    // Collect all sources in the same order as renderSourcesBlock
+// Collect all sources for a node panel in rendering order.
+// Shared by precomputeSourceNumbering and renderSourcesBlock to stay in sync.
+function collectPanelSources(d) {
     let allSources = [];
     if (d.debunkingSources && d.debunkingSources.length > 0) {
         allSources = allSources.concat(d.debunkingSources);
@@ -34392,23 +34320,19 @@ function precomputeSourceNumbering(d) {
     if (d.profileSources && d.profileSources.length > 0) {
         allSources = allSources.concat(d.profileSources);
     }
-    const connections = links.filter(l => {
-        if (l.source.id !== d.id && l.target.id !== d.id) return false;
-        if (!d.isComposite && l._compositeEdge) return false;
-        return true;
-    });
-    connections.forEach(l => {
-        if (l.sources) allSources = allSources.concat(l.sources);
-    });
-
-    // Node text field sources (prevalence, presentation, onset, notes)
-    ['prevalence', 'presentation', 'onset', 'notes'].forEach(field => {
+    // Composite nodes need their edge sources (that's their primary content)
+    if (d.isComposite) {
+        links.filter(l => l.source.id === d.id || l.target.id === d.id).forEach(l => {
+            if (l.sources) allSources = allSources.concat(l.sources);
+        });
+    }
+    // Text fields in panel rendering order
+    ['presentation', 'prevalence', 'onset', 'notes'].forEach(field => {
         if (d[field] && d[field].sources) {
             allSources = allSources.concat(d[field].sources);
         }
     });
-
-    // Lens overlay sources (for active lenses)
+    // Lens overlay sources
     if (hasActiveLenses()) {
         getAllActiveLenses().forEach(lensId => {
             const overlayMap = lensOverlays[lensId];
@@ -34417,17 +34341,22 @@ function precomputeSourceNumbering(d) {
             }
         });
     }
-
     // Deduplicate
     const seen = new Set();
-    const unique = allSources.filter(s => {
+    return allSources.filter(s => {
         const key = sourceDedupeKey(s);
         if (seen.has(key)) return false;
         seen.add(key);
         return true;
     });
+}
 
-    // Assign sequential numbers
+function precomputeSourceNumbering(d) {
+    _sourceNumbering = new Map();
+    _numberedSources = [];
+    if (activePersona !== 'researcher') return;
+
+    const unique = collectPanelSources(d);
     unique.forEach((s, i) => {
         const key = sourceDedupeKey(s);
         const num = i + 1;
@@ -34587,44 +34516,13 @@ function inlineCitationText(text, sources) {
 
 function renderSourcesBlock(d) {
     const pc = getPersonaConfig();
-    // Collect sources: debunking sources (vaccination), profile/composite sources, edge sources, node text field sources
-    let allSources = [];
-    if (d.debunkingSources && d.debunkingSources.length > 0) {
-        allSources = allSources.concat(d.debunkingSources);
-    }
-    if (d.profileSources && d.profileSources.length > 0) {
-        allSources = allSources.concat(d.profileSources);
-    }
-    // Unified: composite edges are now in links[]
-    const connections = links.filter(l => {
-        if (l.source.id !== d.id && l.target.id !== d.id) return false;
-        if (!d.isComposite && l._compositeEdge) return false;
-        return true;
-    });
-    connections.forEach(l => {
-        if (l.sources) allSources = allSources.concat(l.sources);
-    });
-    // Node text field sources (prevalence, presentation, onset, notes)
-    ['prevalence', 'presentation', 'onset', 'notes'].forEach(field => {
-        if (d[field] && d[field].sources) {
-            allSources = allSources.concat(d[field].sources);
-        }
-    });
+    const unique = collectPanelSources(d);
 
-    if (allSources.length === 0) {
+    if (unique.length === 0) {
         return sectionWrapper(pc.headings.sources,
             '<p class="text-note">No sources yet for this condition.</p>',
             isExpanded(d, 'sources'));
     }
-
-    // Deduplicate by ref, title, or doi
-    const seen = new Set();
-    const unique = allSources.filter(s => {
-        const key = s.key || s.doi || s.ref || s.title || s.url || JSON.stringify(s);
-        if (seen.has(key)) return false;
-        seen.add(key);
-        return true;
-    });
 
     // Store resolved sources for panel export
     _currentPanelSources = unique.map(resolveSource);
@@ -34739,6 +34637,7 @@ function attachGlossaryListeners(container) {
     container.querySelectorAll('.glossary-inline[data-glossary-slug]').forEach(el => {
         el.addEventListener('click', (e) => {
             e.stopPropagation();
+            hidePeek();
             showHelpModal();
             requestAnimationFrame(() => showHelpPage('glossary', el.dataset.glossarySlug));
         });
@@ -34754,6 +34653,13 @@ function attachGlossaryListeners(container) {
                 el.classList.remove('glossary-inline-right');
             }
         });
+        // On touch, show definition in peek tooltip (tap opens full glossary page)
+        if (el.dataset.tooltip) {
+            el.addEventListener('touchstart', () => {
+                const term = el.textContent;
+                showPeekAt(el, `<div style="font-size:12px;color:var(--text-secondary);"><strong style="color:var(--color-primary);">${term}</strong>: ${el.dataset.tooltip}</div>`, { autoDismiss: 2500 });
+            }, { passive: true });
+        }
     });
 }
 
@@ -34858,8 +34764,7 @@ function buildConditionPeekHtml(nd) {
 }
 
 function attachConditionLinkListeners(container) {
-    const peek = document.getElementById('condition-peek');
-    if (!container || !peek) return;
+    if (!container || !document.getElementById('condition-peek')) return;
     container.querySelectorAll('.condition-link').forEach(el => {
         const nodeId = el.getAttribute('data-node-id');
         if (!nodeId) return;
@@ -34875,31 +34780,18 @@ function attachConditionLinkListeners(container) {
             }
         });
 
-        el.addEventListener('mouseenter', (e) => {
-            const p = document.getElementById('condition-peek');
-            if (!p) return;
-            p.innerHTML = buildConditionPeekHtml(nd);
-            const rect = el.getBoundingClientRect();
-            let top = rect.bottom + 6;
-            let left = rect.left + 20;
-            // Keep within viewport
-            if (top + 160 > window.innerHeight) top = rect.top - 160;
-            if (left + 280 > window.innerWidth) left = window.innerWidth - 290;
-            p.style.top = top + 'px';
-            p.style.left = Math.max(10, left) + 'px';
-            p.classList.add('visible');
+        el.addEventListener('mouseenter', () => {
+            showPeekAt(el, buildConditionPeekHtml(nd), { height: 160, offsetLeft: 20 });
         });
-
-        el.addEventListener('mouseleave', () => {
-            const p = document.getElementById('condition-peek');
-            if (p) p.classList.remove('visible');
-        });
+        el.addEventListener('mouseleave', hidePeek);
+        el.addEventListener('touchstart', () => {
+            showPeekAt(el, buildConditionPeekHtml(nd), { height: 160, offsetLeft: 20, autoDismiss: 2500 });
+        }, { passive: true });
 
         el.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            const p = document.getElementById('condition-peek');
-            if (p) p.classList.remove('visible');
+            hidePeek();
 
             // Combined panel condition links: navigate to combined view with specified anchor
             const combinedAnchor = el.getAttribute('data-combined-anchor');
@@ -34974,23 +34866,11 @@ function attachConditionLinkListeners(container) {
         el.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); }
         });
-        const showPeek = (e) => {
-            peek.innerHTML = `<div style="font-size:12px;color:var(--text-secondary);"><strong style="color:var(--color-primary);">Mechanism:</strong> ${mechNames}</div>`;
-            const rect = el.getBoundingClientRect();
-            let top = rect.bottom + 6;
-            let left = rect.left + 20;
-            if (top + 60 > window.innerHeight) top = rect.top - 60;
-            if (left + 280 > window.innerWidth) left = window.innerWidth - 290;
-            peek.style.top = top + 'px';
-            peek.style.left = Math.max(10, left) + 'px';
-            peek.classList.add('visible');
-        };
-        el.addEventListener('mouseenter', showPeek);
-        el.addEventListener('mouseleave', () => { peek.classList.remove('visible'); });
-        // On touch, show briefly then auto-dismiss (mouseenter fires but mouseleave doesn't)
-        el.addEventListener('touchstart', (e) => {
-            showPeek(e);
-            setTimeout(() => peek.classList.remove('visible'), 2000);
+        const mechHtml = `<div style="font-size:12px;color:var(--text-secondary);"><strong style="color:var(--color-primary);">Mechanism:</strong> ${mechNames}</div>`;
+        el.addEventListener('mouseenter', () => showPeekAt(el, mechHtml, { offsetLeft: 20 }));
+        el.addEventListener('mouseleave', hidePeek);
+        el.addEventListener('touchstart', () => {
+            showPeekAt(el, mechHtml, { offsetLeft: 20, autoDismiss: 2000 });
         }, { passive: true });
     });
 
