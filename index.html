@@ -33010,11 +33010,20 @@ function buildReportGPSection(report, titleDotsSvg, dateStr, sharedLayout) {
     return html;
 }
 
+// Detect in-app browsers (Facebook, Instagram, LinkedIn, etc.)
+// that cannot handle blob URLs in new tabs
+function _isInAppBrowser() {
+    const ua = navigator.userAgent || '';
+    return /FBAN|FBAV|Instagram|LinkedInApp|Line\/|Twitter|Snapchat|MicroMessenger/i.test(ua);
+}
+
 function downloadConstellationReport() {
     if (constellationYes.size === 0) return;
+    const inApp = _isInAppBrowser();
     // Open window immediately on user gesture (before computation)
-    // to avoid mobile popup blockers
-    const newTab = window.open('', '_blank');
+    // to avoid mobile popup blockers. Skip for in-app browsers
+    // which cannot navigate to blob URLs
+    const newTab = inApp ? null : window.open('', '_blank');
     const report = computeConstellationReport();
     const dateStr = new Date().toLocaleDateString('en-AU', { year: 'numeric', month: 'long', day: 'numeric' });
     const stats = selectTopStats(report);
@@ -33253,10 +33262,20 @@ ${getConstellationReportCSS()}
 </body>
 </html>`;
 
+    const blob = new Blob([html], { type: 'text/html' });
     if (newTab) {
         // Use blob URL so the page has a real origin (favicon works, unlike about:blank)
-        const blob = new Blob([html], { type: 'text/html' });
         newTab.location.href = URL.createObjectURL(blob);
+    } else {
+        // In-app browser fallback: trigger a file download
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'connect-the-dots-report.html';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
     }
 }
 
