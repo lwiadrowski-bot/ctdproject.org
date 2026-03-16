@@ -17578,7 +17578,7 @@ const nodes = [
       developmentalTiming: ['birth'], diagnosticTiming: ['dx-childhood', 'dx-late'], sexLinkedPresentation: ['predominantly-xx'] },
 
     // ── Personal easter egg ─────────────────────────────────────────
-    { id: 'lw', label: 'LW', clarifier: 'LW', domain: 'Personal',
+    { id: 'lw', label: 'LW', domain: 'Personal',
       description: 'The Cartographer',
       searchTerms: ['Lesley', 'Wiadrowski'],
       isPersonal: true,
@@ -35330,7 +35330,7 @@ function showAutocomplete(query) {
             const dotBg = m.node.isPersonal ? 'linear-gradient(135deg, #e74c3c, #f39c12, #f1c40f, #2ecc71, #3498db, #9b59b6)' : col;
             html += `<div class="autocomplete-item${dimClass}" id="ac-item-${idx}" role="option" data-id="${m.node.id}" data-idx="${idx}" onmousedown="selectAutocomplete('${m.node.id}')">
                 <div class="autocomplete-dot" style="background:${dotBg};"></div>
-                <span>${nodeFullTitle(m.node)}</span>
+                <span>${m.node.isEasterEgg || m.node.isPersonal ? m.node.label : nodeFullTitle(m.node)}</span>
                 <span class="autocomplete-domain">${m.node.domain}${filteredTag}</span>
             </div>`;
         }
