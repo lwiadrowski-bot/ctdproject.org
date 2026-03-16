@@ -12645,7 +12645,7 @@ const lensEdgeOverlays = {
 const nodes = [
     // Neurodevelopmental
     { id: 'autism',    label: 'Autism',    domain: 'Neurodevelopmental', searchTerms: ['ASD', 'autistic', 'Asperger'],
-      description: 'Autism Spectrum Disorder',
+      description: 'Autism Spectrum Condition',
       prevalence: {
           technical: '1–2% of population; higher in males (3–4:1) but increasingly recognised diagnostic disparity, female/non-binary individuals frequently missed due to camouflaging',
           lay: 'About 6 to 10 in every 1,000 people are autistic. It used to be thought of as more common in boys, but we now know many girls, women, and non-binary people are missed or diagnosed later because they may present differently.',
@@ -12703,7 +12703,7 @@ const nodes = [
         { condition: 'OCD', conditionId: 'ocd', note: 'Ego-syntonic (autism) vs ego-dystonic (OCD) distinction is critical', stats: '~9%' },
       ],
       developmentalTiming: ['birth'], diagnosticTiming: ['dx-childhood', 'dx-late'], sexLinkedPresentation: [] },
-    { id: 'adhd',      label: 'ADHD',      domain: 'Neurodevelopmental',
+    { id: 'adhd',      label: 'ADHD', clarifier: 'ADHD',      domain: 'Neurodevelopmental',
       description: 'Attention Deficit Hyperactivity Disorder',
       searchTerms: ['ADD'],
       prevalence: {
@@ -12760,7 +12760,7 @@ const nodes = [
         { condition: 'CPTSD', conditionId: 'cptsd', note: 'ADHD impulsivity increases repeated trauma exposure; CPTSD executive dysfunction compounds ADHD', stats: '' },
       ],
       developmentalTiming: ['birth'], diagnosticTiming: ['dx-childhood', 'dx-late'], sexLinkedPresentation: [] },
-    { id: 'dyspraxia', label: 'Dyspraxia', domain: 'Neurodevelopmental',
+    { id: 'dyspraxia', label: 'Dyspraxia', clarifier: 'Dyspraxia', domain: 'Neurodevelopmental',
       description: 'Developmental Coordination Disorder',
       prevalence: {
           technical: '5–6% of children; persists into adulthood in a substantial proportion (estimates range from 30–70%, varying by severity and criteria)',
@@ -12806,7 +12806,7 @@ const nodes = [
           { condition: 'Dyscalculia', conditionId: 'dyscalculia', note: 'Shared sequencing and spatial processing difficulties', stats: '' },
           { condition: 'Tic Disorders', conditionId: 'tics', note: 'Shared basal ganglia-cerebellar motor circuits; dyspraxia found in 20-24% of Tourette syndrome cases', stats: '20-24%' },
       ] },
-    { id: 'spd',       label: 'SPD',       domain: 'Neurodevelopmental', secondary: ['Sensory'],
+    { id: 'spd',       label: 'SPD', shortLabel: 'Sensory Processing', clarifier: 'SPD',       domain: 'Neurodevelopmental', secondary: ['Sensory'],
       description: 'Sensory Processing Disorder', diagnosticStatus: 'criteriaContested',
       prevalence: {
           technical: 'Estimated 5–16% of children; prevalence in adults less studied',
@@ -13183,7 +13183,7 @@ const nodes = [
       developmentalTiming: ['birth'], diagnosticTiming: ['dx-adult', 'dx-late'], sexLinkedPresentation: ['hormonal', 'predominantly-xx']
     },
     // Autonomic
-    { id: 'pots',        label: 'POTS',        domain: 'Autonomic', description: 'Postural Orthostatic Tachycardia Syndrome',
+    { id: 'pots',        label: 'POTS', clarifier: 'POTS',        domain: 'Autonomic', description: 'Postural Orthostatic Tachycardia Syndrome',
       prevalence: {
           technical: 'General population: estimated 0.2-1%, though prevalence has not been properly studied. Female predominance ~5:1. Prevalence has increased with post-COVID recognition. In hEDS: 61% in a self-selected online survey (likely overestimate due to selection bias). In ME/CFS: 27% met formal POTS criteria in one study; 82-100% show abnormal cerebral blood flow on standing by extracranial Doppler.',
           lay: 'POTS affects roughly 1 to 5 in every 1,000 people, though exact numbers have not been properly studied. About five times as many women are affected as men. Recognition has increased since COVID, as POTS can develop after infection. In people with hEDS, a large survey found about 6 in 10 reported POTS (though this likely overestimates, as the survey attracted people with more conditions). In ME/CFS, about a quarter met formal POTS criteria in one study, though most show abnormal blood flow responses on standing.',
@@ -13282,7 +13282,7 @@ const nodes = [
       developmentalTiming: ['childhood', 'puberty', 'adult'], diagnosticTiming: ['dx-adult'], sexLinkedPresentation: ['predominantly-xx'] },
 
     // Immune
-    { id: 'mcas',       label: 'MCAS',         domain: 'Immune', description: 'Mast Cell Activation Syndrome', diagnosticStatus: 'criteriaContested',
+    { id: 'mcas',       label: 'MCAS', clarifier: 'MCAS',         domain: 'Immune', description: 'Mast Cell Activation Syndrome', diagnosticStatus: 'criteriaContested',
       prevalence: {
           technical: 'Prevalence unclear; significantly underdiagnosed. One familial study extrapolated that up to 17% of the general population may have some form of mast cell disorder, though this was based on symptom self-report among relatives of MCAS patients, not clinical diagnosis. Prevalence estimates range from ~2% to 87% depending on diagnostic criteria used.',
           lay: 'The true prevalence is unclear and MCAS is significantly underdiagnosed. One study estimated up to 17% of the general population may have some form of mast cell activation, though this was based on symptom self-report rather than clinical diagnosis. How many people have MCAS depends enormously on which diagnostic criteria are used.',
@@ -13414,7 +13414,7 @@ const nodes = [
           { condition: 'ADHD', conditionId: 'adhd', note: 'Co-occurrence above chance; shared inflammatory pathways and medication confounding', stats: '1.5–1.8x risk' },
       ],
       developmentalTiming: ['childhood', 'adult'], diagnosticTiming: ['dx-childhood', 'dx-adult'], sexLinkedPresentation: ['hormonal', 'predominantly-xx'] },
-    { id: 'eczema',     label: 'Eczema',        domain: 'Immune', description: 'Atopic Dermatitis',
+    { id: 'eczema',     label: 'Eczema', clarifier: 'Eczema',        domain: 'Immune', description: 'Atopic Dermatitis',
       prevalence: {
           technical: '15–20% of children; 1–3% of adults; often persists or recurs',
           lay: 'Very common in children (15 to 20 in every 100) and affects 1 to 3 in every 100 adults. It often persists or comes back over time.',
@@ -13458,7 +13458,7 @@ const nodes = [
           { condition: 'ADHD', conditionId: 'adhd', note: 'Association persists after controlling for sleep disturbance, suggesting inflammation contributes independently', stats: '1.3–1.6x risk' },
       ],
       developmentalTiming: ['birth', 'childhood'], diagnosticTiming: ['dx-childhood'], sexLinkedPresentation: [] },
-    { id: 'mecfs',      label: 'ME/CFS',        domain: 'Immune', secondary: ['Neurological'], description: 'Myalgic Encephalomyelitis / Chronic Fatigue Syndrome', searchTerms: ['chronic fatigue', 'CFS', 'ME'], diagnosticStatus: 'emerging',
+    { id: 'mecfs',      label: 'ME/CFS', clarifier: 'ME/CFS',        domain: 'Immune', secondary: ['Neurological'], description: 'Myalgic Encephalomyelitis / Chronic Fatigue Syndrome', searchTerms: ['chronic fatigue', 'CFS', 'ME'], diagnosticStatus: 'emerging',
       prevalence: {
           technical: '0.2-0.9% of population depending on case definition; significantly underdiagnosed. Women are affected 1.5-4x more often. Post-COVID incidence rising.',
           lay: 'Affects roughly 2 to 9 in every 1,000 people depending on diagnostic criteria, but is significantly underdiagnosed. Women are affected significantly more often. The number of new cases has been rising since COVID.',
@@ -13693,7 +13693,7 @@ const nodes = [
         { condition: 'Insomnia', conditionId: 'insomnia', note: 'Non-restorative sleep is a core feature', stats: '' }
       ],
       developmentalTiming: ['adult'], diagnosticTiming: ['dx-adult', 'dx-late'], sexLinkedPresentation: ['hormonal', 'predominantly-xx']
-    },    { id: 'tmj', label: 'TMJ', domain: 'Musculoskeletal', description: 'Temporomandibular Joint Disorder',
+    },    { id: 'tmj', label: 'TMJ', clarifier: 'TMJ', domain: 'Musculoskeletal', description: 'Temporomandibular Joint Disorder',
       prevalence: {
           technical: 'General population: 5–12%. In fibromyalgia: 76.8%. In hEDS: elevated but specific rates variable. Female:male ratio ~2:1.',
           lay: 'Affects 5–12% of the general population. In fibromyalgia, 76.8% of people also have TMJ disorder. Rates are elevated in hEDS, though specific figures vary. It is about twice as common in women as men.',
@@ -13784,7 +13784,7 @@ const nodes = [
       ],
       developmentalTiming: ['childhood', 'puberty', 'adult', 'episodic'], diagnosticTiming: ['dx-childhood', 'dx-adult'], sexLinkedPresentation: ['hormonal', 'predominantly-xx']
     },
-    { id: 'peripheral_sfn', label: 'Peripheral / Small Fibre Neuropathy', domain: 'Neurological', secondary: ['Autonomic'], description: 'Peripheral Neuropathy including Small Fibre Neuropathy',
+    { id: 'peripheral_sfn', label: 'Peripheral / Small Fibre Neuropathy', shortLabel: 'Small Fibre Neuropathy', domain: 'Neurological', secondary: ['Autonomic'], description: 'Peripheral Neuropathy including Small Fibre Neuropathy',
       prevalence: {
           technical: 'Peripheral neuropathy general population: 1–7% (rising with age). Small fibre neuropathy (SFN) is the most common subtype affecting unmyelinated C-fibres and thinly myelinated Aδ-fibres. In hEDS populations: SFN prevalence estimated 30–50% based on skin biopsy and corneal confocal studies. POTS patients: up to 50% have evidence of small fibre involvement. Fibromyalgia: ~50% have reduced intraepidermal nerve fibre density consistent with SFN.',
           lay: 'Peripheral neuropathy, damage to the nerves outside the brain and spinal cord, affects 1–7% of the general population and becomes more common with age. Small fibre neuropathy (SFN) is the type most relevant to the neurodivergent cluster, affecting the smallest nerve fibres that carry pain, temperature, and autonomic signals. It is found in an estimated 30–50% of people with hEDS and up to 50% of those with POTS.',
@@ -13832,7 +13832,7 @@ const nodes = [
         ],
       developmentalTiming: ['puberty', 'adult', 'progressive'], diagnosticTiming: ['dx-adult', 'dx-late'], sexLinkedPresentation: []
     },
-    { id: 'fnd',      label: 'FND',      domain: 'Neurological', description: 'Functional Neurological Disorder', diagnosticStatus: 'conditionContested',
+    { id: 'fnd',      label: 'FND', shortLabel: 'Functional Neurological', clarifier: 'FND',      domain: 'Neurological', description: 'Functional Neurological Disorder', diagnosticStatus: 'conditionContested',
       prevalence: {
           technical: 'General population: ~50 per 100, 000 (4–12 per 100, 000 new cases annually). Second most common reason for neurology outpatient referral. Significantly elevated in people with adverse childhood experiences. Co-occurrence with neurodivergent conditions is under-studied but increasingly recognised.',
           lay: 'FND affects around 50 per 100, 000 people, with 4–12 new cases per 100, 000 each year. It is the second most common reason people are referred to a neurologist. Rates are notably higher in people who have experienced adverse childhood events. How often FND co-occurs with neurodivergent conditions is not yet well studied, but the connection is increasingly being recognised.',
@@ -13878,7 +13878,7 @@ const nodes = [
       developmentalTiming: ['adult'], diagnosticTiming: ['dx-adult'], sexLinkedPresentation: ['predominantly-xx'] },
 
     // Metabolic / Endocrine
-    { id: 'pcos', label: 'PCOS', domain: 'Metabolic / Endocrine', description: 'Polycystic Ovary Syndrome',
+    { id: 'pcos', label: 'PCOS', clarifier: 'PCOS', domain: 'Metabolic / Endocrine', description: 'Polycystic Ovary Syndrome',
       prevalence: {
           technical: 'General population: 8–13% of women and people with ovaries of reproductive age, making it one of the most common endocrine conditions. In autistic women: emerging evidence of elevated rates, one Danish registry study reported adjusted OR ~1.59 (95% CI 1.34–1.88) for autism in offspring of mothers with PCOS. The association is bidirectional in research but specific co-occurrence rates in neurodivergent populations are not yet well-quantified.',
           lay: 'PCOS affects 8–13% of women and people with ovaries of reproductive age, making it one of the most common hormonal conditions. Emerging research suggests elevated rates in autistic women; one Danish registry study found roughly 60% higher odds of autism in children of mothers with PCOS. The association appears to be bidirectional, though precise co-occurrence figures in neurodivergent populations are not yet established.',
@@ -13919,7 +13919,7 @@ const nodes = [
           { condition: 'Endometriosis', conditionId: 'endometriosis', note: 'Hormonal overlap', stats: '' }
       ],
       developmentalTiming: ['puberty'], diagnosticTiming: ['dx-adult', 'dx-late'], sexLinkedPresentation: ['hormonal', 'predominantly-xx', 'anatomy-specific'] },
-    { id: 'pmdd', label: 'PMDD', domain: 'Metabolic / Endocrine', secondary: ['Mental health'], description: 'Premenstrual Dysphoric Disorder',
+    { id: 'pmdd', label: 'PMDD', clarifier: 'PMDD', domain: 'Metabolic / Endocrine', secondary: ['Mental health'], description: 'Premenstrual Dysphoric Disorder',
       prevalence: {
           technical: 'General population: ~5–8% of menstruating individuals. In ADHD: 31.4%. In autism: contested, one study reported 21% vs 3% controls, but a subsequent study found 14.3% vs 9.5% (not significant).',
           lay: 'Around 5–8% of menstruating people in the general population have PMDD. In ADHD, rates are much higher, around 31% in one large study, more than three times the rate in controls. In autism, the picture is less clear: one study found 21% (vs 3% in controls), while another found a smaller, non-significant difference.',
@@ -13963,7 +13963,7 @@ const nodes = [
       developmentalTiming: ['puberty', 'adult'], diagnosticTiming: ['dx-adult', 'dx-late'], sexLinkedPresentation: ['hormonal', 'predominantly-xx', 'anatomy-specific'] },
 
     // Gastrointestinal
-    { id: 'ibs',         label: 'IBS',         domain: 'Gastrointestinal', description: 'Irritable Bowel Syndrome',
+    { id: 'ibs',         label: 'IBS', clarifier: 'IBS',         domain: 'Gastrointestinal', description: 'Irritable Bowel Syndrome',
       prevalence: {
           technical: '~4-11% of population depending on diagnostic criteria (Rome III ~11%, Rome IV ~4%); more common in women',
           lay: 'Affects roughly 4 to 11% of people depending on which diagnostic criteria are used; more commonly diagnosed in women.',
@@ -14053,7 +14053,7 @@ const nodes = [
           { condition: 'Prader-Willi Syndrome', conditionId: 'prader_willi', note: 'Fatal GI complications reported; gastroparesis screening important in PWS', stats: '' },
       ],
       developmentalTiming: ['adult'], diagnosticTiming: ['dx-adult'], sexLinkedPresentation: ['predominantly-xx'] },
-    { id: 'arfid',       label: 'ARFID',       domain: 'Mental health', secondary: ['Gastrointestinal', 'Sensory'], description: 'Avoidant/Restrictive Food Intake Disorder', diagnosticStatus: 'emerging',
+    { id: 'arfid',       label: 'ARFID', clarifier: 'ARFID',       domain: 'Mental health', secondary: ['Gastrointestinal', 'Sensory'], description: 'Avoidant/Restrictive Food Intake Disorder', diagnosticStatus: 'emerging',
       searchTerms: ['picky eating', 'selective eating'],
       prevalence: {
           technical: '5–15% of eating disorder clinic populations; prevalence in autism estimated 15–30%',
@@ -14100,7 +14100,7 @@ const nodes = [
       developmentalTiming: ['childhood'], diagnosticTiming: ['dx-childhood', 'dx-adult'], sexLinkedPresentation: [] },
 
     // Mental health
-    { id: 'anxiety',    label: 'Anxiety',    domain: 'Mental health', description: 'Generalised Anxiety Disorder',
+    { id: 'anxiety',    label: 'Anxiety', clarifier: 'GAD',    domain: 'Mental health', description: 'Generalised Anxiety Disorder',
       prevalence: {
           technical: 'General population: ~3.1% (12-month), ~6.8% lifetime. In autism: 20–84% depending on measurement tools and sample, the wide range reflects both genuine variability and the inadequacy of standard anxiety measures for autistic populations. In ADHD: ~50% lifetime anxiety disorder (Kessler et al.). Female predominance ~2:1 in general population, though this may partly reflect gendered differences in reporting and detection.',
           lay: 'About 3 in 100 people experience generalised anxiety disorder in any given year, and about 7 in 100 over a lifetime. In autistic people the rate is far higher, estimates range from 20 to 84% depending on how it is measured, partly because standard anxiety tools were not designed with autistic people in mind. Around half of ADHD people experience an anxiety disorder at some point. Women are more often diagnosed, though this may partly reflect differences in who gets referred and how symptoms are described.',
@@ -14205,7 +14205,7 @@ const nodes = [
       ],
       developmentalTiming: ['puberty', 'adult', 'episodic'], diagnosticTiming: ['dx-adult'], sexLinkedPresentation: []
     },
-    { id: 'ocd', label: 'OCD', domain: 'Mental health', description: 'Obsessive Compulsive Disorder',
+    { id: 'ocd', label: 'OCD', clarifier: 'OCD', domain: 'Mental health', description: 'Obsessive Compulsive Disorder',
       prevalence: {
           technical: 'General population: 2–3% lifetime. In autism: ~9% across ages, 11.6% in autistic youth. In ADHD: ~9% in adults. Co-occurrence higher in clinical than population-based samples.',
           lay: 'About 2 to 3 in every 100 people will experience OCD at some point in their lifetime. In autistic people the rate is higher, around 9% across age groups and about 12% in autistic young people. In ADHD adults, around 9% also have OCD. Rates tend to look higher in clinical samples than in the general population.',
@@ -14250,7 +14250,7 @@ const nodes = [
           { condition: 'BFRBs', conditionId: 'bfrb', note: 'OCD-related conditions; shared compulsive behaviours', stats: '' }
       ],
       developmentalTiming: ['childhood', 'adult'], diagnosticTiming: ['dx-childhood', 'dx-adult'], sexLinkedPresentation: [] },
-    { id: 'ptsd', label: 'PTSD', domain: 'Mental health', description: 'Post Traumatic Stress Disorder',
+    { id: 'ptsd', label: 'PTSD', clarifier: 'PTSD', domain: 'Mental health', description: 'Post Traumatic Stress Disorder',
       prevalence: {
           technical: 'General population: ~6–8% lifetime (USA), ~4% globally. In autism: diagnostic prevalence aligns with general population (1–2%), but screener-based studies find >40% probable PTSD in trauma-exposed autistic adults, a >20× gap reflecting systematic underdiagnosis. In ADHD: ~36% PTSD prevalence.',
           lay: 'About 6 to 8 in every 100 people in the USA will experience PTSD at some point in their lifetime, with global rates around 4%. In autistic people, formal diagnosis rates look similar to the general population (1 to 2%), but when screening tools are used with autistic adults who have experienced trauma, over 40% meet probable PTSD criteria, a more than 20-fold gap that reflects serious underdiagnosis. In ADHD people, around 36% are estimated to experience PTSD.',
@@ -14297,7 +14297,7 @@ const nodes = [
       developmentalTiming: ['childhood', 'puberty', 'adult'], diagnosticTiming: ['dx-adult'], sexLinkedPresentation: [] },
 
     // Sleep
-    { id: 'dsps', label: 'DSPS', domain: 'Sleep', description: 'Delayed Sleep Phase Syndrome',
+    { id: 'dsps', label: 'DSPS', shortLabel: 'Delayed Sleep Phase', clarifier: 'DSPS', domain: 'Sleep', description: 'Delayed Sleep Phase Syndrome',
       prevalence: {
           technical: 'General population: ~0.1–3% (varies by age; up to 7–16% in adolescents). In ADHD: 33.3% of adults. In autism: DSPS is the most commonly identified circadian disorder.',
           lay: 'Affects roughly 0.1 to 3% of the general population, rising to 7 to 16% in teenagers. In ADHD adults, one study found DSPS in one in three people. In autism, it is the most commonly identified circadian rhythm difference.',
@@ -14475,7 +14475,7 @@ const nodes = [
           { condition: 'Dyslexia', conditionId: 'dyslexia', note: 'Shared phonological-orthographic processing difficulties; both affect written language output', stats: '' },
           { condition: 'Autism', conditionId: 'autism', note: 'Motor coordination and fine motor difficulties are common in autism, contributing to writing difficulties', stats: '' },
       ] },
-    { id: 'pda', label: 'PDA', domain: 'Neurodevelopmental',
+    { id: 'pda', label: 'PDA', clarifier: 'PDA', domain: 'Neurodevelopmental',
       description: 'Pervasive Drive for Autonomy (clinically termed Pathological Demand Avoidance)', diagnosticStatus: 'conditionContested',
       prevalence: {
           technical: 'No reliable prevalence data; no agreed diagnostic criteria exist. Increasingly described in clinical and community autistic settings but formal epidemiological study is not yet possible',
@@ -14515,7 +14515,7 @@ const nodes = [
           { condition: 'C-PTSD', conditionId: 'cptsd', note: 'Repeated developmental trauma and invalidation can lead to complex PTSD, which amplifies demand avoidance', stats: '' },
           { condition: 'PTSD', conditionId: 'ptsd', note: 'Chronic unmet needs and social invalidation create trauma responses that can drive or worsen demand avoidance', stats: '' },
       ] },
-    { id: 'dld', label: 'DLD', domain: 'Neurodevelopmental',
+    { id: 'dld', label: 'DLD', shortLabel: 'Language Disorder', clarifier: 'DLD', domain: 'Neurodevelopmental',
       description: 'Developmental Language Disorder',
       prevalence: {
           technical: '~7% of children; often persists into adulthood',
@@ -14604,7 +14604,7 @@ const nodes = [
       ] },
 
     // Connective tissue (new)
-    { id: 'ceds', label: 'cEDS / other EDS', domain: 'Connective tissue', secondary: ['Genetic'],
+    { id: 'ceds', label: 'cEDS / other EDS', clarifier: 'cEDS / other EDS', domain: 'Connective tissue', secondary: ['Genetic'],
       description: 'Classical EDS and other EDS subtypes', searchName: 'classical Ehlers-Danlos syndrome', orphanet: '287',
       prevalence: {
           technical: 'cEDS: ~1:20,000; other subtypes vary; hEDS is by far the most common EDS subtype',
@@ -14643,7 +14643,7 @@ const nodes = [
           { condition: 'Marfan Syndrome', conditionId: 'marfan', note: 'Shared connective tissue matrix abnormality with phenotypic overlap but distinct genetic mechanisms', stats: '' },
       ],
       developmentalTiming: ['birth'], diagnosticTiming: ['dx-childhood', 'dx-adult'], sexLinkedPresentation: [] },
-    { id: 'marfan', label: 'Marfan Syndrome', domain: 'Connective tissue', secondary: ['Genetic'],
+    { id: 'marfan', label: 'Marfan Syndrome', shortLabel: 'Marfan', domain: 'Connective tissue', secondary: ['Genetic'],
       description: 'Marfan Syndrome', orphanet: '558',
       prevalence: {
           technical: '1 in 5,000–10,000',
@@ -14850,7 +14850,7 @@ const nodes = [
           { condition: 'Anxiety', conditionId: 'anxiety', note: 'Vasovagal episodes are clinically indistinguishable from panic attacks; frequently misdiagnosed as primary anxiety', stats: '' },
       ],
       developmentalTiming: ['puberty', 'adult'], diagnosticTiming: ['dx-childhood', 'dx-adult'], sexLinkedPresentation: [] },
-    { id: 'ist', label: 'IST', domain: 'Autonomic',
+    { id: 'ist', label: 'IST', shortLabel: 'Sinus Tachycardia', clarifier: 'IST', domain: 'Autonomic',
       description: 'Inappropriate Sinus Tachycardia',
       prevalence: {
           technical: 'Prevalence poorly defined; the only population-based estimate is 1.16% (OPERA study, N=604 middle-aged subjects). Predominantly affects young women (>90% female in clinical series, mean age ~33 years).',
@@ -14936,7 +14936,7 @@ const nodes = [
           { condition: 'Allergic Rhinitis', conditionId: 'allergic_rhinitis', note: 'Mast cell excess drives IgE-independent and IgE-dependent allergic rhinitis', stats: '' },
       ],
       developmentalTiming: ['childhood', 'adult'], diagnosticTiming: ['dx-childhood', 'dx-adult'], sexLinkedPresentation: [] },
-    { id: 'anaphylactic_allergy', label: 'Anaphylactic Allergy', domain: 'Immune',
+    { id: 'anaphylactic_allergy', label: 'Anaphylactic Allergy', clarifier: 'Anaphylaxis', domain: 'Immune',
       description: 'IgE-Mediated Allergy',
       searchTerms: ['food allergy', 'peanut allergy', 'anaphylaxis', 'EpiPen', 'allergic reaction', 'insect venom allergy', 'drug allergy'],
       prevalence: {
@@ -14983,7 +14983,7 @@ const nodes = [
           { condition: 'hEDS / Hypermobility', conditionId: 'heds', note: 'Hereditary alpha-tryptasemia (HαT) overlap', stats: '' },
       ],
       developmentalTiming: ['childhood', 'adult'], diagnosticTiming: ['dx-childhood', 'dx-adult'], sexLinkedPresentation: [] },
-    { id: 'coeliac', label: 'Coeliac Disease', domain: 'Immune',
+    { id: 'coeliac', label: 'Coeliac Disease', shortLabel: 'Coeliac', domain: 'Immune',
       description: 'Coeliac Disease',
       searchTerms: ['celiac', 'gluten intolerance'],
       prevalence: {
@@ -15194,7 +15194,7 @@ const nodes = [
           { condition: 'MCAS', conditionId: 'mcas', note: 'Mast cell infiltration of psoriatic plaques and MCAS-mediated skin inflammation share overlapping mechanisms', stats: '' },
       ],
       developmentalTiming: ['puberty', 'adult'], diagnosticTiming: ['dx-adult'], sexLinkedPresentation: [] },
-    { id: 'ms', label: 'Multiple Sclerosis', domain: 'Neurological', secondary: ['Immune'],
+    { id: 'ms', label: 'Multiple Sclerosis', clarifier: 'MS', domain: 'Neurological', secondary: ['Immune'],
       description: 'Multiple Sclerosis',
       prevalence: {
           technical: '~2.8 million worldwide (2020); global prevalence 35.9 per 100,000; 3:1 female predominance; prevalence increased 30% since 2013',
@@ -15233,7 +15233,7 @@ const nodes = [
           { condition: 'Depression', conditionId: 'depression', note: 'Depression is the most common psychiatric co-occurrence in MS; both neuroinflammatory and reactive mechanisms contribute', stats: '~50% lifetime' },
           { condition: 'ME/CFS', conditionId: 'mecfs', note: 'MS fatigue and ME/CFS fatigue share central fatigue mechanisms; both may involve neuroinflammation', stats: '' },
       ],
-      developmentalTiming: ['adult', 'episodic'], diagnosticTiming: ['dx-adult'], sexLinkedPresentation: ['hormonal', 'predominantly-xx'] },    { id: 'allergic_rhinitis', label: 'Allergic Rhinitis', domain: 'Immune', secondary: ['Autonomic'],
+      developmentalTiming: ['adult', 'episodic'], diagnosticTiming: ['dx-adult'], sexLinkedPresentation: ['hormonal', 'predominantly-xx'] },    { id: 'allergic_rhinitis', label: 'Allergic Rhinitis', shortLabel: 'Hay Fever', clarifier: 'Hay Fever', domain: 'Immune', secondary: ['Autonomic'],
       description: 'Allergic Rhinitis',
       prevalence: {
           technical: '10–30% of adults; one of the most common chronic conditions globally',
@@ -15270,7 +15270,7 @@ const nodes = [
       developmentalTiming: ['childhood', 'adult'], diagnosticTiming: ['dx-childhood', 'dx-adult'], sexLinkedPresentation: [] },
 
     // Sensory (new)
-    { id: 'apd', label: 'APD', domain: 'Sensory',
+    { id: 'apd', label: 'APD', shortLabel: 'Auditory Processing', clarifier: 'APD', domain: 'Sensory',
       description: 'Auditory Processing Disorder',
       prevalence: {
           technical: 'Estimated 2-5% of school-age children depending on diagnostic criteria; one rigorous study found 0.2%. Likely underdiagnosed in adults. Male-to-female ratio approximately 2:1.',
@@ -15311,7 +15311,7 @@ const nodes = [
             { condition: 'Hyperacusis', conditionId: 'hyperacusis', note: 'Both involve atypical auditory processing; APD (accuracy) and hyperacusis (gain/sensitivity) often co-occur', stats: '' },
         ],
       developmentalTiming: ['birth'], diagnosticTiming: ['dx-childhood', 'dx-late'], sexLinkedPresentation: [] },
-    { id: 'vpd', label: 'VPD', domain: 'Sensory',
+    { id: 'vpd', label: 'VPD', shortLabel: 'Visual Processing', clarifier: 'VPD', domain: 'Sensory',
       description: 'Visual Processing Disorder',
       prevalence: {
           technical: 'Population prevalence uncertain; rarely assessed independently of other learning differences. One mainstream school screening found 3.4% of children had visual perceptual difficulties. Irlen syndrome (scotopic sensitivity) prevalence of 12-14% comes primarily from Irlen-affiliated research and is not independently replicated at that rate.',
@@ -15387,7 +15387,7 @@ const nodes = [
               { key: '10.1001/archopht.126.10.1336', claim: 'Office-based vergence/accommodative therapy: 73% of children achieved normal or improved convergence in randomised trial' }
           ]
       },
-      developmentalTiming: ['birth'], diagnosticTiming: ['dx-childhood'], sexLinkedPresentation: [] },    { id: 'proprioceptive_pd', label: 'Proprioceptive Processing', domain: 'Sensory',
+      developmentalTiming: ['birth'], diagnosticTiming: ['dx-childhood'], sexLinkedPresentation: [] },    { id: 'proprioceptive_pd', label: 'Proprioceptive Processing', shortLabel: 'Proprioception', domain: 'Sensory',
       description: 'Proprioceptive Processing Disorder',
       prevalence: {
           technical: 'Prevalence as distinct entity uncertain; rarely assessed independently of broader SPD. SPD itself is estimated at 5-16% in children depending on criteria. Proprioceptive differences are near-universal in hEDS/HSD populations and very common in autistic people.',
@@ -15423,7 +15423,7 @@ const nodes = [
           ]
       },
       developmentalTiming: ['birth'], diagnosticTiming: ['dx-childhood', 'dx-late'], sexLinkedPresentation: [] },
-    { id: 'visual_snow', label: 'Visual Snow Syndrome', domain: 'Sensory', secondary: ['Neurological'],
+    { id: 'visual_snow', label: 'Visual Snow Syndrome', shortLabel: 'Visual Snow', domain: 'Sensory', secondary: ['Neurological'],
       description: 'Visual Snow Syndrome', diagnosticStatus: 'emerging',
       prevalence: {
           technical: '~1–2% of the general population (2.2% in UK adult sample; 0.7–0.9% in Italian young adult cohort); substantially underdiagnosed. Visual snow as a symptom (without full syndrome criteria) found in 3.7% of UK sample.',
@@ -15564,7 +15564,7 @@ const nodes = [
       developmentalTiming: ['adult', 'progressive'], diagnosticTiming: ['dx-adult'], sexLinkedPresentation: [] },
 
     // Musculoskeletal (new)
-    { id: 'crps', label: 'CRPS', domain: 'Musculoskeletal',
+    { id: 'crps', label: 'CRPS', shortLabel: 'Complex Pain', clarifier: 'CRPS', domain: 'Musculoskeletal',
       description: 'Complex Regional Pain Syndrome', orphanet: '83452',
       searchTerms: ['RSD', 'reflex sympathetic dystrophy'],
       prevalence: {
@@ -15771,7 +15771,7 @@ const nodes = [
           ]
       },
       developmentalTiming: ['birth'], diagnosticTiming: ['dx-childhood', 'dx-adult', 'dx-late'], sexLinkedPresentation: [] },
-    { id: 'iih', label: 'IIH', domain: 'Neurological', secondary: ['Structural'],
+    { id: 'iih', label: 'IIH', shortLabel: 'Intracranial Hypertension', clarifier: 'IIH', domain: 'Neurological', secondary: ['Structural'],
       description: 'Idiopathic Intracranial Hypertension',
       prevalence: {
           technical: '~1.2 per 100,000 (pooled incidence); approximately 87-90% in women of childbearing age, with obesity as a major risk factor',
@@ -15854,7 +15854,7 @@ const nodes = [
       developmentalTiming: ['childhood', 'episodic'], diagnosticTiming: ['dx-childhood'], sexLinkedPresentation: [] },
 
     // Metabolic / Endocrine (new)
-    { id: 'hypothyroidism', label: 'Hypothyroidism', domain: 'Metabolic / Endocrine', secondary: ['Immune'],
+    { id: 'hypothyroidism', label: 'Hypothyroidism', shortLabel: 'Hypo/hyper-thyroidism', domain: 'Metabolic / Endocrine', secondary: ['Immune'],
       description: 'Hypothyroidism / Hyperthyroidism',
       prevalence: {
           technical: 'Hypothyroidism: ~5% of adults (overt and subclinical combined); Hashimoto\'s is the most common cause',
@@ -15974,7 +15974,7 @@ const nodes = [
           ]
       },
       developmentalTiming: ['adult'], diagnosticTiming: ['dx-adult'], sexLinkedPresentation: ['hormonal', 'predominantly-xx', 'anatomy-specific'] },
-    { id: 'endometriosis', label: 'Endometriosis / Adenomyosis', domain: 'Metabolic / Endocrine', secondary: ['Immune'],
+    { id: 'endometriosis', label: 'Endometriosis / Adenomyosis', shortLabel: 'Endometriosis', domain: 'Metabolic / Endocrine', secondary: ['Immune'],
       description: 'Endometriosis and Adenomyosis',
       prevalence: {
           technical: 'Endometriosis: ~10% of women and people with a uterus of reproductive age (6.8% pooled prevalence in clinical data; up to 30–40% in those with pelvic pain or dysmenorrhoea). Adenomyosis: estimated 20–30% in symptomatic populations (general population ~1%), higher in symptomatic individuals (~20.7% pooled in adolescents and young adults). The two conditions frequently co-occur, adenomyosis is found in 58–90% of people with endometriosis depending on diagnostic method.',
@@ -16020,7 +16020,7 @@ const nodes = [
       developmentalTiming: ['puberty'], diagnosticTiming: ['dx-adult', 'dx-late'], sexLinkedPresentation: ['hormonal', 'predominantly-xx', 'anatomy-specific'] },
 
     // Gastrointestinal (new)
-    { id: 'gord', label: 'GORD / GERD', domain: 'Gastrointestinal', secondary: ['Autonomic'],
+    { id: 'gord', label: 'GORD / GERD', shortLabel: 'Reflux', clarifier: 'GORD / GERD', domain: 'Gastrointestinal', secondary: ['Autonomic'],
       description: 'Gastro-Oesophageal Reflux Disease', searchTerms: ['acid reflux', 'heartburn'],
       prevalence: {
           technical: '~10-20% of the Western population (global pooled prevalence ~14%)',
@@ -16064,7 +16064,7 @@ const nodes = [
           { condition: 'Sleep Bruxism', conditionId: 'sleep_bruxism', note: 'Acid reflux triggers protective jaw clenching during sleep', stats: '' },
       ],
       developmentalTiming: ['adult'], diagnosticTiming: ['dx-adult'], sexLinkedPresentation: [] },
-    { id: 'eoe', label: 'EoE', domain: 'Gastrointestinal', secondary: ['Immune'], diagnosticStatus: 'emerging',
+    { id: 'eoe', label: 'EoE', shortLabel: 'Eosinophilic Oesophagitis', clarifier: 'EoE', domain: 'Gastrointestinal', secondary: ['Immune'], diagnosticStatus: 'emerging',
       description: 'Eosinophilic Oesophagitis',
       searchTerms: ['eosinophilic esophagitis'],
       prevalence: {
@@ -16110,7 +16110,7 @@ const nodes = [
           { condition: 'Eczema', conditionId: 'eczema', note: 'Atopic triad clustering; shared Th2-skewed immune response', stats: '' },
       ],
       developmentalTiming: ['childhood', 'adult'], diagnosticTiming: ['dx-childhood', 'dx-adult'], sexLinkedPresentation: ['predominantly-xy'] },
-    { id: 'hirschsprungs', label: "Hirschsprung's Disease", domain: 'Gastrointestinal', secondary: ['Genetic'],
+    { id: 'hirschsprungs', label: "Hirschsprung's Disease", shortLabel: 'Hirschsprung\'s', domain: 'Gastrointestinal', secondary: ['Genetic'],
       description: "Hirschsprung's Disease",
       prevalence: {
           technical: '1 in 5, 000 births; 4:1 male predominance',
@@ -16151,7 +16151,7 @@ const nodes = [
           { condition: 'Gastroparesis', conditionId: 'gastroparesis', note: 'Both involve enteric nervous system dysfunction causing dysmotility', stats: '' },
       ],
       developmentalTiming: ['birth'], diagnosticTiming: ['dx-childhood'], sexLinkedPresentation: ['predominantly-xy'] },
-    { id: 'ibd', label: 'IBD', domain: 'Gastrointestinal', secondary: ['Immune'],
+    { id: 'ibd', label: 'IBD', shortLabel: 'Crohn\'s / Colitis', clarifier: 'IBD', domain: 'Gastrointestinal', secondary: ['Immune'],
       description: "IBD - Crohn's Disease / Ulcerative Colitis",
       prevalence: {
           technical: '~0.3% in Western countries; increasing globally',
@@ -16321,7 +16321,7 @@ const nodes = [
           { condition: 'ME/CFS', conditionId: 'mecfs', note: 'Can develop as a consequence of chronic illness burden', stats: '' },
       ],
       developmentalTiming: ['childhood', 'puberty'], diagnosticTiming: ['dx-childhood', 'dx-adult'], sexLinkedPresentation: [] },
-    { id: 'cptsd', label: 'CPTSD', domain: 'Mental health',
+    { id: 'cptsd', label: 'CPTSD', shortLabel: 'C-PTSD', clarifier: 'C-PTSD', domain: 'Mental health',
       description: 'Complex PTSD', diagnosticStatus: 'criteriaContested',
       searchTerms: ['C-PTSD', 'complex trauma'],
       prevalence: {
@@ -16371,7 +16371,7 @@ const nodes = [
           { condition: 'SPD', conditionId: 'spd', note: 'Sensory hyperreactivity from autonomic sensitisation', stats: '' }
       ],
       developmentalTiming: ['childhood', 'adult'], diagnosticTiming: ['dx-adult', 'dx-late'], sexLinkedPresentation: [] },
-    { id: 'bpd', label: 'BPD / EUPD', domain: 'Mental health',
+    { id: 'bpd', label: 'BPD / EUPD', shortLabel: 'Borderline PD', clarifier: 'BPD / EUPD', domain: 'Mental health',
       description: 'Borderline Personality Disorder / Emotionally Unstable Personality Disorder', diagnosticStatus: 'criteriaContested',
       prevalence: {
           technical: 'Pooled prevalence ~2.4% (95% CI: 1.7–3.4%); community samples show more balanced sex distribution than the ~3:1 female ratio seen in clinical settings, suggesting diagnostic bias',
@@ -16417,7 +16417,7 @@ const nodes = [
           { condition: 'BFRBs', conditionId: 'bfrb', note: 'Self-harm and body-focused behaviours overlap', stats: '' },
       ],
       developmentalTiming: ['puberty', 'adult'], diagnosticTiming: ['dx-adult'], sexLinkedPresentation: [] },
-    { id: 'rsd', label: 'RSD', domain: 'Mental health',
+    { id: 'rsd', label: 'RSD', shortLabel: 'Rejection Sensitivity', clarifier: 'RSD', domain: 'Mental health',
       description: 'Rejection Sensitive Dysphoria', diagnosticStatus: 'conditionContested',
       prevalence: {
           technical: 'No formal prevalence data; RSD is not a recognised diagnosis in DSM or ICD. Rejection sensitivity is widely reported in ADHD and autism but has not been epidemiologically quantified as a distinct construct',
@@ -16457,7 +16457,7 @@ const nodes = [
           { condition: 'CPTSD', conditionId: 'cptsd', note: 'Rejection sensitivity amplified by trauma history', stats: '' },
       ],
       developmentalTiming: ['childhood'], diagnosticTiming: ['dx-childhood', 'dx-adult', 'dx-late'], sexLinkedPresentation: [] },
-    { id: 'anorexia', label: 'Anorexia Nervosa', domain: 'Mental health',
+    { id: 'anorexia', label: 'Anorexia Nervosa', shortLabel: 'Anorexia', domain: 'Mental health',
       description: 'Anorexia Nervosa',
       prevalence: {
           technical: '~0.5–1% lifetime; disproportionately affects young women; highest mortality of any psychiatric disorder',
@@ -16639,7 +16639,7 @@ const nodes = [
       developmentalTiming: ['puberty', 'adult', 'episodic'], diagnosticTiming: ['dx-adult'], sexLinkedPresentation: [] },
 
     // Sleep (new)
-    { id: 'non24', label: 'Non-24 Sleep-Wake', domain: 'Sleep',
+    { id: 'non24', label: 'Non-24 Sleep-Wake', shortLabel: 'Non-24h Sleep-Wake', domain: 'Sleep',
       description: 'Non-24-Hour Sleep-Wake Disorder',
       prevalence: {
           technical: 'Rare in sighted individuals; common in blind individuals; emerging recognition in autism',
@@ -16722,7 +16722,7 @@ const nodes = [
           { condition: 'DPDR', conditionId: 'dpdr', note: 'Depersonalisation can occur with sleep fragmentation', stats: '' },
       ],
       developmentalTiming: ['puberty', 'adult'], diagnosticTiming: ['dx-adult', 'dx-late'], sexLinkedPresentation: [] },
-    { id: 'idiopathic_hypersomnia', label: 'Idiopathic Hypersomnia', domain: 'Sleep', diagnosticStatus: 'emerging',
+    { id: 'idiopathic_hypersomnia', label: 'Idiopathic Hypersomnia', shortLabel: 'Hypersomnia', domain: 'Sleep', diagnosticStatus: 'emerging',
       description: 'Idiopathic Hypersomnia',
       prevalence: {
           technical: 'Uncertain; estimated ~0.002-0.01%; likely underdiagnosed',
@@ -16802,7 +16802,7 @@ const nodes = [
           ]
       },
       developmentalTiming: ['adult', 'progressive'], diagnosticTiming: ['dx-adult'], sexLinkedPresentation: ['predominantly-xy'] },
-    { id: 'uars', label: 'UARS', domain: 'Sleep', secondary: ['Structural'], diagnosticStatus: 'criteriaContested',
+    { id: 'uars', label: 'UARS', shortLabel: 'Airway Resistance', clarifier: 'UARS', domain: 'Sleep', secondary: ['Structural'], diagnosticStatus: 'criteriaContested',
       description: 'Upper Airway Resistance Syndrome',
       prevalence: {
           technical: 'No reliable prevalence data; UARS is not universally recognised as distinct from obstructive sleep apnoea, and diagnostic criteria vary between centres. Likely underdiagnosed where it is recognised',
@@ -16841,7 +16841,7 @@ const nodes = [
           { condition: 'Narrow Palate', conditionId: 'narrow_palate', note: 'Structural risk factor for upper airway resistance', stats: '' },
       ],
       developmentalTiming: ['adult'], diagnosticTiming: ['dx-adult'], sexLinkedPresentation: [] },
-    { id: 'rls', label: 'Restless Legs Syndrome', domain: 'Sleep', searchTerms: ['RLS', 'Willis-Ekbom'],
+    { id: 'rls', label: 'Restless Legs Syndrome', shortLabel: 'Restless Legs', domain: 'Sleep', searchTerms: ['RLS', 'Willis-Ekbom'],
       description: 'Restless Legs Syndrome',
       prevalence: {
           technical: '~5–10% of adults; increases with age',
@@ -16884,7 +16884,7 @@ const nodes = [
           { condition: 'Anxiety', conditionId: 'anxiety', note: 'Sleep disruption exacerbates anxiety; bidirectional relationship', stats: '' },
       ],
       developmentalTiming: ['adult', 'progressive', 'episodic'], diagnosticTiming: ['dx-adult'], sexLinkedPresentation: [] },
-    { id: 'plmd', label: 'PLMD', domain: 'Sleep',
+    { id: 'plmd', label: 'PLMD', shortLabel: 'PLMD', clarifier: 'PLMD', domain: 'Sleep',
       description: 'Periodic Limb Movement Disorder',
       prevalence: {
           technical: '~4–11% of the general population; increases with age',
@@ -17009,7 +17009,7 @@ const nodes = [
           { condition: 'hEDS', conditionId: 'heds', note: 'Case reports suggest a possible association with connective tissue disorders', stats: '' },
       ],
       developmentalTiming: ['birth'], diagnosticTiming: ['dx-childhood'], sexLinkedPresentation: ['predominantly-xy'] },
-    { id: 'cci', label: 'CCI', domain: 'Structural', secondary: ['Neurological'], diagnosticStatus: 'criteriaContested',
+    { id: 'cci', label: 'CCI', shortLabel: 'Craniocervical Instability', clarifier: 'CCI', domain: 'Structural', secondary: ['Neurological'], diagnosticStatus: 'criteriaContested',
       description: 'Craniocervical Instability',
       prevalence: {
           technical: 'Prevalence uncertain; diagnosis contested; may be overdiagnosed in EDS communities',
@@ -17270,7 +17270,7 @@ const nodes = [
       developmentalTiming: ['birth'], diagnosticTiming: ['dx-childhood'], sexLinkedPresentation: [] },
 
     // Mental health (new)
-    { id: 'nd_burnout', label: 'ND Burnout', domain: 'Neurodevelopmental', secondary: ['Mental health'],
+    { id: 'nd_burnout', label: 'ND Burnout', clarifier: 'ND Burnout', domain: 'Neurodevelopmental', secondary: ['Mental health'],
       description: 'Neurodivergent Burnout', diagnosticStatus: 'emerging',
       prevalence: {
           technical: 'Unknown; considered common across autistic adults who mask; ADHD burnout recognised in community but less formally studied',
@@ -17401,7 +17401,7 @@ const nodes = [
       developmentalTiming: ['childhood'], diagnosticTiming: ['dx-childhood'], sexLinkedPresentation: ['predominantly-xy'] },
 
     // Chromosomal / genetic conditions (screening prompt)
-    { id: 'klinefelter', label: 'Klinefelter Syndrome (XXY)', domain: 'Genetic', secondary: ['Neurodevelopmental', 'Metabolic / Endocrine'],
+    { id: 'klinefelter', label: 'Klinefelter Syndrome (XXY)', shortLabel: 'Klinefelter Syndrome', domain: 'Genetic', secondary: ['Neurodevelopmental', 'Metabolic / Endocrine'],
       description: 'Klinefelter Syndrome (47, XXY)',
       prevalence: {
           technical: '~1 in 600 males (estimates range 1 in 500–1,000); significantly underdiagnosed, estimated 65–75% of affected individuals are never diagnosed',
@@ -17443,7 +17443,7 @@ const nodes = [
           { condition: 'Dyslexia', conditionId: 'dyslexia', note: 'Language and reading difficulties common', stats: '' },
       ],
       developmentalTiming: ['birth'], diagnosticTiming: ['dx-childhood', 'dx-late'], sexLinkedPresentation: ['predominantly-xy'] },
-    { id: '22q112', label: '22q11.2 Deletion Syndrome', domain: 'Genetic', secondary: ['Neurodevelopmental', 'Structural', 'Immune'],
+    { id: '22q112', label: '22q11.2 Deletion Syndrome', shortLabel: '22q11.2 Deletion', domain: 'Genetic', secondary: ['Neurodevelopmental', 'Structural', 'Immune'],
       description: '22q11.2 Deletion Syndrome (DiGeorge / Velocardiofacial)',
       prevalence: {
           technical: '~1 in 4, 000; one of the most common chromosomal deletion syndromes; substantially underdiagnosed in adults',
@@ -17487,7 +17487,7 @@ const nodes = [
           { condition: 'Epilepsy', conditionId: 'epilepsy', note: 'Seizure risk 20-30%', stats: '20-30%' },
       ],
       developmentalTiming: ['birth'], diagnosticTiming: ['dx-childhood', 'dx-late'], sexLinkedPresentation: [] },
-    { id: 'fragile_x', label: 'Fragile X Syndrome', domain: 'Genetic', secondary: ['Neurodevelopmental', 'Neurological'],
+    { id: 'fragile_x', label: 'Fragile X Syndrome', shortLabel: 'Fragile X', domain: 'Genetic', secondary: ['Neurodevelopmental', 'Neurological'],
       description: 'Fragile X Syndrome (FXS)',
       prevalence: {
           technical: '~1 in 7,000 males; ~1 in 11,000 females; most common inherited single-gene cause of intellectual disability',
@@ -17531,7 +17531,7 @@ const nodes = [
           { condition: 'APD', conditionId: 'apd', note: 'Auditory processing difficulties common', stats: '' },
       ],
       developmentalTiming: ['birth'], diagnosticTiming: ['dx-childhood'], sexLinkedPresentation: ['predominantly-xy'] },
-    { id: 'turner', label: 'Turner Syndrome (45, X)', domain: 'Genetic', secondary: ['Neurodevelopmental', 'Metabolic / Endocrine'],
+    { id: 'turner', label: 'Turner Syndrome (45, X)', shortLabel: 'Turner Syndrome', domain: 'Genetic', secondary: ['Neurodevelopmental', 'Metabolic / Endocrine'],
       description: 'Turner Syndrome (45, X)',
       prevalence: {
           technical: '~1 in 2, 500 females; mosaic variants (45, X/46, XX) are milder and more likely underdiagnosed',
@@ -17578,7 +17578,7 @@ const nodes = [
       developmentalTiming: ['birth'], diagnosticTiming: ['dx-childhood', 'dx-late'], sexLinkedPresentation: ['predominantly-xx'] },
 
     // ── Personal easter egg ─────────────────────────────────────────
-    { id: 'lw', label: 'LW', domain: 'Personal',
+    { id: 'lw', label: 'LW', clarifier: 'LW', domain: 'Personal',
       description: 'The Cartographer',
       searchTerms: ['Lesley', 'Wiadrowski'],
       isPersonal: true,
@@ -17810,7 +17810,7 @@ const nodes = [
     },
 
     // ── v20 new nodes ──────────────────────────────────────────────
-    { id: 'sud', label: 'Substance Use Disorders', domain: 'Mental health',
+    { id: 'sud', label: 'Substance Use Disorders', shortLabel: 'Substance Use', clarifier: 'SUD', domain: 'Mental health',
       description: 'Substance Use Disorders',
       prevalence: {
           technical: 'General population lifetime prevalence: ~15–20%. Among ADHD adults: 15.2% current SUD, 23–25% of SUD treatment-seekers have ADHD (van Emmerik-van Oortmerssen 2012, meta-analysis). Autism: ~30% increased risk of SUD vs general population. PTSD: approximately 50% co-occurrence. Depression: ~30–40% co-occurrence. The self-medication pathway from unrecognised neurodivergence to substance use is a major clinical concern.',
@@ -17856,7 +17856,7 @@ const nodes = [
           { condition: 'FASD', conditionId: 'fasd', note: 'Elevated risk; self-medication pathway from unrecognised neurodevelopmental needs', stats: '' }
       ],
       developmentalTiming: ['puberty', 'adult', 'episodic'], diagnosticTiming: ['dx-adult', 'dx-late'], sexLinkedPresentation: ['predominantly-xy'] },
-    { id: 'dpdr', label: 'DPDR', domain: 'Mental health', secondary: ['Neurological'],
+    { id: 'dpdr', label: 'DPDR', shortLabel: 'Depersonalisation', clarifier: 'DPDR', domain: 'Mental health', secondary: ['Neurological'],
       description: 'Depersonalisation/Derealisation Disorder',
       searchTerms: ['depersonalisation', 'derealisation', 'depersonalization', 'derealization'],
       prevalence: {
@@ -17903,7 +17903,7 @@ const nodes = [
           { condition: 'Epilepsy', conditionId: 'epilepsy', note: 'Distinguish depersonalisation from temporal lobe epilepsy aura', stats: '' }
       ],
       developmentalTiming: ['childhood', 'puberty', 'adult', 'episodic'], diagnosticTiming: ['dx-adult', 'dx-late'], sexLinkedPresentation: [] },
-    { id: 'bfrb', label: 'BFRBs', domain: 'Mental health',
+    { id: 'bfrb', label: 'BFRBs', shortLabel: 'Body-Focused Behaviours', clarifier: 'BFRBs', domain: 'Mental health',
       description: 'Body-Focused Repetitive Behaviours (Excoriation & Trichotillomania)',
       searchTerms: ['repetitive behaviour', 'repetitive behavior', 'hair pulling', 'skin picking'],
       prevalence: {
@@ -17950,7 +17950,7 @@ const nodes = [
           { condition: 'Anxiety', conditionId: 'anxiety', note: 'Emotion dysregulation is a central driver', stats: '' },
       ],
       developmentalTiming: ['childhood', 'puberty', 'adult'], diagnosticTiming: ['dx-childhood', 'dx-adult', 'dx-late'], sexLinkedPresentation: ['predominantly-xx'] },
-    { id: 'functional_constipation', label: 'Functional Constipation', domain: 'Gastrointestinal',
+    { id: 'functional_constipation', label: 'Functional Constipation', shortLabel: 'Constipation', domain: 'Gastrointestinal',
       description: 'Functional Constipation (Rome IV)',
       prevalence: {
           technical: 'Global prevalence (Rome IV): 10.1%. Paediatric: 14.4%. In autism: median 22%, range 4.3–45.5%. In ADHD: adjusted IRR 3.39. In hEDS: up to 75% have functional GI disorders; constipation 38.6%; rectal hyposensitivity 43.3%. In POTS: 70–74%. In learning disabilities: 33–50%+. Female:male OR 1.94–2.40.',
@@ -18042,7 +18042,7 @@ const nodes = [
           { condition: 'Fibromyalgia', conditionId: 'fibromyalgia', note: 'Central sensitisation amplifies bruxism-related pain', stats: '' },
       ],
       developmentalTiming: ['childhood', 'puberty', 'adult'], diagnosticTiming: ['dx-childhood', 'dx-adult', 'dx-late'], sexLinkedPresentation: [] },
-    { id: 'prader_willi', label: 'Prader-Willi Syndrome', domain: 'Genetic', secondary: ['Neurodevelopmental'],
+    { id: 'prader_willi', label: 'Prader-Willi Syndrome', shortLabel: 'Prader-Willi', domain: 'Genetic', secondary: ['Neurodevelopmental'],
       description: 'Prader-Willi Syndrome (15q11.2-q13)',
       searchTerms: ['Prader Willi', 'PWS'],
       prevalence: {
@@ -18097,7 +18097,7 @@ const nodes = [
           { condition: 'Gastroparesis', conditionId: 'gastroparesis', note: 'Fatal GI complications reported; gastroparesis screening important', stats: '' },
       ],
       developmentalTiming: ['birth', 'childhood'], diagnosticTiming: ['dx-childhood'], sexLinkedPresentation: [] },
-    { id: 'williams', label: 'Williams Syndrome', domain: 'Genetic', secondary: ['Neurodevelopmental'],
+    { id: 'williams', label: 'Williams Syndrome', shortLabel: 'Williams', domain: 'Genetic', secondary: ['Neurodevelopmental'],
       description: 'Williams Syndrome (7q11.23 deletion)',
       searchTerms: ['Williams-Beuren', 'WBS'],
       prevalence: {
@@ -18254,7 +18254,7 @@ const nodes = [
           { condition: 'ADHD (medication-related)', conditionId: 'adhd', note: 'Stimulant medications can cause or worsen RP via vasoconstriction', stats: '' }
       ],
       developmentalTiming: ['puberty', 'adult', 'episodic'], diagnosticTiming: ['dx-adult', 'dx-late'], sexLinkedPresentation: ['hormonal', 'predominantly-xx'] },
-    { id: 'bdd', label: 'BDD', domain: 'Mental health',
+    { id: 'bdd', label: 'BDD', shortLabel: 'Body Dysmorphia', clarifier: 'BDD', domain: 'Mental health',
       description: 'Body Dysmorphic Disorder',
       prevalence: {
           technical: '~1.9% community adults; 2.2% in adolescents. Higher in clinical settings: 7.4% psychiatric inpatients, 11–20% dermatology/cosmetic surgery. Slightly more common in women than men (~1.5:1).',
@@ -18300,7 +18300,7 @@ const nodes = [
         { condition: 'Autism', conditionId: 'autism', note: 'Shared detail-focused visual processing; very high autistic trait rates', stats: '96% with autistic traits in adolescents' },
       ],
       developmentalTiming: ['puberty', 'adult'], diagnosticTiming: ['dx-adult', 'dx-late'], sexLinkedPresentation: ['predominantly-xx'] },
-    { id: 'fasd', label: 'FASD', domain: 'Neurodevelopmental',
+    { id: 'fasd', label: 'FASD', clarifier: 'FASD', domain: 'Neurodevelopmental',
       description: 'Foetal Alcohol Spectrum Disorder',
       searchTerms: ['fetal alcohol'],
       prevalence: {
@@ -18406,7 +18406,7 @@ const nodes = [
       ],
       developmentalTiming: ['adult', 'episodic'], diagnosticTiming: ['dx-adult'], sexLinkedPresentation: ['predominantly-xx'] },
 
-    { id: 'abi', label: 'ABI', domain: 'Neurological', secondary: ['Neurodevelopmental'],
+    { id: 'abi', label: 'ABI', shortLabel: 'Acquired Brain Injury', clarifier: 'ABI', domain: 'Neurological', secondary: ['Neurodevelopmental'],
       description: 'Acquired Brain Injury',
       searchTerms: ['acquired brain injury', 'traumatic brain injury', 'TBI', 'concussion', 'head injury', 'brain injury'],
       prevalence: {
@@ -23084,6 +23084,8 @@ const coPresentations = [
     {
         id: 'audhd',
         label: 'AuDHD',
+        shortLabel: 'AuDHD',
+        clarifier: 'AuDHD',
         components: ['autism', 'adhd'],
         triggerSets: [['autism', 'adhd']],
         isProfile: true,
@@ -23154,6 +23156,8 @@ const coPresentations = [
     {
         id: 'hypermobility-pots-mcas',
         label: 'Hypermobility + POTS + MCAS',
+        shortLabel: 'Trifecta',
+        clarifier: 'hEDS + POTS + MCAS',
         components: ['heds', 'pots', 'mcas'],
         triggerSets: [
             ['heds', 'pots'], ['heds', 'mcas'], ['pots', 'mcas'],
@@ -23221,6 +23225,7 @@ const coPresentations = [
     {
         id: 'fibro-mecfs',
         label: 'Fibromyalgia + ME/CFS',
+        shortLabel: 'Fibro + ME/CFS',
         components: ['fibromyalgia', 'mecfs'],
         triggerSets: [['fibromyalgia', 'mecfs']],
         isProfile: true,
@@ -23404,6 +23409,12 @@ function edgeSourceId(e) { return typeof e.source === 'object' ? e.source.id : e
 function edgeTargetId(e) { return typeof e.target === 'object' ? e.target.id : e.target; }
 function edgeSourceNode(e) { return typeof e.source === 'object' ? e.source : nodes.find(n => n.id === e.source); }
 function edgeTargetNode(e) { return typeof e.target === 'object' ? e.target : nodes.find(n => n.id === e.target); }
+
+// ── Node name helpers ────────────────────────────────────────────────
+// shortLabel: conversational name for space-constrained UI (tabs, cards, pills)
+// clarifier: bracketed context for full titles, e.g. "(ADHD)" or "(Anaphylaxis)"
+function nodeShortLabel(d) { return d.shortLabel || d.label; }
+function nodeFullTitle(d) { return d.clarifier ? (d.description || d.label) + ' (' + d.clarifier + ')' : (d.description || d.label); }
 
 // Generate composite link objects for injection into links[]
 function generateCompositeLinks(coPres) {
@@ -23802,6 +23813,8 @@ coPresentations.forEach(cp => {
         domain: cp.domain,
         secondary: cp.secondary || [],
         description: cp.description,
+        ...(cp.shortLabel ? { shortLabel: cp.shortLabel } : {}),
+        ...(cp.clarifier ? { clarifier: cp.clarifier } : {}),
         prevalence: cp.prevalence,
         presentation: cp.presentation,
         onset: cp.onset,
@@ -25458,10 +25471,10 @@ function showKbFocusRing(d) {
     const _kbConnCount = links.filter(l =>
         (l.source.id || l.source) === d.id || (l.target.id || l.target) === d.id
     ).length;
-    const _kbDesc = d.description && d.description !== d.label
-        ? '. ' + d.description : '';
+    const _kbTitle = nodeFullTitle(d);
+    const _kbExtra = _kbTitle !== d.label ? '. ' + _kbTitle : '';
     announceToScreenReader(
-        `${d.label}, ${d.domain} domain, ${_kbConnCount} connection${_kbConnCount !== 1 ? 's' : ''}${_kbDesc}`
+        `${d.label}, ${d.domain} domain, ${_kbConnCount} connection${_kbConnCount !== 1 ? 's' : ''}${_kbExtra}`
     );
 }
 
@@ -27646,28 +27659,11 @@ function bfsAllShortestPaths(sourceId, targetId, maxHops = 4) {
 }
 
 // ── Constellation display label helper ────────────────────────────────
-// Returns the condition name with full description if the label is an
-// acronym-style short form (≤6 chars, mostly uppercase).
-// e.g. "POTS" → "POTS (Postural Orthostatic Tachycardia Syndrome)"
-//      "Autism" → "Autism" (unchanged)
+// Returns full title with clarifier for formal contexts (GP summary, report headings).
+// For space-constrained contexts (chips, cards), use nodeShortLabel() directly.
 function getConstellationDisplayLabel(node) {
-    if (!node || !node.description || node.label === node.description) return node ? node.label : '';
-    const lbl = node.label;
-    const desc = node.description;
-    // Acronym-style: ≤6 chars and at least half uppercase letters
-    // Returns full name first with acronym in brackets: "Postural Orthostatic Tachycardia Syndrome (POTS)"
-    if (lbl.length <= 6) {
-        const upperCount = (lbl.match(/[A-Z]/g) || []).length;
-        if (upperCount >= lbl.length / 2) {
-            return desc + ' (' + lbl + ')';
-        }
-    }
-    // Short label with a longer description: show full name
-    // e.g. "Chiari" → "Chiari Malformation"
-    if (desc.length > lbl.length && desc.toLowerCase().startsWith(lbl.toLowerCase())) {
-        return desc;
-    }
-    return lbl;
+    if (!node) return '';
+    return nodeFullTitle(node);
 }
 
 
@@ -28098,14 +28094,14 @@ function renderTwoNodeHeader(nodeA, nodeB) {
                 <span class="header-pill anchor" draggable="true" ondragstart="headerDragStart(event, 0)" ondragover="event.preventDefault()" ondrop="headerDrop(event, 0)"
                       style="background:${cA}20; color:${cA}; border:2px solid ${cA}60;">
                     <span class="color-dot" style="background:${cA};"></span>
-                    ${nodeA.label}
+                    ${nodeShortLabel(nodeA)}
                     <span style="cursor:pointer;opacity:0.5;font-size:16px;line-height:1;"
                           onclick="dropCondition(0)">&times;</span>
                 </span>
                 <span class="header-pill" draggable="true" ondragstart="headerDragStart(event, 1)" ondragover="event.preventDefault()" ondrop="headerDrop(event, 1)"
                       style="background:${cB}20; color:${cB}; border:1px solid ${cB}50;">
                     <span class="color-dot" style="background:${cB};"></span>
-                    ${nodeB.label}
+                    ${nodeShortLabel(nodeB)}
                     <span style="cursor:pointer;opacity:0.5;font-size:16px;line-height:1;"
                           onclick="dropCondition(1)">&times;</span>
                 </span>
@@ -28116,13 +28112,13 @@ function renderTwoNodeHeader(nodeA, nodeB) {
         <div class="panel-tabs">
             <button class="panel-tab${activeTab === 'nodeA' ? ' active' : ''}"
                     onclick="switchTab('nodeA')"
-                    style="${activeTab === 'nodeA' ? `color:${cA};border-bottom-color:${cA}` : ''}">${nodeA.label}</button>
+                    style="${activeTab === 'nodeA' ? `color:${cA};border-bottom-color:${cA}` : ''}">${nodeShortLabel(nodeA)}</button>
             <button class="panel-tab${activeTab === 'combined' ? ' active' : ''}"
                     onclick="switchTab('combined')"
                     style="${activeTab === 'combined' ? `color:${cShared};border-bottom-color:${cShared}` : ''}">Combined</button>
             <button class="panel-tab${activeTab === 'nodeB' ? ' active' : ''}"
                     onclick="switchTab('nodeB')"
-                    style="${activeTab === 'nodeB' ? `color:${cB};border-bottom-color:${cB}` : ''}">${nodeB.label}</button>
+                    style="${activeTab === 'nodeB' ? `color:${cB};border-bottom-color:${cB}` : ''}">${nodeShortLabel(nodeB)}</button>
         </div>
         <div id="panel-filter-dropdown" class="panel-filter-dropdown" style="display:none;" onclick="event.stopPropagation()"></div>
       </div>
@@ -28382,12 +28378,15 @@ function attachInlineSearch(container) {
         // Match co-presentations (exclude currently selected)
         const cpMatches = coPresentations.filter(cp =>
             cp.id !== selected &&
-            (cp.label.toLowerCase().includes(q) || cp.id.toLowerCase().includes(q))
+            (cp.label.toLowerCase().includes(q) || cp.id.toLowerCase().includes(q) ||
+             (cp.shortLabel && cp.shortLabel.toLowerCase().includes(q)))
         );
 
         const nodeMatches = nodes
             .filter(n => n.id !== selected && !n.isEasterEgg && !n.isPersonal && !n.isComposite &&
-                        (n.label.toLowerCase().includes(q) || n.description.toLowerCase().includes(q)))
+                        (n.label.toLowerCase().includes(q) || n.description.toLowerCase().includes(q) ||
+                         (n.shortLabel && n.shortLabel.toLowerCase().includes(q)) ||
+                         (n.clarifier && n.clarifier.toLowerCase().includes(q))))
             .sort((a, b) => {
                 const aS = a.label.toLowerCase().startsWith(q);
                 const bS = b.label.toLowerCase().startsWith(q);
@@ -28440,7 +28439,7 @@ function attachInlineSearch(container) {
         nodeMatches.forEach(n => {
             html += `<div class="autocomplete-item" data-id="${n.id}" data-idx="${idx}">
                 <div class="autocomplete-dot" style="background:${domainColors[n.domain]};"></div>
-                <span>${n.label}</span>
+                <span>${nodeShortLabel(n)}</span>
                 <span class="autocomplete-domain">${n.domain}</span>
             </div>`;
             idx++;
@@ -28523,7 +28522,7 @@ function showNodeInfo(event, d) {
     }
     moveFocusTo(panel);
     trapFocus(panel);
-    announceToScreenReader('Information panel: ' + d.label);
+    announceToScreenReader('Information panel: ' + nodeFullTitle(d));
 
     // Personal easter egg: custom panel
     if (d.isPersonal) {
@@ -28545,7 +28544,7 @@ function showNodeInfo(event, d) {
                     <div style="display:flex;flex-direction:column;gap:3px;min-width:0;flex:1;">
                         <span class="header-pill anchor" style="align-self:flex-start; background:${mainColor}15; color:${mainColor}; border:2px solid ${mainColor}50;">
                             ${dots}
-                            <span style="margin-left:4px;">${d.label}</span>
+                            <span style="margin-left:4px;">${nodeShortLabel(d)}</span>
                         </span>
                         <div class="flex-row">
                             <div class="inline-search-wrapper">
@@ -28567,7 +28566,7 @@ function showNodeInfo(event, d) {
                     <div style="display:flex;flex-direction:column;gap:3px;min-width:0;flex:1;">
                         <span class="header-pill anchor" style="align-self:flex-start; background:${cD}20; color:${cD}; border:2px solid ${cD}60;">
                             <span class="color-dot" style="background:${cD};"></span>
-                            ${d.label}
+                            ${nodeShortLabel(d)}
                         </span>
                         <div class="flex-row">
                             <div class="inline-search-wrapper">
@@ -28696,13 +28695,13 @@ function renderPersonalPanel(d) {
             confirmed.forEach(c => {
                 constContent += `<span class="condition-link" data-node-id="${c.id}"
                     style="display:inline-block;padding:3px 8px;border-radius:12px;
-                    font-size:12px;font-weight:500;text-decoration:none;background:${dc}15;color:${dc};border:1px solid ${dc}40;cursor:pointer;">${c.label}</span>`;
+                    font-size:12px;font-weight:500;text-decoration:none;background:${dc}15;color:${dc};border:1px solid ${dc}40;cursor:pointer;">${nodeShortLabel(c)}</span>`;
             });
             // Suspected conditions last (outlined in domain colour)
             suspected.forEach(c => {
                 constContent += `<span class="condition-link" data-node-id="${c.id}"
                     style="display:inline-block;padding:3px 8px;border-radius:12px;
-                    font-size:12px;font-weight:500;text-decoration:none;background:transparent;color:${dc};border:1.5px solid ${dc}60;cursor:pointer;">${c.label}</span>`;
+                    font-size:12px;font-weight:500;text-decoration:none;background:transparent;color:${dc};border:1.5px solid ${dc}60;cursor:pointer;">${nodeShortLabel(c)}</span>`;
             });
             constContent += '</div></div>';
         });
@@ -28969,7 +28968,7 @@ function applyFilters() {
     const filterPassingNodeIds = new Set();
     nodes.forEach(n => {
         if (n.isEasterEgg || n.isPersonal || n._isDormant) return;
-        if (currentSearch && !n.label.toLowerCase().includes(currentSearch) && !n.description.toLowerCase().includes(currentSearch)) return;
+        if (currentSearch && !n.label.toLowerCase().includes(currentSearch) && !n.description.toLowerCase().includes(currentSearch) && !(n.shortLabel && n.shortLabel.toLowerCase().includes(currentSearch))) return;
         if (!nodeDomainPasses(n) || !nodeTimingPasses(n) || !nodePresentationPasses(n)) return;
         if (!panelNodeDomainPasses(n) || !panelNodeTimingPasses(n) || !panelNodePresentationPasses(n)) return;
         filterPassingNodeIds.add(n.id);
@@ -30072,7 +30071,7 @@ function showDomainInfo(domainName) {
             condHtml += '<div class="section-label" style="width:100%;margin:0 0 2px;">Primary</div>';
             [...primaryNodes].sort((a, b) => a.label.localeCompare(b.label)).forEach(n => {
                 condHtml += `<span class="condition-link" data-node-id="${n.id}" style="padding:3px 8px;border-radius:12px;font-size:var(--font-sm);font-weight:500;text-decoration:none;
-                                    background:${color}20;color:${color};border:1px solid ${color}40;">${n.label}</span>`;
+                                    background:${color}20;color:${color};border:1px solid ${color}40;">${nodeShortLabel(n)}</span>`;
             });
         }
         if (secondaryNodes.length > 0) {
@@ -30080,7 +30079,7 @@ function showDomainInfo(domainName) {
             [...secondaryNodes].sort((a, b) => a.domain.localeCompare(b.domain) || a.label.localeCompare(b.label)).forEach(n => {
                 const nColor = domainColors[n.domain] || '#888';
                 condHtml += `<span class="condition-link" data-node-id="${n.id}" style="padding:3px 8px;border-radius:12px;font-size:var(--font-sm);font-weight:500;text-decoration:none;
-                                    background:${nColor}20;color:${nColor};border:1px solid ${nColor}40;">${n.label}</span>`;
+                                    background:${nColor}20;color:${nColor};border:1px solid ${nColor}40;">${nodeShortLabel(n)}</span>`;
             });
         }
         condHtml += '</div>';
@@ -30242,7 +30241,7 @@ function showMechanismInfo(mechId) {
         sortedNodes.forEach(n => {
             const nColor = domainColors[n.domain] || '#888';
             condHtml += `<span class="condition-link" data-node-id="${n.id}" style="padding:3px 8px;border-radius:12px;font-size:var(--font-sm);font-weight:500;text-decoration:none;
-                                background:${nColor}20;color:${nColor};border:1px solid ${nColor}40;">${n.label}</span>`;
+                                background:${nColor}20;color:${nColor};border:1px solid ${nColor}40;">${nodeShortLabel(n)}</span>`;
         });
         condHtml += '</div>';
         html += sectionWrapper(pc.headings.mechConditions, condHtml, false);
@@ -30324,7 +30323,7 @@ function renderMechanismPanel() {
         sortedNodes.forEach(n => {
             html += `<span style="padding:3px 8px;border-radius:12px;font-size:var(--font-sm);font-weight:500;cursor:pointer;
                                 background:${domainColors[n.domain]}20;color:${domainColors[n.domain]};border:1px solid ${domainColors[n.domain]}40;"
-                          onclick="jumpToNode('${n.id}')">${n.label}</span>`;
+                          onclick="jumpToNode('${n.id}')">${nodeShortLabel(n)}</span>`;
         });
         html += '</div></div>';
 
@@ -30341,11 +30340,11 @@ function renderMechanismPanel() {
                           margin:5px 0;border-left:3px solid ${linkColor};">
                 <div class="flex-row">
                     <span style="cursor:pointer;font-weight:500;font-size:12px;"
-                          onclick="jumpToNode('${src.id}')">${src.label}</span>
+                          onclick="jumpToNode('${src.id}')">${nodeShortLabel(src)}</span>
                     <span style="color:${linkColor};font-size:var(--font-sm);cursor:pointer;"
                           onclick="navigateToCombined('${src.id}','${tgt.id}')">→(${tShort})→</span>
                     <span style="cursor:pointer;font-weight:500;font-size:12px;"
-                          onclick="jumpToNode('${tgt.id}')">${tgt.label}</span>
+                          onclick="jumpToNode('${tgt.id}')">${nodeShortLabel(tgt)}</span>
                 </div>
             </div>`;
         });
@@ -31293,7 +31292,7 @@ function showLensInfo(lensId) {
                 const nColor = domainColors[n.domain] || '#888';
                 const hidden = i >= 12;
                 condHtml += `<span class="condition-link${hidden ? ' conn-hidden' : ''}" data-node-id="${n.id}" style="padding:3px 8px;border-radius:12px;font-size:var(--font-sm);font-weight:500;text-decoration:none;
-                                    background:${nColor}20;color:${nColor};border:1px solid ${nColor}40;${hidden ? 'display:none;' : ''}">${n.label}</span>`;
+                                    background:${nColor}20;color:${nColor};border:1px solid ${nColor}40;${hidden ? 'display:none;' : ''}">${nodeShortLabel(n)}</span>`;
             });
             condHtml += '</div>';
             if (sortedNodes.length > 12) {
@@ -31411,7 +31410,7 @@ function renderLensBlock(d) {
         const names = withoutOverlay.map(l => l.label).join(', ');
         content += `<div class="lens-overlay-section-flat" style="margin-top:${withOverlay.length > 0 ? '10' : '0'}px;">`;
         content += `<span class="lens-overlay-label" style="display:inline;">${names}</span>`;
-        content += `<span style="font-size:12px;color:var(--text-secondary);"> \u2014 ${withoutOverlay.length === 1 ? 'this lens doesn\u2019t' : 'these lenses don\u2019t'} specifically change the picture for ${d.label}.</span>`;
+        content += `<span style="font-size:12px;color:var(--text-secondary);"> \u2014 ${withoutOverlay.length === 1 ? 'this lens doesn\u2019t' : 'these lenses don\u2019t'} specifically change the picture for ${nodeShortLabel(d)}.</span>`;
         content += '</div>';
     }
 
@@ -31752,7 +31751,7 @@ function renderConstellationQuestionnaireView(content) {
             const isNotSure = constellationNotSure.has(n.id);
             const stateClass = isYes ? ' yes' : isNotSure ? ' not-sure' : '';
             const stateIcon = isYes ? '<span style="color:var(--color-primary);">&#10003;</span>' : isNotSure ? '<span style="color:#71717a;">?</span>' : '';
-            const displayLabel = getConstellationDisplayLabel(n);
+            const displayLabel = nodeFullTitle(n);
             // Tooltip: first sentence of presentation lay text
             let chipTooltip = '';
             if (n.presentation) {
@@ -31917,10 +31916,10 @@ function renderConstellationReviewPage() {
             html += `<span style="font-size:11px;color:#aaa;">${group.yes.length + group.notSure.length}</span>`;
             html += '</div>';
             group.yes.forEach(n => {
-                html += `<span style="font-size:12px;color:#333;margin-left:14px;display:block;">${n.label} <span style="color:var(--color-primary);font-size:10px;">&#10003;</span></span>`;
+                html += `<span style="font-size:12px;color:#333;margin-left:14px;display:block;">${nodeShortLabel(n)} <span style="color:var(--color-primary);font-size:10px;">&#10003;</span></span>`;
             });
             group.notSure.forEach(n => {
-                html += `<span style="font-size:12px;color:#888;margin-left:14px;display:block;">${n.label} <span style="color:#71717a;font-size:10px;">?</span></span>`;
+                html += `<span style="font-size:12px;color:#888;margin-left:14px;display:block;">${nodeShortLabel(n)} <span style="color:#71717a;font-size:10px;">?</span></span>`;
             });
             html += '</div>';
         });
@@ -32092,8 +32091,8 @@ function computeConstellationReport() {
             l.mechanismTags.forEach(mId => {
                 mechCounts[mId] = (mechCounts[mId] || 0) + 1;
                 if (!mechConditions[mId]) mechConditions[mId] = new Set();
-                if (sNode) mechConditions[mId].add(sNode.label);
-                if (tNode) mechConditions[mId].add(tNode.label);
+                if (sNode) mechConditions[mId].add(nodeShortLabel(sNode));
+                if (tNode) mechConditions[mId].add(nodeShortLabel(tNode));
             });
         }
     });
@@ -32114,8 +32113,8 @@ function computeConstellationReport() {
         const tNode = nodes.find(n => n.id === tId);
         if (!hubCounts[sId]) hubCounts[sId] = { connectedNodes: new Set(), mechanisms: new Set() };
         if (!hubCounts[tId]) hubCounts[tId] = { connectedNodes: new Set(), mechanisms: new Set() };
-        if (tNode) hubCounts[sId].connectedNodes.add(tNode.label);
-        if (sNode) hubCounts[tId].connectedNodes.add(sNode.label);
+        if (tNode) hubCounts[sId].connectedNodes.add(nodeShortLabel(tNode));
+        if (sNode) hubCounts[tId].connectedNodes.add(nodeShortLabel(sNode));
         if (l.mechanismTags) {
             l.mechanismTags.forEach(mId => {
                 hubCounts[sId].mechanisms.add(mId);
@@ -32166,7 +32165,7 @@ function computeConstellationReport() {
             const tId = edgeTargetId(e);
             const otherId = sId === nsId ? tId : sId;
             const otherNode = nodes.find(n => n.id === otherId);
-            if (otherNode) connectedNames.add(otherNode.label);
+            if (otherNode) connectedNames.add(nodeShortLabel(otherNode));
         });
         const mechIds = [...mechanisms];
         const mechNames = mechIds.map(mId => {
@@ -32255,7 +32254,7 @@ function computeConstellationReport() {
                 if (overlays[nodeId]) {
                     const n = nodes.find(nd => nd.id === nodeId);
                     if (n) {
-                        affectedConditions.push(n.label);
+                        affectedConditions.push(nodeShortLabel(n));
                         affectedIds.push(nodeId);
                         allAffectedIds.add(nodeId);
                     }
@@ -32372,7 +32371,7 @@ function generateDomainPillsHTML(report) {
         const color = domainColors[d.domain] || '#888';
         const domainNodes = report.yesNodes.filter(n => n.domain === d.domain);
         const condParts = domainNodes.map((n, i) => {
-            let label = n.label;
+            let label = nodeShortLabel(n);
             const nodeLenses = condLensMap[n.id];
             if (nodeLenses && nodeLenses.length > 0) {
                 label += nodeLenses.map(l => tinyLensIconSVG(l.id)).join('');
@@ -32444,10 +32443,7 @@ function generateMechanismNarrative(mechEntry, isKnown) {
     const layDesc = mechEntry.description ? (mechEntry.description.lay || mechEntry.description.technical || '') : '';
     // Extract just the first sentence for brevity
     const firstSentence = layDesc.split(/\.\s/)[0];
-    const condNames = (mechEntry.conditions || []).map(name => {
-        const n = nodes.find(nd => nd.label === name);
-        return n ? n.label : name; // Keep short names in mechanism narratives to avoid clutter
-    });
+    const condNames = mechEntry.conditions || [];
     // Use full label in narrative
     let text = `<strong>${mechEntry.label}</strong> -`;
     // Distinguish known vs not-sure vs new
@@ -32614,7 +32610,7 @@ function computeConstellationMiniNetworkLayout(svgW, svgH) {
     });
 
     const netNodes = nodes.filter(n => allIds.has(n.id)).map(n => ({
-        id: n.id, label: getConstellationDisplayLabel(n), domain: n.domain,
+        id: n.id, label: nodeShortLabel(n), domain: n.domain,
         isNotSure: constellationNotSure.has(n.id),
         connCount: internalConnCount[n.id] || 0,
         x: pad + Math.random() * (svgW - 2 * pad),
@@ -32786,7 +32782,7 @@ function selectTopStats(report) {
     if (report.mechBreakdown.length >= 2) highlights.push({ label: 'Shared pathways', value: report.mechBreakdown.length, color: '#cc8833', score: report.mechBreakdown.length });
     if (report.hubNodes.length > 0) {
         const topHub = report.hubNodes[0];
-        if (topHub.internalCount >= 3) highlights.push({ label: topHub.node.label + ' links', value: topHub.internalCount, color: domainColors[topHub.node.domain] || '#888', score: topHub.internalCount });
+        if (topHub.internalCount >= 3) highlights.push({ label: nodeShortLabel(topHub.node) + ' links', value: topHub.internalCount, color: domainColors[topHub.node.domain] || '#888', score: topHub.internalCount });
     }
     const nsWithConn = report.notSureAnalysis.filter(ns => ns.connectionCount >= 1).length;
     if (nsWithConn >= 2) highlights.push({ label: 'Not-sure with links', value: nsWithConn, color: '#71717a', score: nsWithConn });
@@ -33089,9 +33085,8 @@ ${getConstellationReportCSS()}
         html += '<div class="hub-grid">';
         report.hubNodes.forEach(hub => {
             const color = domainColors[hub.node.domain] || '#ddd';
-            const displayLabel = getConstellationDisplayLabel(hub.node);
             html += `<div class="hub-card" style="border-top-color:${color};">`;
-            html += `<h3>${displayLabel}</h3>`;
+            html += `<h3>${nodeShortLabel(hub.node)}</h3>`;
             html += `<p class="subtitle">Connected to ${hub.internalCount} of your conditions</p>`;
             html += `<p>${generateHubNarrative(hub)}</p>`;
             html += '</div>';
@@ -33186,7 +33181,7 @@ ${getConstellationReportCSS()}
         html += '<h2>Dots you\'re not sure about</h2>';
         html += '<p style="font-size:12px;color:#666;">Understanding these connections helps you make informed decisions about what to explore further.</p>';
         report.notSureAnalysis.forEach(ns => {
-            const displayLabel = getConstellationDisplayLabel(ns.node);
+            const displayLabel = nodeFullTitle(ns.node);
             const color = domainColors[ns.node.domain] || '#888';
             const borderColor = color;
             html += `<div class="ns-card" style="border-left-color:${borderColor};">`;
@@ -33227,7 +33222,7 @@ ${getConstellationReportCSS()}
         html += '<h2>Worth exploring</h2>';
         html += '<p style="font-size:12px;color:#888;">These conditions are connected to multiple dots in your map. Research suggests they may co-occur; they are not predictions.</p>';
         report.adjacentConditions.slice(0, 8).forEach(adj => {
-            const displayLabel = getConstellationDisplayLabel(adj.node);
+            const displayLabel = nodeFullTitle(adj.node);
             const mechDisplay = mechDisplayNames(adj.mechanisms, adj.mechanismsShort);
             html += `<div class="adj-card" style="border-left-color:${domainColors[adj.node.domain]};">`;
             html += `<h3>${displayLabel}</h3>`;
@@ -33359,8 +33354,8 @@ function buildCombinedConnectionInner(nodeA, nodeB, idA, idB, directEdge, typeLa
         if (directEdge.directionality) {
             const dirLabels = {
                 'bidirectional':    'Bidirectional \u2014 each influences the other',
-                'source-to-target': `${nodeA.label} \u2192 ${nodeB.label}`,
-                'target-to-source': `${nodeB.label} \u2192 ${nodeA.label}`,
+                'source-to-target': `${nodeShortLabel(nodeA)} \u2192 ${nodeShortLabel(nodeB)}`,
+                'target-to-source': `${nodeShortLabel(nodeB)} \u2192 ${nodeShortLabel(nodeA)}`,
                 'shared-upstream':  'Shared upstream cause \u2014 no direct link between these conditions'
             };
             html += `<p class="conn-dir" style="font-size:var(--font-sm);color:var(--text-faint);margin:6px 0 0;">Directionality: ${dirLabels[directEdge.directionality] || directEdge.directionality}</p>`;
@@ -33375,10 +33370,10 @@ function buildCombinedConnectionInner(nodeA, nodeB, idA, idB, directEdge, typeLa
             const isNuanced = evidence && evidence.tier === 'nuanced';
             if (isNuanced) {
                 html += `<p style="color:var(--text-primary);font-size:14px;font-weight:600;margin:0 0 8px;">No connection to routine childhood immunisation.</p>
-                <p style="font-size:12px;color:var(--text-secondary);line-height:1.6;margin:0 0 10px;">Routine childhood vaccines have no established connection to ${otherNode.label}. However, one specific non-routine vaccine product has a confirmed association; see below for detail.</p>`;
+                <p style="font-size:12px;color:var(--text-secondary);line-height:1.6;margin:0 0 10px;">Routine childhood vaccines have no established connection to ${nodeShortLabel(otherNode)}. However, one specific non-routine vaccine product has a confirmed association; see below for detail.</p>`;
             } else {
                 html += `<p style="color:var(--text-primary);font-size:14px;font-weight:600;margin:0 0 8px;">No connection exists.</p>
-                <p style="font-size:12px;color:var(--text-secondary);line-height:1.6;margin:0 0 10px;">There is no direct, indirect, mechanistic, or inferred connection between childhood immunisation and ${otherNode.label}. The broader claim that vaccines cause chronic or neurodevelopmental conditions originated from a single fraudulent 1998 paper (Wakefield et al.), which was retracted by The Lancet. The lead author was struck off the medical register for deliberate falsification of data. That claim has since been contradicted by hundreds of rigorous studies involving millions of children.</p>`;
+                <p style="font-size:12px;color:var(--text-secondary);line-height:1.6;margin:0 0 10px;">There is no direct, indirect, mechanistic, or inferred connection between childhood immunisation and ${nodeShortLabel(otherNode)}. The broader claim that vaccines cause chronic or neurodevelopmental conditions originated from a single fraudulent 1998 paper (Wakefield et al.), which was retracted by The Lancet. The lead author was struck off the medical register for deliberate falsification of data. That claim has since been contradicted by hundreds of rigorous studies involving millions of children.</p>`;
             }
         } else {
             const paths = bfsAllShortestPaths(idA, idB);
@@ -33392,8 +33387,8 @@ function buildCombinedConnectionInner(nodeA, nodeB, idA, idB, directEdge, typeLa
                     html += `<div class="path-chain conn-card${hidden ? ' conn-hidden' : ''}" ${hidden ? 'style="display:none;"' : ''}>`;
                     path.forEach((nodeId, i) => {
                         const n = nodes.find(nd => nd.id === nodeId);
-                        html += `<span class="path-node-pill" tabindex="0" role="link" aria-label="${n.label}" onclick="jumpToNode('${nodeId}')"
-                                       style="background:${domainColors[n.domain]}20;color:${domainColors[n.domain]};border:1px solid ${domainColors[n.domain]}50;">${n.label}</span>`;
+                        html += `<span class="path-node-pill" tabindex="0" role="link" aria-label="${nodeFullTitle(n)}" onclick="jumpToNode('${nodeId}')"
+                                       style="background:${domainColors[n.domain]}20;color:${domainColors[n.domain]};border:1px solid ${domainColors[n.domain]}50;">${nodeShortLabel(n)}</span>`;
                         if (i < path.length - 1) html += `<span class="path-arrow">&rarr;</span>`;
                     });
                     html += '</div>';
@@ -33423,7 +33418,7 @@ function buildCombinedConditionsSection(
         <div class="condition-tab" data-tab="onlyA" data-color="${cA}" onclick="switchConditionTab(this)"
              style="padding:8px 4px;border-radius:8px;background:${cA}08;border:1px solid ${cA}25;cursor:pointer;transition:all 0.15s;">
             <div class="stat-number" style="color:${cA};">${filteredOnlyA.size}</div>
-            <div style="font-size:var(--font-sm);color:${cA};margin-top:3px;">Only ${nodeA.label}</div>
+            <div style="font-size:var(--font-sm);color:${cA};margin-top:3px;">Only ${nodeShortLabel(nodeA)}</div>
         </div>
         <div class="condition-tab active" data-tab="shared" data-color="${sharedColor}" onclick="switchConditionTab(this)"
              style="padding:8px 4px;border-radius:8px;background:${sharedColor}15;border:2px solid ${sharedColor}60;cursor:pointer;transition:all 0.15s;">
@@ -33433,7 +33428,7 @@ function buildCombinedConditionsSection(
         <div class="condition-tab" data-tab="onlyB" data-color="${cB}" onclick="switchConditionTab(this)"
              style="padding:8px 4px;border-radius:8px;background:${cB}08;border:1px solid ${cB}25;cursor:pointer;transition:all 0.15s;">
             <div class="stat-number" style="color:${cB};">${filteredOnlyB.size}</div>
-            <div style="font-size:var(--font-sm);color:${cB};margin-top:3px;">Only ${nodeB.label}</div>
+            <div style="font-size:var(--font-sm);color:${cB};margin-top:3px;">Only ${nodeShortLabel(nodeB)}</div>
         </div>
     </div>`;
 
@@ -33452,8 +33447,8 @@ function buildCombinedConditionsSection(
             const bestPrompt = spA || spB;
             const stats = bestPrompt ? bestPrompt.stats : '';
             const rels = [];
-            if (styA) rels.push({ typeShort: styA.typeShort, strength: styA.strength, mechNames: styA.mechNames, anchorId: idA, anchorLabel: nodeA.label });
-            if (styB) rels.push({ typeShort: styB.typeShort, strength: styB.strength, mechNames: styB.mechNames, anchorId: idB, anchorLabel: nodeB.label });
+            if (styA) rels.push({ typeShort: styA.typeShort, strength: styA.strength, mechNames: styA.mechNames, anchorId: idA, anchorLabel: nodeShortLabel(nodeA) });
+            if (styB) rels.push({ typeShort: styB.typeShort, strength: styB.strength, mechNames: styB.mechNames, anchorId: idB, anchorLabel: nodeShortLabel(nodeB) });
             html += renderCard(n, { relationships: rels, stats, hidden, anchorId: idA });
         });
         if (sharedArray.length > PAGE_S) {
@@ -33467,17 +33462,17 @@ function buildCombinedConditionsSection(
             const evidence = vacNode.vaccineEvidence && vacNode.vaccineEvidence[otherNode.id];
             if (evidence) {
                 const isNuanced = evidence.tier === 'nuanced';
-                html += `<p style="color:var(--text-primary);font-size:var(--font-base);font-weight:600;margin:0 0 6px;">${isNuanced ? otherNode.label + ' - nuanced' : otherNode.label + ' - no association'}</p>`;
+                html += `<p style="color:var(--text-primary);font-size:var(--font-base);font-weight:600;margin:0 0 6px;">${isNuanced ? nodeShortLabel(otherNode) + ' - nuanced' : nodeShortLabel(otherNode) + ' - no association'}</p>`;
                 html += `<p style="font-size:12px;color:var(--text-secondary);line-height:1.6;margin:0 0 8px;">${evidence.summary}</p>`;
                 if (evidence.sources && evidence.sources.length > 0) {
-                    evidence.sources.forEach(s => vaccineSources.push({ ...s, claim: s.claim || ('Vaccine safety evidence - ' + otherNode.label) }));
+                    evidence.sources.forEach(s => vaccineSources.push({ ...s, claim: s.claim || ('Vaccine safety evidence - ' + nodeShortLabel(otherNode)) }));
                 }
                 if (!isNuanced && vacNode.debunkingSources && vacNode.debunkingSources.length > 0) {
                     vacNode.debunkingSources.forEach(s => vaccineSources.push({ ...s, claim: s.claim }));
                 }
             } else {
-                html += `<p style="color:var(--text-primary);font-size:var(--font-base);font-weight:600;margin:0 0 6px;">${otherNode.label}: no established link</p>`;
-                html += `<p style="font-size:12px;color:var(--text-secondary);line-height:1.6;margin:0 0 8px;">None of the research reviewed for this map has found a link between childhood immunisation and ${otherNode.label}. While some conditions may first become apparent around the same age as routine immunisations, and some immunisations can cause short-lived adverse events such as fever, neither of these is evidence of a causal connection. Large-scale epidemiological studies are what establish or rule out these links, and none has found one here.</p>`;
+                html += `<p style="color:var(--text-primary);font-size:var(--font-base);font-weight:600;margin:0 0 6px;">${nodeShortLabel(otherNode)}: no established link</p>`;
+                html += `<p style="font-size:12px;color:var(--text-secondary);line-height:1.6;margin:0 0 8px;">None of the research reviewed for this map has found a link between childhood immunisation and ${nodeShortLabel(otherNode)}. While some conditions may first become apparent around the same age as routine immunisations, and some immunisations can cause short-lived adverse events such as fever, neither of these is evidence of a causal connection. Large-scale epidemiological studies are what establish or rule out these links, and none has found one here.</p>`;
                 html += `<p style="font-size:12px;color:var(--text-secondary);line-height:1.6;margin:0 0 8px;">The broader claim linking vaccines to neurodevelopmental and chronic conditions originated from a single fraudulent 1998 study (Wakefield et al., retracted). The lead author was struck off the medical register. Vaccine hesitancy itself is now a subject of public health research.</p>`;
                 if (vacNode.debunkingSources && vacNode.debunkingSources.length > 0) {
                     vacNode.debunkingSources.forEach(s => vaccineSources.push({ ...s, claim: s.claim }));
@@ -33565,7 +33560,7 @@ function renderCombinedPanel(nodeA, nodeB) {
     let html = renderTwoNodeHeader(nodeA, nodeB);
 
     // ── Title ──
-    html += `<h3>${nodeA.label} &amp; ${nodeB.label}</h3>`;
+    html += `<h3>${nodeFullTitle(nodeA)} &amp; ${nodeFullTitle(nodeB)}</h3>`;
 
     // ── Co-presentation prompt ──
     const matchedCoPres = coPresentations.find(cp =>
@@ -33987,7 +33982,7 @@ function renderCard(other, opts) {
     let html = `<div class="conn-card${hidden ? ' conn-hidden' : ''}"
                  style="--card-accent:${borderColor};${hidden ? 'display:none;' : ''}">
         <div class="flex-row flex-row-baseline">
-            <span class="condition-link" data-node-id="${other.id}"${clickAnchor ? ` data-combined-anchor="${clickAnchor}"` : ''}>${other.label}</span>
+            <span class="condition-link" data-node-id="${other.id}"${clickAnchor ? ` data-combined-anchor="${clickAnchor}"` : ''}>${nodeShortLabel(other)}</span>
             ${formattedStats ? `<span class="conn-stats">${formattedStats}</span>` : ''}
         </div>`;
     relationships.forEach(r => {
@@ -34041,13 +34036,7 @@ function renderValidationBadge(d) {
 function renderIdentityBlock(d) {
     const pc = getPersonaConfig();
     let html = '';
-    // Full name heading: description with label in brackets only when non-obvious
-    // e.g. show "(ME/CFS)" for "Myalgic Encephalomyelitis / Chronic Fatigue Syndrome"
-    // but NOT "(Autism)" for "Autism Spectrum Disorder" - that's just the obvious short form
-    const fullName = d.description || d.label;
-    const labelDiffers = d.label && d.description && d.label !== d.description;
-    const showBrackets = labelDiffers && !d.description.toLowerCase().includes(d.label.toLowerCase());
-    const headingText = showBrackets ? `${d.description} (${d.label})` : fullName;
+    const headingText = nodeFullTitle(d);
     const badge = renderValidationBadge(d);
     html += `<div style="display:flex;align-items:flex-start;gap:8px;"><h2 class="panel-title" style="flex:1;">${headingText}</h2>${badge}</div>`;
 
@@ -34198,7 +34187,7 @@ function renderScreeningBlock(d) {
         return sectionWrapper(pc.headings.screening, inner, isExpanded(d, 'screening'));
     }
     if (pc.screeningSubheading) {
-        inner += `<p style="font-size:12px;color:var(--text-tertiary);margin:0 0 8px;line-height:1.4;">These conditions frequently occur alongside ${d.label || d.description}</p>`;
+        inner += `<p style="font-size:12px;color:var(--text-tertiary);margin:0 0 8px;line-height:1.4;">These conditions frequently occur alongside ${nodeShortLabel(d)}</p>`;
     }
     prompts.forEach(p => {
         const linkedNode = p.conditionId ? nodes.find(n => n.id === p.conditionId) : null;
@@ -34618,13 +34607,13 @@ function renderProfileConnectionsBlock(nodeA, nodeB) {
     sorted.forEach((entry, idx) => {
         const hidden = idx >= PAGE;
         const viaDots = `<span style="display:inline-flex;gap:2px;margin-left:auto;flex-shrink:0;">`
-            + (entry.viaA ? `<span title="via ${nodeA.label}" class="color-dot color-dot-sm" style="background:${cA};"></span>` : '')
-            + (entry.viaB ? `<span title="via ${nodeB.label}" class="color-dot color-dot-sm" style="background:${cB};"></span>` : '')
+            + (entry.viaA ? `<span title="via ${nodeShortLabel(nodeA)}" class="color-dot color-dot-sm" style="background:${cA};"></span>` : '')
+            + (entry.viaB ? `<span title="via ${nodeShortLabel(nodeB)}" class="color-dot color-dot-sm" style="background:${cB};"></span>` : '')
             + `</span>`;
         html += `<div class="conn-card${hidden ? ' conn-hidden' : ''}" style="padding:7px 10px;border-radius:8px;background:#f8f9fa;margin:5px 0;border-left:3px solid ${domainColors[entry.node.domain]};${hidden ? 'display:none;' : ''}">
             <div class="flex-row">
                 <div style="width:9px;height:9px;border-radius:50%;background:${domainColors[entry.node.domain]};flex-shrink:0;"></div>
-                <span class="condition-link" data-node-id="${entry.node.id}">${entry.node.label}</span>
+                <span class="condition-link" data-node-id="${entry.node.id}">${nodeShortLabel(entry.node)}</span>
                 ${viaDots}
             </div>
         </div>`;
@@ -34735,7 +34724,7 @@ function buildConditionPeekHtml(nd) {
         </div>`;
     }
 
-    const peekTitle = (nd.description && nd.description !== nd.label) ? nd.description : nd.label;
+    const peekTitle = nodeFullTitle(nd);
     const header = `<div class="flex-row" style="margin-bottom:4px;">
         <div class="color-dot" style="background:${domainColor};"></div>
         <strong style="font-size:var(--font-base);color:var(--text-primary);">${peekTitle}</strong>`;
@@ -35062,7 +35051,7 @@ function showBrowse() {
             items.forEach(n => {
                 html += `<div class="autocomplete-item" id="ac-item-${idx}" role="option" data-id="${n.id}" data-idx="${idx}" onmousedown="selectAutocomplete('${n.id}')">
                     <div class="autocomplete-dot" style="background:${col};"></div>
-                    <span>${n.label}</span>
+                    <span>${nodeFullTitle(n)}</span>
                     <span class="autocomplete-domain">${n.domain}</span>
                 </div>`;
                 idx++;
@@ -35073,7 +35062,7 @@ function showBrowse() {
             const dots = compositeDotsHTML(cp, 10);
             html += `<div class="autocomplete-item" id="ac-item-${idx}" role="option" data-id="${cp.id}" data-idx="${idx}" data-composite="true" onmousedown="selectAutocompleteComposite('${cp.id}')">
                 <div class="flex-row" style="flex-shrink:0;">${dots}</div>
-                <span style="font-weight:500;">${cp.label}</span>
+                <span style="font-weight:500;">${nodeFullTitle(cp)}</span>
                 <span class="autocomplete-domain">co-presentation</span>
             </div>`;
             idx++;
@@ -35131,7 +35120,7 @@ function showBrowse() {
             all.push({ label: n.label, cat: n.domain, color: col, html: (idx) =>
                 `<div class="autocomplete-item" id="ac-item-${idx}" role="option" data-id="${n.id}" data-idx="${idx}" onmousedown="selectAutocomplete('${n.id}')">
                     <div class="autocomplete-dot" style="background:${col};"></div>
-                    <span>${n.label}</span>
+                    <span>${nodeFullTitle(n)}</span>
                     <span class="autocomplete-domain">${n.domain}</span>
                 </div>` });
         });
@@ -35140,7 +35129,7 @@ function showBrowse() {
             all.push({ label: cp.label, cat: 'co-presentation', color: '#888', html: (idx) =>
                 `<div class="autocomplete-item" id="ac-item-${idx}" role="option" data-id="${cp.id}" data-idx="${idx}" data-composite="true" onmousedown="selectAutocompleteComposite('${cp.id}')">
                     <div class="flex-row" style="flex-shrink:0;">${dots}</div>
-                    <span>${cp.label}</span>
+                    <span>${nodeFullTitle(cp)}</span>
                     <span class="autocomplete-domain">co-presentation</span>
                 </div>` });
         });
@@ -35208,6 +35197,8 @@ function collectSearchMatches(q) {
             fuzzyMatch(q, n.description),
             fuzzyMatch(q, n.id)
         ];
+        if (n.shortLabel) scores.push(fuzzyMatch(q, n.shortLabel));
+        if (n.clarifier) scores.push(fuzzyMatch(q, n.clarifier));
         if (n.searchTerms) n.searchTerms.forEach(t => scores.push(fuzzyMatch(q, t)));
         const best = Math.max(...scores);
         if (best >= 50) {
@@ -35222,6 +35213,8 @@ function collectSearchMatches(q) {
             fuzzyMatch(q, cp.id),
             fuzzyMatch(q, cp.description)
         ];
+        if (cp.shortLabel) scores.push(fuzzyMatch(q, cp.shortLabel));
+        if (cp.clarifier) scores.push(fuzzyMatch(q, cp.clarifier));
         const best = Math.max(...scores);
         if (best >= 50) {
             conditionMatches.push({ type: 'copres', cp, score: best, dimmed: false });
@@ -35329,7 +35322,7 @@ function showAutocomplete(query) {
             const dots = compositeDotsHTML(m.cp, 10);
             html += `<div class="autocomplete-item${dimClass}" id="ac-item-${idx}" role="option" data-id="${m.cp.id}" data-idx="${idx}" data-composite="true" onmousedown="selectAutocompleteComposite('${m.cp.id}')">
                 <div class="flex-row" style="flex-shrink:0;">${dots}</div>
-                <span style="font-weight:500;">${m.cp.label}</span>
+                <span style="font-weight:500;">${nodeFullTitle(m.cp)}</span>
                 <span class="autocomplete-domain">co-presentation${filteredTag}</span>
             </div>`;
         } else {
@@ -35337,7 +35330,7 @@ function showAutocomplete(query) {
             const dotBg = m.node.isPersonal ? 'linear-gradient(135deg, #e74c3c, #f39c12, #f1c40f, #2ecc71, #3498db, #9b59b6)' : col;
             html += `<div class="autocomplete-item${dimClass}" id="ac-item-${idx}" role="option" data-id="${m.node.id}" data-idx="${idx}" onmousedown="selectAutocomplete('${m.node.id}')">
                 <div class="autocomplete-dot" style="background:${dotBg};"></div>
-                <span>${m.node.label}</span>
+                <span>${nodeFullTitle(m.node)}</span>
                 <span class="autocomplete-domain">${m.node.domain}${filteredTag}</span>
             </div>`;
         }
