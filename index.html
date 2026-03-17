@@ -28715,6 +28715,9 @@ let _konamiIdx = 0;
 // ── Secret variant: ↑↑↓↓←→←→LW Enter ──────────────────────────────
 const _lwSequence = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','l','w','Enter'];
 let _lwIdx = 0;
+// ── Secret variant: ↑↑↓↓←→←→RP Enter → heart ─────────────────────
+const _rpSequence = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','r','p','Enter'];
+let _rpIdx = 0;
 document.addEventListener('keydown', e => {
     // Check LW sequence
     if (e.key === _lwSequence[_lwIdx]) {
@@ -28725,6 +28728,16 @@ document.addEventListener('keydown', e => {
         }
     } else {
         _lwIdx = e.key === _lwSequence[0] ? 1 : 0;
+    }
+    // Check RP sequence
+    if (e.key === _rpSequence[_rpIdx]) {
+        _rpIdx++;
+        if (_rpIdx === _rpSequence.length) {
+            _rpIdx = 0;
+            triggerRpEasterEgg();
+        }
+    } else {
+        _rpIdx = e.key === _rpSequence[0] ? 1 : 0;
     }
     // Check standard Konami
     if (e.key === _konamiSequence[_konamiIdx]) {
@@ -29131,6 +29144,174 @@ function triggerLwEasterEgg() {
             _lwActive = false;
         }, 2500);
     }, 5000);
+}
+
+// ── Secret easter egg: RP variant → heart shape ─────────────────────
+let _rpActive = false;
+function triggerRpEasterEgg() {
+    if (_rpActive || _eggActive || _lwActive) return;
+    _rpActive = true;
+
+    closeInfo();
+    clearAllSelections();
+    hideAutocomplete();
+    searchBox.value = '';
+    currentSearch = '';
+    updateSearchClearBtn();
+    applyFilters();
+
+    const visible = nodes.filter(n =>
+        !n._isDormant && !isHiddenComponent(n.id) && !n.isEasterEgg && !n.isPersonal
+    );
+
+    // Sort by connection count (most connected = biggest = centre)
+    const sorted = [...visible].sort((a, b) => {
+        const ca = links.filter(l => edgeSourceId(l) === a.id || edgeTargetId(l) === a.id).length;
+        const cb = links.filter(l => edgeSourceId(l) === b.id || edgeTargetId(l) === b.id).length;
+        return cb - ca;
+    });
+
+    // Heart shape: parametric equation
+    // x = 16 sin³(t), y = 13cos(t) - 5cos(2t) - 2cos(3t) - cos(4t)
+    const cx = width / 2, cy = height / 2;
+    const baseR = Math.min(width, height) * 0.028;
+
+    function heartX(t) { return 16 * Math.pow(Math.sin(t), 3); }
+    function heartY(t) { return -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t)); }
+
+    // Distribute in concentric heart-shaped rings
+    const ringScales = [1.0, 0.72, 0.48, 0.28];
+    const rings = [];
+    let remaining = sorted.length;
+    const totalCirc = ringScales.reduce((s, sc) => s + sc, 0);
+    ringScales.forEach((sc, ri) => {
+        const count = ri < ringScales.length - 1
+            ? Math.round(sorted.length * sc / totalCirc)
+            : remaining;
+        rings.push(count);
+        remaining -= rings[ri];
+    });
+
+    // Compute target positions (smallest on outside, biggest in centre)
+    const rpTargets = new Map();
+    let nodeIdx = sorted.length - 1;
+    ringScales.forEach((sc, ri) => {
+        const count = rings[ri];
+        if (count <= 0) return;
+        for (let i = 0; i < count && nodeIdx >= 0; i++, nodeIdx--) {
+            const n = sorted[nodeIdx];
+            const t = (2 * Math.PI * i) / count - Math.PI / 2;
+            rpTargets.set(n.id, {
+                x: cx + heartX(t) * baseR * sc + (Math.random() - 0.5) * 4,
+                y: cy + heartY(t) * baseR * sc + (Math.random() - 0.5) * 4
+            });
+        }
+    });
+    while (nodeIdx >= 0) {
+        const n = sorted[nodeIdx];
+        rpTargets.set(n.id, {
+            x: cx + (Math.random() - 0.5) * baseR * 3,
+            y: cy + (Math.random() - 0.5) * baseR * 3
+        });
+        nodeIdx--;
+    }
+
+    // Save and unpin
+    const savedFx = new Map();
+    const savedFy = new Map();
+    visible.forEach(n => {
+        savedFx.set(n.id, n.fx);
+        savedFy.set(n.id, n.fy);
+        n.fx = undefined;
+        n.fy = undefined;
+    });
+
+    // Apply forces
+    simulation.force('rp-x', d3.forceX(d => {
+        const t = rpTargets.get(d.id);
+        return t ? t.x : d.x;
+    }).strength(d => rpTargets.has(d.id) ? 0.25 : 0));
+    simulation.force('rp-y', d3.forceY(d => {
+        const t = rpTargets.get(d.id);
+        return t ? t.y : d.y;
+    }).strength(d => rpTargets.has(d.id) ? 0.25 : 0));
+
+    simulation.force('charge', d3.forceManyBody().strength(0));
+    simulation.force('center', null);
+    simulation.force('x', null);
+    simulation.force('y', null);
+    simulation.force('link').strength(0);
+    simulation.force('collision', d3.forceCollide().radius(d =>
+        rpTargets.has(d.id) ? getNodeRadius(d) + 2 : 0
+    ));
+    simulation.alpha(1).restart();
+
+    // Zoom to fit
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+    rpTargets.forEach(t => {
+        if (t.x < minX) minX = t.x;
+        if (t.x > maxX) maxX = t.x;
+        if (t.y < minY) minY = t.y;
+        if (t.y > maxY) maxY = t.y;
+    });
+    const pad = 60;
+    const bw = (maxX - minX) + pad * 2;
+    const bh = (maxY - minY) + pad * 2;
+    const rpScale = Math.min(width / bw, height / bh) * 0.92;
+    const midX = (minX + maxX) / 2;
+    const midY = (minY + maxY) / 2;
+    const rpTransform = d3.zoomIdentity
+        .translate(width / 2 - midX * rpScale, height / 2 - midY * rpScale)
+        .scale(rpScale);
+    svg.transition().duration(prefersReducedMotion ? 0 : 800).call(zoom.transform, rpTransform);
+
+    // Hold, then release
+    setTimeout(() => {
+        simulation.force('rp-x', null);
+        simulation.force('rp-y', null);
+
+        visible.forEach(n => {
+            const sx = savedFx.get(n.id);
+            const sy = savedFy.get(n.id);
+            n.fx = sx != null ? sx : undefined;
+            n.fy = sy != null ? sy : undefined;
+        });
+        if (vaccinationNode) {
+            vaccinationNode.fx = width / 2 + 3000;
+            vaccinationNode.fy = height / 2 - 1000;
+        }
+        if (personalNode) {
+            personalNode.fx = width / 2 - 2500;
+            personalNode.fy = height / 2 + 800;
+        }
+        nodes.forEach(n => {
+            if (n.isComposite && n._isDormant) {
+                n.fx = width / 2;
+                n.fy = height / 2;
+            }
+        });
+
+        simulation.force('center', d3.forceCenter(width / 2, height / 2));
+        simulation.force('charge', d3.forceManyBody().strength(d =>
+            (d._isDormant || isHiddenComponent(d.id)) ? 0 : -300
+        ));
+        const af = getAspectForces();
+        simulation.force('x', d3.forceX(width / 2).strength(af.xStrength));
+        simulation.force('y', d3.forceY(height / 2).strength(af.yStrength));
+        simulation.force('link').strength(linkStrengthFn);
+        simulation.force('collision', d3.forceCollide().radius(d =>
+            (d._isDormant || isHiddenComponent(d.id)) ? 0 : getNodeRadius(d) + 25
+        ));
+        simulation.alpha(0.6).restart();
+
+        setTimeout(() => {
+            if (_overviewTransform) {
+                svg.transition().duration(prefersReducedMotion ? 0 : 600)
+                    .call(zoom.transform, _overviewTransform);
+            }
+            _rpActive = false;
+        }, 2500);
+    }, 4000);
 }
 
 function resetNodeVisuals() {
