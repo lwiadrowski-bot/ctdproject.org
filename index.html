@@ -27433,11 +27433,11 @@ function _updateCosmicZoom() {
     _cosmicOverlay.style.background = 'rgb(0, 0, 0)';
 
     // Global star brightness multiplier — used by position update to scale opacity
-    // Stars fade out at the end (progress 0.70-0.90)
-    if (progress < 0.70) {
+    // Stars fade out at the end (progress 0.82-0.94)
+    if (progress < 0.82) {
         _cosmicStarBrightness = 1;
     } else {
-        _cosmicStarBrightness = Math.max(0, 1 - (progress - 0.70) / 0.20);
+        _cosmicStarBrightness = Math.max(0, 1 - (progress - 0.82) / 0.12);
     }
 
     // Move stars on each scroll tick
@@ -27450,9 +27450,13 @@ function _updateCosmicZoom() {
 // Messages: zoom through them like passing through giant text in space
 // Each has a range: starts huge (off-screen large), shrinks to readable, shrinks to nothing
 // readAt is the midpoint where it's at scale(1) and fully readable
+// 4 messages, exponentially spaced: 1x, 2x, 3x, 4x scroll effort
+// Total 10 parts. Stars fully out by 0.12. Range 0.12-0.96 = 0.84
+// Part = 0.084. msg1 at 0.12+0.084=0.20, msg2 at 0.20+0.168=0.37, msg3 at 0.37+0.252=0.62, msg4 at 0.96
 const _cosmicMsgs = [
-    { text: 'you look gorgeous today', cls: '', startAt: 0.15, readAt: 0.25, endAt: 0.34 },
-    { text: 'when did you last drink something?', cls: '', startAt: 0.44, readAt: 0.54, endAt: 0.63 },
+    { text: 'you look gorgeous today', cls: '', startAt: 0.12, readAt: 0.20, endAt: 0.28 },
+    { text: 'have you changed your hair?', cls: '', startAt: 0.34, readAt: 0.42, endAt: 0.50 },
+    { text: 'you should probably drink some water', cls: '', startAt: 0.58, readAt: 0.66, endAt: 0.74 },
     { text: '[this space intentionally left blank]', cls: 'faint', startAt: 0.96, readAt: 0.96, endAt: 2, fadeOnly: true }
 ];
 
