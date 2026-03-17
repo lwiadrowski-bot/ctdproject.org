@@ -45,6 +45,7 @@
     }
     </script>
     <script src="https://d3js.org/d3.v7.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js" crossorigin="anonymous"></script>
     <style>
 /* ── Design tokens ── */
 :root {
@@ -24412,7 +24413,7 @@ const safetyPageContent = `
 
     <h3>Next steps</h3>
     <div class="safety-action-row">
-        <a href="tel:112" class="safety-action-btn">Call<br>for help</a>
+        <a href="tel:112" class="safety-action-btn" onclick="_track('safety_page',{action:'call'})">Call<br>for help</a>
         <p>If you have harmed yourself or someone else, this button will connect you to emergency services worldwide. Or contact your local emergency number: 000 Australia &middot; 111 New Zealand &middot; 999 UK &middot; 911 US/Canada.</p>
     </div>
     <div class="safety-action-row">
@@ -25078,6 +25079,28 @@ validateData();
         if (badge) badge.style.display = 'block';
         document.title = 'DEV — ' + document.title;
     }
+})();
+
+// ── Analytics (Mixpanel) ─────────────────────────────────────────────
+// Cookieless, anonymous event tracking. Disabled on dev/localhost.
+(function() {
+    const _isDev = /^(localhost|127\.|192\.168\.|10\.|file:)/.test(window.location.host || window.location.protocol);
+    if (_isDev || typeof mixpanel === 'undefined') {
+        window._track = function() {}; // no-op on dev
+        return;
+    }
+    mixpanel.init('bfebd14838499164ea3d2d0746aac79b', {
+        api_host: 'https://api-eu.mixpanel.com',
+        persistence: 'localStorage',
+        disable_cookie: true,
+        disable_persistence: true,   // no identifying state stored
+        ip: false,                   // don't record IP
+        property_blacklist: ['$current_url', '$referrer', '$referring_domain'],
+        autocapture: false
+    });
+    window._track = function(event, props) {
+        try { mixpanel.track(event, props || {}); } catch(e) { /* silent */ }
+    };
 })();
 
 // ── Colour helpers ──────────────────────────────────────────────────
@@ -25878,6 +25901,7 @@ function removePresentationPill(id) { removeFilterPill('presentation', id); }
 // ── Generic three-state filter toggle ──────────────────────────────
 // Cycles: off → include → exclude → off. Returns nothing; mutates sets in place.
 function toggleFilter(value, includeSet, excludeSet) {
+    _track('filter_toggle', { value });
     if (includeSet.has(value)) {
         includeSet.delete(value);
         excludeSet.add(value);
@@ -27916,6 +27940,7 @@ document.addEventListener('touchmove', (e) => {
         e.stopPropagation();
         e.preventDefault();
         _dpCount++;
+        _track('pixel_click', { count: _dpCount });
 
         if (_dpCount < 47) {
             // Update counter immediately
@@ -28044,6 +28069,7 @@ const zoom = d3.zoom()
             }
         } else if (t.k <= _cosmicFadeEnd && !_cosmicActive) {
             // Fully dark — activate starfield mode
+            _track('easter_egg', { type: 'cosmic' });
             _cosmicActive = true;
             _cosmicProgress = 0;
             _initCosmicOverlay();
@@ -28525,6 +28551,7 @@ function dropCondition(idx) {
 function handleNodeClick(event, d) {
     // Ignore clicks on hidden component nodes
     if (isHiddenComponent(d.id)) return;
+    _track('node_click', { nodeId: d.id, domain: d.domain, isComposite: !!d.isComposite });
     clearKbFocusRing();
 
     // Constellation mode: cycle node state instead of normal selection
@@ -28689,6 +28716,7 @@ document.addEventListener('keydown', e => {
         _konamiIdx++;
         if (_konamiIdx === _konamiSequence.length) {
             _konamiIdx = 0;
+            _track('easter_egg', { type: 'konami' });
             triggerEggEasterEgg();
         }
     } else {
@@ -30185,6 +30213,7 @@ function showTutorial() {
 }
 
 function closeTutorial(markComplete) {
+    _track('tutorial', { step: tutorialStep, action: markComplete ? 'complete' : 'skip' });
     const tm = document.getElementById('tutorial-modal');
     tm.classList.remove('open');
     tm.setAttribute('aria-hidden', 'true');
@@ -30415,6 +30444,7 @@ function closeHelpModal() {
 let _safetyTriggerEl = null;
 
 function showSafetyModal() {
+    _track('safety_page', { action: 'open' });
     _safetyTriggerEl = document.activeElement;
     // Copy title logo dots into safety modal header
     const srcLogo = document.getElementById('title-logo');
@@ -30447,6 +30477,7 @@ function toggleSafetyCrisis(btn) {
 }
 
 function downloadSafetyCard() {
+    _track('safety_page', { action: 'download_card' });
     // Sized to fit content, trimmed to actual height
     const w = 780;
     const canvas = document.createElement('canvas');
@@ -30846,6 +30877,7 @@ function closePersonaCluster() {
 }
 
 function setPersona(persona) {
+    _track('persona_switch', { persona });
     activePersona = persona;
     document.querySelectorAll('.persona-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.persona === persona);
@@ -31833,6 +31865,7 @@ function closeLensPalette() {
 }
 
 function toggleLens(lensId) {
+    _track('lens_toggle', { lensId, active: !activeLenses.has(lensId) });
     // Mutual exclusion: exit constellation mode if active
     if (constellationMode) exitConstellationMode();
     if (activeLenses.has(lensId)) {
@@ -32509,6 +32542,7 @@ function renderLensEdgeBlock(nodeA, nodeB) {
 
 function activateAmabEasterEgg() {
     if (_amabEasterEggActive) return;
+    _track('easter_egg', { type: 'amab' });
     _amabEasterEggActive = true;
     // Suspend any active lenses — save state, clear highlighting, restore on back/close
     _suspendedLenses = { active: new Set(activeLenses), panel: new Set(panelActiveLenses) };
@@ -34033,6 +34067,7 @@ function _isInAppBrowser() {
 
 function downloadConstellationReport() {
     if (constellationYes.size === 0) return;
+    _track('report_generate', { conditionCount: constellationYes.size, notSureCount: constellationNotSure.size });
     const inApp = _isInAppBrowser();
     // Open window immediately on user gesture (before computation)
     // to avoid mobile popup blockers. Skip for in-app browsers
@@ -36464,6 +36499,7 @@ function selectAutocompleteComposite(cpId) {
 }
 
 function selectAutocomplete(nodeId) {
+    _track('search_select', { nodeId, query: searchBox.value.trim() });
     clearSearch();
     const n = nodes.find(nd => nd.id === nodeId);
     if (!n) return;
@@ -36471,6 +36507,7 @@ function selectAutocomplete(nodeId) {
 }
 
 function selectAutocompleteGlossary(anchor) {
+    _track('glossary_click', { term: anchor.replace('glossary-', '') });
     clearSearch();
     showHelpModal();
     requestAnimationFrame(() => showHelpPage('glossary', anchor));
