@@ -4427,6 +4427,117 @@ body.dark-mode.high-contrast .source-ref { color: #fff; }
 }
 body.dark-mode #dev-badge { background: #45c4b0; color: #1a1a2e; }
 
+/* ── Cosmic zoom easter egg ── */
+#cosmic-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    background: transparent;
+    overflow: hidden;
+}
+#cosmic-overlay.active {
+    pointer-events: none;
+}
+#cosmic-circle {
+    will-change: transform, opacity;
+}
+
+/* ── Dead pixel easter egg ── */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+#dead-pixel {
+    position: fixed;
+    background: #bbb;
+    cursor: default;
+    z-index: 100000;
+    border-radius: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+body.dark-mode #dead-pixel { background: #2a2a44; }
+#dead-pixel-counter {
+    position: fixed;
+    bottom: 12px;
+    right: 12px;
+    font-family: 'Press Start 2P', 'Courier New', monospace;
+    font-size: 18px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: #33cc33;
+    z-index: 10001;
+    pointer-events: none;
+    text-shadow: 0 0 4px rgba(51, 204, 51, 0.3);
+}
+body.dark-mode #dead-pixel-counter { color: #33cc33; }
+#dead-pixel-trophy {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.85);
+    cursor: default;
+}
+#dead-pixel-trophy .trophy-icon {
+    font-size: 120px;
+    line-height: 1;
+}
+#dead-pixel-trophy .trophy-title {
+    font-family: 'Press Start 2P', 'Courier New', monospace;
+    font-size: 24px;
+    font-weight: 400;
+    color: #39ff14;
+    letter-spacing: 2px;
+    margin-top: 16px;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+}
+#dead-pixel-trophy .trophy-subtitle {
+    font-family: 'Press Start 2P', 'Courier New', monospace;
+    font-size: 10px;
+    color: #888;
+    margin-top: 12px;
+}
+#dead-pixel-final {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: #000;
+}
+.cosmic-star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+}
+.cosmic-star.visible { opacity: 1; }
+.cosmic-star.bright {
+    width: 3px;
+    height: 3px;
+    box-shadow: 0 0 4px 1px rgba(255,255,255,0.6);
+}
+.cosmic-msg {
+    position: absolute;
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 18px;
+    opacity: 0;
+    text-align: center;
+    letter-spacing: 0.5px;
+    z-index: 1;
+    white-space: nowrap;
+    will-change: transform, opacity;
+}
+.cosmic-msg.faint {
+    font-size: 13px;
+    color: #666;
+    font-style: italic;
+}
+
 
     </style>
 </head>
@@ -27211,8 +27322,681 @@ if (prefersReducedMotion) {
 let _zoomGestureTransformed = false;
 let _gestureStartK = null, _gestureStartX = null, _gestureStartY = null;
 const _svgGroups = svg.selectAll(':scope > g');
+// ── Cosmic zoom easter egg (zoom-out approach) ──────────────────────
+// Zoom out far enough and the map becomes a tiny cluster of dots in
+// darkness. Keep going and you're in space. Stars drift in, messages appear.
+// All driven by d3's normal zoom — no hacking, no fighting.
+let _cosmicActive = false;
+let _cosmicProgress = 0;
+let _cosmicOverlay = null;
+let _cosmicStars = [];
+const _cosmicScrollStep = 0.0012;
+let _cosmicStarBrightness = 1;
+const _cosmicFadeStart = 0.025; // d3 scale where darkening begins
+const _cosmicFadeEnd = 0.008;   // d3 scale where fully dark, scroll takes over
+
+function _initCosmicOverlay() {
+    if (_cosmicOverlay) return;
+    const el = document.createElement('div');
+    el.id = 'cosmic-overlay';
+    document.getElementById('graph-container').appendChild(el);
+    _cosmicOverlay = el;
+    for (let i = 0; i < 150; i++) {
+        const star = document.createElement('div');
+        star.className = 'cosmic-star visible' + (Math.random() < 0.15 ? ' bright' : '');
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 5 + Math.random() * 95;
+        star.style.left = (50 + Math.cos(angle) * dist) + '%';
+        star.style.top = (50 + Math.sin(angle) * dist) + '%';
+        star.style.opacity = '0';
+        star.dataset.angle = angle;
+        star.dataset.startDist = dist;
+        star.dataset.currentDist = dist;
+        el.appendChild(star);
+        _cosmicStars.push(star);
+    }
+}
+// Create overlay at page load and warm up star position updates across real frames
+setTimeout(() => {
+    _initCosmicOverlay();
+    // Run position updates across actual animation frames to prime layout/paint pipeline
+    let warmCycles = 0;
+    _cosmicStarBrightness = 0;
+    function warmFrame() {
+        if (warmCycles >= 60) {
+            // Reset positions and hide
+            _cosmicStars.forEach(s => {
+                const dist = parseFloat(s.dataset.startDist);
+                const angle = parseFloat(s.dataset.angle);
+                s.dataset.currentDist = dist;
+                s.style.left = (50 + Math.cos(angle) * dist) + '%';
+                s.style.top = (50 + Math.sin(angle) * dist) + '%';
+                s.style.opacity = '0';
+                s.style.transform = '';
+            });
+            _cosmicStarBrightness = 1;
+            return;
+        }
+        warmCycles++;
+        _cosmicStarStep = _cosmicScrollStep;
+        _cosmicStarBrightness = 0.001; // near-invisible but forces paint
+        _updateCosmicStarPositions();
+        requestAnimationFrame(warmFrame);
+    }
+    requestAnimationFrame(warmFrame);
+}, 2000);
+
+// Scroll-driven star positions — movement proportional to actual scroll step
+let _cosmicStarStep = 0; // set by scroll handler before calling update
+function _updateCosmicStarPositions() {
+    if (!_cosmicOverlay) return;
+    // Scale star movement to match scroll step — base rate calibrated to cosmicScrollStep
+    const moveDist = (_cosmicStarStep / _cosmicScrollStep) * 0.3;
+    _cosmicStars.forEach(s => {
+        let dist = parseFloat(s.dataset.currentDist || s.dataset.startDist);
+        dist -= moveDist;
+        // Respawn when reaching centre or pushed past edge
+        if (dist < 5) {
+            dist = 45 + Math.random() * 55;
+            s.dataset.angle = Math.random() * Math.PI * 2;
+        } else if (dist > 100) {
+            dist = 5 + Math.random() * 10;
+            s.dataset.angle = Math.random() * Math.PI * 2;
+        }
+        s.dataset.currentDist = dist;
+        const angle = parseFloat(s.dataset.angle);
+        s.style.left = (50 + Math.cos(angle) * dist) + '%';
+        s.style.top = (50 + Math.sin(angle) * dist) + '%';
+        // Fade and shrink near centre, fade near edge
+        const fadeCentre = 40;
+        const fadeEdge = 85;
+        let starOpacity = 1;
+        if (dist < fadeCentre) {
+            starOpacity = dist / fadeCentre;
+            // Also shrink star size as it approaches centre
+            const shrink = Math.max(0.2, dist / fadeCentre);
+            s.style.transform = `scale(${shrink})`;
+        } else if (dist > fadeEdge) {
+            starOpacity = (100 - dist) / (100 - fadeEdge);
+            s.style.transform = '';
+        } else {
+            s.style.transform = '';
+        }
+        s.style.opacity = starOpacity * _cosmicStarBrightness;
+    });
+}
+
+function _updateCosmicZoom() {
+    if (!_cosmicOverlay) return;
+    const progress = _cosmicProgress;
+
+    _cosmicOverlay.style.background = 'rgb(0, 0, 0)';
+
+    // Global star brightness multiplier — used by position update to scale opacity
+    // Stars fade out at the end (progress 0.70-0.90)
+    if (progress < 0.70) {
+        _cosmicStarBrightness = 1;
+    } else {
+        _cosmicStarBrightness = Math.max(0, 1 - (progress - 0.70) / 0.20);
+    }
+
+    // Move stars on each scroll tick
+    _updateCosmicStarPositions();
+
+    // Update messages via rAF to avoid blocking the scroll
+    requestAnimationFrame(() => _updateCosmicMessages());
+}
+
+// Messages: zoom through them like passing through giant text in space
+// Each has a range: starts huge (off-screen large), shrinks to readable, shrinks to nothing
+// readAt is the midpoint where it's at scale(1) and fully readable
+const _cosmicMsgs = [
+    { text: 'you look gorgeous today', cls: '', startAt: 0.15, readAt: 0.25, endAt: 0.34 },
+    { text: 'when did you last drink something?', cls: '', startAt: 0.44, readAt: 0.54, endAt: 0.63 },
+    { text: '[this space intentionally left blank]', cls: 'faint', startAt: 0.96, readAt: 0.96, endAt: 2, fadeOnly: true }
+];
+
+function _updateCosmicMessages() {
+    if (!_cosmicOverlay) return;
+    _cosmicMsgs.forEach((m, i) => {
+        let el = _cosmicOverlay.querySelector(`.cosmic-msg[data-msg-idx="${i}"]`);
+        const inRange = _cosmicProgress >= m.startAt && _cosmicProgress < m.endAt;
+
+        if (inRange) {
+            if (!el) {
+                el = document.createElement('div');
+                el.className = 'cosmic-msg' + (m.cls ? ' ' + m.cls : '');
+                el.style.top = '50%';
+                el.style.left = '50%';
+                el.textContent = m.text;
+                el.dataset.msgIdx = i;
+                _cosmicOverlay.appendChild(el);
+                requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('visible')));
+            }
+            if (m.fadeOnly) {
+                // Simple fade in — for the final message
+                const t = Math.min(1, (_cosmicProgress - m.startAt) / 0.05);
+                el.style.transform = 'translate(-50%, -50%) scale(1)';
+                el.style.opacity = t;
+            } else {
+                // Zoom through: massive → readable → nothing
+                // Starts at scale 30 (way bigger than screen) fading in,
+                // readable at scale 1, then shrinks to nothing
+                let scale, opacity;
+                if (_cosmicProgress < m.readAt) {
+                    const t = (_cosmicProgress - m.startAt) / (m.readAt - m.startAt);
+                    // Ease out: fast at start (huge/invisible), slows as it approaches readable
+                    const eased = 1 - Math.pow(1 - t, 2);
+                    scale = 30 - 29 * eased; // 30 → 1, decelerating
+                    // Slow fade in: invisible until ~30% through, fully visible at ~70%
+                    opacity = Math.min(1, Math.max(0, (t - 0.3) / 0.4));
+                } else {
+                    const t = Math.min(1, (_cosmicProgress - m.readAt) / (m.endAt - m.readAt));
+                    scale = 1 - t; // 1 → 0
+                    opacity = 1 - t;
+                }
+                el.style.transform = `translate(-50%, -50%) scale(${Math.max(0.01, scale)})`;
+                el.style.opacity = opacity;
+            }
+        } else if (el) {
+            el.remove();
+        }
+    });
+}
+
+function _exitCosmicZoom() {
+    _cosmicActive = false;
+    _cosmicProgress = 0;
+    _cosmicStarBrightness = 1;
+    if (_cosmicOverlay) {
+        _cosmicOverlay.style.background = 'transparent';
+        _cosmicStars.forEach(s => { s.style.opacity = 0; s.dataset.currentDist = s.dataset.startDist; });
+        _cosmicOverlay.querySelectorAll('.cosmic-msg').forEach(el => el.remove());
+        _cosmicOverlay.classList.remove('active');
+    }
+    // Zoom back to overview so the map is visible and centred
+    if (_overviewTransform) {
+        svg.transition('zoom').duration(600).call(zoom.transform, _overviewTransform);
+    }
+}
+
+// ── Cosmic zoom: scroll input (desktop) ──────────────────────────────
+document.addEventListener('wheel', (e) => {
+    const graphEl = document.getElementById('graph-container');
+    if (!graphEl || !graphEl.contains(e.target)) return;
+
+    // When in starfield phase, scroll drives messages
+    if (_cosmicActive) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        // Ignore small deltas (trackpad inertia/momentum events)
+        if (Math.abs(e.deltaY) < 2) return;
+        const zoomingOut = e.deltaY > 0;
+        const zoomingIn = e.deltaY < 0;
+        if (zoomingOut) {
+            _cosmicStarStep = _cosmicScrollStep;
+            _cosmicProgress = Math.min(1, _cosmicProgress + _cosmicScrollStep);
+        } else if (zoomingIn) {
+            _cosmicStarStep = -_cosmicScrollStep;
+            _cosmicProgress = Math.max(0, _cosmicProgress - _cosmicScrollStep);
+            if (_cosmicProgress <= 0) {
+                _exitCosmicZoom();
+                return;
+            }
+        }
+        _updateCosmicZoom();
+        return;
+    }
+}, { passive: false, capture: true });
+
+// ── Cosmic zoom: touch input (mobile pinch) ──────────────────────────
+let _cosmicTouchDist = 0;
+document.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 2) {
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        _cosmicTouchDist = Math.sqrt(dx * dx + dy * dy);
+    }
+}, { passive: true, capture: true });
+
+document.addEventListener('touchmove', (e) => {
+    if (e.touches.length !== 2) return;
+    const graphEl = document.getElementById('graph-container');
+    const onGraph = graphEl && (graphEl.contains(e.target) || (_cosmicOverlay && _cosmicOverlay.contains(e.target)));
+    if (!onGraph) return;
+
+    // Allow d3 to handle normal pinch zoom until cosmic activates
+    if (!_cosmicActive) {
+        const t = d3.zoomTransform(svg.node());
+        if (t.k <= _cosmicFadeEnd) {
+            _cosmicActive = true;
+            _cosmicProgress = 0;
+            _initCosmicOverlay();
+            _cosmicOverlay.classList.add('active');
+            _cosmicStarBrightness = 1;
+            _cosmicOverlay.style.background = 'rgb(0, 0, 0)';
+        }
+        return;
+    }
+
+    const dx = e.touches[0].clientX - e.touches[1].clientX;
+    const dy = e.touches[0].clientY - e.touches[1].clientY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    const pinchingOut = dist < _cosmicTouchDist - 2; // fingers closing = zoom out further
+    const pinchingIn = dist > _cosmicTouchDist + 2;
+
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    if (pinchingOut) {
+        _cosmicStarStep = _cosmicScrollStep;
+        _cosmicProgress = Math.min(1, _cosmicProgress + _cosmicScrollStep);
+        _updateCosmicZoom();
+    } else if (pinchingIn) {
+        _cosmicStarStep = -_cosmicScrollStep;
+        _cosmicProgress = Math.max(0, _cosmicProgress - _cosmicScrollStep);
+        if (_cosmicProgress <= 0) { _exitCosmicZoom(); }
+        else _updateCosmicZoom();
+    }
+    _cosmicTouchDist = dist;
+}, { passive: false, capture: true });
+
+// ── Animation pre-warming ────────────────────────────────────────────
+// Browser JIT + GPU compositor need ~9s to optimise CSS transition paths.
+// Pre-warm by running invisible transitions off-screen at page load.
+(function() {
+    const warmup = document.createElement('div');
+    warmup.style.cssText = 'position:fixed;left:-9999px;top:-9999px;width:0;height:0;overflow:hidden;pointer-events:none;';
+    document.body.appendChild(warmup);
+    let count = 0;
+    function cycle() {
+        if (count > 40) { warmup.remove(); return; }
+        count++;
+        // Simulate firework sparks
+        for (let i = 0; i < 8; i++) {
+            const el = document.createElement('div');
+            el.style.cssText = 'position:absolute;left:50px;top:50px;width:3px;height:3px;background:#fff;border-radius:50%;box-shadow:0 0 4px #fff;transition:all 1.5s ease-out;opacity:1;will-change:transform,opacity,left,top;';
+            warmup.appendChild(el);
+            requestAnimationFrame(() => {
+                el.style.left = (Math.random() * 200) + 'px';
+                el.style.top = (Math.random() * 200) + 'px';
+                el.style.opacity = '0';
+                el.style.width = '1px';
+                el.style.height = '1px';
+            });
+            setTimeout(() => el.remove(), 1600);
+        }
+        // Simulate star movement
+        for (let i = 0; i < 5; i++) {
+            const star = document.createElement('div');
+            star.style.cssText = 'position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;left:100px;top:100px;';
+            warmup.appendChild(star);
+            requestAnimationFrame(() => {
+                star.style.left = (50 + Math.random() * 100) + 'px';
+                star.style.top = (50 + Math.random() * 100) + 'px';
+                star.style.opacity = '0.5';
+                star.style.transform = 'scale(0.5)';
+            });
+            setTimeout(() => star.remove(), 800);
+        }
+        setTimeout(cycle, 200);
+    }
+    // Start after page settles
+    setTimeout(cycle, 500);
+})();
+
+// ── Dead pixel easter egg ────────────────────────────────────────────
+// A tiny dead pixel on the screen. Click it and the count goes up.
+// Session-only — resets on page reload.
+(function() {
+    let _dpCount = 0;
+    let _dpFirstClick = false;
+
+    function _pixelTrophySVG() {
+        // Pixel art trophy — 17 wide x 16 tall, rendered at 4px per pixel
+        const p = 4;
+        const g1 = '#FFD700'; // bright gold
+        const g2 = '#DAA520'; // gold
+        const g3 = '#B8860B'; // dark gold
+        const g4 = '#996515'; // darker gold (shadow)
+        const br = '#8B4513'; // brown (base)
+        const br2 = '#A0522D'; // lighter brown
+        const gr = '#555';    // grey (base bottom)
+        const pixels = [
+            // Handles
+            [1,0,g3],[15,0,g3],
+            [0,1,g3],[1,1,g2],[15,1,g2],[16,1,g3],
+            [0,2,g3],[1,2,g2],[15,2,g2],[16,2,g3],
+            [0,3,g3],[1,3,g2],[15,3,g2],[16,3,g3],
+            [0,4,g4],[1,4,g3],[15,4,g3],[16,4,g4],
+            // Cup rim (row 0)
+            [3,0,g3],[4,0,g1],[5,0,g1],[6,0,g1],[7,0,g1],[8,0,g1],[9,0,g1],[10,0,g1],[11,0,g1],[12,0,g1],[13,0,g3],
+            // Cup body (rows 1-6)
+            [2,1,g3],[3,1,g1],[4,1,g1],[5,1,g1],[6,1,g1],[7,1,g1],[8,1,g1],[9,1,g1],[10,1,g1],[11,1,g1],[12,1,g1],[13,1,g1],[14,1,g3],
+            [2,2,g3],[3,2,g1],[4,2,g1],[5,2,g1],[6,2,g1],[7,2,g1],[8,2,g1],[9,2,g1],[10,2,g1],[11,2,g1],[12,2,g1],[13,2,g1],[14,2,g3],
+            [2,3,g3],[3,3,g1],[4,3,g1],[5,3,g1],[6,3,g1],[7,3,g1],[8,3,g1],[9,3,g1],[10,3,g1],[11,3,g1],[12,3,g1],[13,3,g1],[14,3,g3],
+            [2,4,g3],[3,4,g1],[4,4,g1],[5,4,g1],[6,4,g1],[7,4,g1],[8,4,g1],[9,4,g1],[10,4,g1],[11,4,g1],[12,4,g1],[13,4,g1],[14,4,g3],
+            [2,5,g4],[3,5,g2],[4,5,g1],[5,5,g1],[6,5,g1],[7,5,g1],[8,5,g1],[9,5,g1],[10,5,g1],[11,5,g1],[12,5,g1],[13,5,g2],[14,5,g4],
+            [3,6,g4],[4,6,g2],[5,6,g2],[6,6,g2],[7,6,g2],[8,6,g2],[9,6,g2],[10,6,g2],[11,6,g2],[12,6,g2],[13,6,g4],
+            [4,7,g4],[5,7,g3],[6,7,g3],[7,7,g3],[8,7,g3],[9,7,g3],[10,7,g3],[11,7,g3],[12,7,g4],
+            // Stem (rows 8-10)
+            [7,8,g3],[8,8,g2],[9,8,g3],
+            [7,9,g3],[8,9,g2],[9,9,g3],
+            [7,10,g4],[8,10,g3],[9,10,g4],
+            // Stem flare (row 11)
+            [5,11,g4],[6,11,g3],[7,11,g3],[8,11,g2],[9,11,g3],[10,11,g3],[11,11,g4],
+            // Base (rows 12-14)
+            [4,12,br],[5,12,br2],[6,12,br2],[7,12,br2],[8,12,br2],[9,12,br2],[10,12,br2],[11,12,br2],[12,12,br],
+            [3,13,br],[4,13,br2],[5,13,br2],[6,13,br2],[7,13,br2],[8,13,br2],[9,13,br2],[10,13,br2],[11,13,br2],[12,13,br2],[13,13,br],
+            [3,14,gr],[4,14,gr],[5,14,gr],[6,14,gr],[7,14,gr],[8,14,gr],[9,14,gr],[10,14,gr],[11,14,gr],[12,14,gr],[13,14,gr],
+        ];
+        const w = 17 * p;
+        const h = 15 * p;
+        let svg = `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="image-rendering:pixelated;">`;
+        pixels.forEach(([x, y, c]) => {
+            svg += `<rect x="${x*p}" y="${y*p}" width="${p}" height="${p}" fill="${c}"/>`;
+        });
+        // "47" pixel art on cup — each digit 3x5 pixels, 1px gap between
+        const nc = br2;
+        // "4" at x=5, y=1
+        const n4 = [[5,1],[7,1], [5,2],[7,2], [5,3],[6,3],[7,3], [7,4], [7,5]];
+        // "7" at x=9, y=1
+        const n7 = [[9,1],[10,1],[11,1], [11,2], [10,3], [10,4], [10,5]];
+        const n5 = n4; const n0 = n7; // alias for the spread below
+        [...n5, ...n0].forEach(([x, y]) => {
+            svg += `<rect x="${x*p}" y="${y*p}" width="${p}" height="${p}" fill="${nc}"/>`;
+        });
+        svg += '</svg>';
+        return svg;
+    }
+
+    // Create the pixel
+    const pixel = document.createElement('div');
+    pixel.id = 'dead-pixel';
+    // 1x1 visible pixel with invisible hit area
+    // Larger on touch devices
+    const isTouchDevice = 'ontouchstart' in window;
+    const hitPad = isTouchDevice ? 10 : 6;
+    pixel.style.width = '1px';
+    pixel.style.height = '1px';
+    pixel.style.padding = hitPad + 'px';
+    pixel.style.margin = '-' + hitPad + 'px';
+    pixel.style.backgroundClip = 'content-box';
+    // Fixed position in whitespace (top-right area, away from map)
+    pixel.style.left = (window.innerWidth - 100) + 'px';
+    pixel.style.top = '100px';
+    document.body.appendChild(pixel);
+
+    // Counter element
+    const counter = document.createElement('div');
+    counter.id = 'dead-pixel-counter';
+    counter.style.display = 'none';
+    document.body.appendChild(counter);
+
+    function movePixel() {
+        // TODO: re-enable random movement for production
+        // For now, keep pixel in fixed spot for testing
+    }
+
+    function showBigTrophy() {
+        const trophy = document.createElement('div');
+        trophy.id = 'dead-pixel-trophy';
+        // Pixel art trophy using CSS box-shadow on a single pixel element
+        // Each "pixel" is 8px, trophy is ~11x13 grid
+        const px = 8;
+        const g1 = '#FFD700'; // gold
+        const g2 = '#DAA520'; // darker gold
+        const g3 = '#B8860B'; // dark gold
+        const shadows = [
+            // Cup handles (row 0)
+            [1,0,g2],[9,0,g2],
+            // Cup rim (row 1)
+            [1,1,g1],[2,1,g1],[3,1,g1],[4,1,g1],[5,1,g1],[6,1,g1],[7,1,g1],[8,1,g1],[9,1,g1],
+            // Cup body (rows 2-3) with "50" space
+            [0,2,g2],[1,2,g1],[2,2,g1],[3,2,g1],[4,2,g1],[5,2,g1],[6,2,g1],[7,2,g1],[8,2,g1],[9,2,g1],[10,2,g2],
+            [0,3,g2],[1,3,g1],[2,3,g1],[3,3,g1],[4,3,g1],[5,3,g1],[6,3,g1],[7,3,g1],[8,3,g1],[9,3,g1],[10,3,g2],
+            // Cup body (row 4)
+            [0,4,g2],[1,4,g1],[2,4,g1],[3,4,g1],[4,4,g1],[5,4,g1],[6,4,g1],[7,4,g1],[8,4,g1],[9,4,g1],[10,4,g2],
+            // Cup taper (row 5)
+            [1,5,g2],[2,5,g1],[3,5,g1],[4,5,g1],[5,5,g1],[6,5,g1],[7,5,g1],[8,5,g1],[9,5,g2],
+            // Cup taper (row 6)
+            [2,6,g2],[3,6,g1],[4,6,g1],[5,6,g1],[6,6,g1],[7,6,g1],[8,6,g2],
+            // Stem (rows 7-8)
+            [4,7,g3],[5,7,g2],[6,7,g3],
+            [4,8,g3],[5,8,g2],[6,8,g3],
+            // Base (rows 9-10)
+            [3,9,g3],[4,9,g2],[5,9,g1],[6,9,g2],[7,9,g3],
+            [2,10,g3],[3,10,g2],[4,10,g1],[5,10,g1],[6,10,g1],[7,10,g2],[8,10,g3],
+        ].map(([x,y,c]) => `${x*px}px ${y*px}px 0 0 ${c}`).join(',');
+
+        const trophyW = 11 * px * 5; // total width at 5x scale
+        const trophyH = 11 * px * 5;
+        trophy.innerHTML = `
+            <div style="position:relative;width:${trophyW}px;height:${trophyH}px;">
+                <div style="position:absolute;top:0;left:0;width:${px}px;height:${px}px;box-shadow:${shadows};transform:scale(5);transform-origin:top left;"></div>
+                <div style="position:absolute;top:${3*px*5}px;left:50%;transform:translateX(-50%);font-family:'Press Start 2P',monospace;font-size:${px*3}px;color:${g3};pointer-events:none;white-space:nowrap;">50</div>
+            </div>
+        `;
+        document.body.appendChild(trophy);
+        trophy.addEventListener('click', () => trophy.remove());
+        setTimeout(() => { if (trophy.parentNode) trophy.remove(); }, 8000);
+    }
+
+    let _dpBigTrophyActive = false;
+
+    function showBigTrophyScreen() {
+        _dpBigTrophyActive = true;
+        const screen = document.createElement('div');
+        screen.id = 'dead-pixel-trophy';
+        // Reuse the trophy SVG but scale it up
+        const bigSvg = _pixelTrophySVG()
+            .replace(/width="\d+"/, 'width="204"')
+            .replace(/height="\d+"/, 'height="180"')
+            .replace('style="image-rendering:pixelated;"', 'style="image-rendering:pixelated;width:204px;height:180px;"');
+        screen.innerHTML = `
+            <div style="text-align:center;">
+                <div style="font-family:'Press Start 2P',monospace;font-size:22px;color:#33cc33;text-shadow:0 0 8px rgba(51,204,51,0.4);position:relative;z-index:1;">#1 CHAMPION!</div>
+                <div style="margin:60px 0;display:inline-block;">${_pixelTrophySVG().replace(/width="68"/, 'width="272"').replace(/height="60"/, 'height="240"').replace(/viewBox/, 'style="image-rendering:pixelated;" viewBox')}</div>
+                <div style="font-family:'Press Start 2P',monospace;font-size:18px;color:#33cc33;text-shadow:0 0 8px rgba(51,204,51,0.4);position:relative;z-index:1;">HAPPY NOW?</div>
+            </div>
+        `;
+        document.body.appendChild(screen);
+    }
+
+    function showFinalScreen() {
+        const screen = document.createElement('div');
+        screen.id = 'dead-pixel-final';
+        screen.style.cssText = 'position:fixed;inset:0;z-index:99999;background:#000;display:flex;align-items:center;justify-content:center;flex-direction:column;';
+        const fwEl = document.createElement('div');
+        fwEl.style.cssText = 'position:absolute;inset:0;overflow:hidden;';
+        screen.appendChild(fwEl);
+        const textEl = document.createElement('div');
+        textEl.style.cssText = 'font-family:"Press Start 2P",monospace;font-size:32px;color:#33cc33;text-align:center;z-index:1;text-shadow:0 0 14px rgba(51,204,51,0.6);line-height:2;position:absolute;';
+        textEl.textContent = '';
+        screen.appendChild(textEl);
+
+        // Bouncing DVD-screensaver style movement
+        // Start from the text's actual rendered position
+        let _textX = 0;
+        let _textY = 0;
+        let _textDx = 1.2;
+        let _textDy = 0.8;
+        let _textMoving = false;
+        function moveText() {
+            if (!screen.parentNode) return;
+            _textX += _textDx;
+            _textY += _textDy;
+            const tw = textEl.offsetWidth || 400;
+            const th = textEl.offsetHeight || 100;
+            if (_textX <= 0 || _textX + tw >= window.innerWidth) _textDx *= -1;
+            if (_textY <= 0 || _textY + th >= window.innerHeight) _textDy *= -1;
+            _textX = Math.max(0, Math.min(window.innerWidth - tw, _textX));
+            _textY = Math.max(0, Math.min(window.innerHeight - th, _textY));
+            textEl.style.left = _textX + 'px';
+            textEl.style.top = _textY + 'px';
+            requestAnimationFrame(moveText);
+        }
+        document.body.appendChild(screen);
+        pixel.style.display = 'none';
+        counter.style.display = 'none';
+        // Pre-warm: spawn a few invisible fireworks to prime the browser's animation pipeline
+        for (let w = 0; w < 3; w++) {
+            for (let i = 0; i < 12; i++) {
+                const warmup = document.createElement('div');
+                warmup.style.cssText = 'position:absolute;left:-100px;top:-100px;width:3px;height:3px;background:red;border-radius:50%;transition:all 1.5s;opacity:0;';
+                fwEl.appendChild(warmup);
+                requestAnimationFrame(() => { warmup.style.left = '-200px'; });
+                setTimeout(() => warmup.remove(), 100);
+            }
+        }
+        // Flash text
+        let flashOn = true;
+        const flashInterval = setInterval(() => {
+            textEl.style.opacity = flashOn ? '1' : '0.15';
+            flashOn = !flashOn;
+        }, 800);
+        textEl.innerHTML = 'NEW HYPERFOCUS<br>UNLOCKED!!!';
+        // Start bouncing from actual rendered position after fireworks have warmed up
+        setTimeout(() => {
+            const rect = textEl.getBoundingClientRect();
+            _textX = rect.left;
+            _textY = rect.top;
+            _textMoving = true;
+            moveText();
+        }, 1500);
+        // Fireworks
+        function spawnFirework() {
+            if (!screen.parentNode) { clearInterval(flashInterval); return; }
+            const x = 10 + Math.random() * 80;
+            const y = 10 + Math.random() * 60;
+            const colors = ['#ff0','#f0f','#0ff','#f00','#0f0','#33cc33','#FFD700','#ff6600'];
+            const sparkCount = 16 + Math.floor(Math.random() * 8);
+            for (let i = 0; i < sparkCount; i++) {
+                const spark = document.createElement('div');
+                const angle = (Math.PI * 2 * i) / sparkCount + (Math.random() - 0.5) * 0.3;
+                const dist = 15 + Math.random() * 45;
+                const c = colors[Math.floor(Math.random() * colors.length)];
+                const size = 2 + Math.random() * 3;
+                spark.style.cssText = `position:absolute;left:${x}%;top:${y}%;width:${size}px;height:${size}px;background:${c};border-radius:50%;box-shadow:0 0 ${size*2}px ${c};transition:all 1.8s ease-out;opacity:1;will-change:transform,opacity,left,top;`;
+                fwEl.appendChild(spark);
+                // Stagger the launch slightly for a burst effect
+                const delay = 20 + Math.random() * 80;
+                setTimeout(() => {
+                    spark.style.left = (x + Math.cos(angle) * dist) + '%';
+                    spark.style.top = (y + Math.sin(angle) * dist) + '%';
+                    spark.style.opacity = '0';
+                    spark.style.width = '1px';
+                    spark.style.height = '1px';
+                }, delay);
+                // Trail particles along the path
+                for (let t = 1; t <= 3; t++) {
+                    const trail = document.createElement('div');
+                    const trailDist = dist * (t * 0.25);
+                    const trailSize = Math.max(1, size - t);
+                    trail.style.cssText = `position:absolute;left:${x}%;top:${y}%;width:${trailSize}px;height:${trailSize}px;background:${c};border-radius:50%;opacity:0.6;transition:all ${1.2 + t * 0.3}s ease-out;`;
+                    fwEl.appendChild(trail);
+                    setTimeout(() => {
+                        trail.style.left = (x + Math.cos(angle) * trailDist) + '%';
+                        trail.style.top = (y + Math.sin(angle) * trailDist) + '%';
+                        trail.style.opacity = '0';
+                    }, delay + t * 60);
+                    setTimeout(() => trail.remove(), 2200);
+                }
+                setTimeout(() => spark.remove(), 2200);
+            }
+            setTimeout(spawnFirework, 600 + Math.random() * 800);
+        }
+        setTimeout(spawnFirework, 200);
+    }
+
+    pixel.addEventListener('click', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        _dpCount++;
+
+        if (_dpCount < 47) {
+            // Update counter immediately
+            counter.textContent = _dpCount;
+            counter.style.display = '';
+            if (!_dpFirstClick) {
+                _dpFirstClick = true;
+                counter.style.background = 'repeating-linear-gradient(0deg, #33cc33 0px, #33cc33 1px, transparent 1px, transparent 2px)';
+                counter.style.padding = '4px 8px';
+                counter.style.margin = '-4px -8px';
+                setTimeout(() => { counter.style.background = ''; counter.style.padding = ''; counter.style.margin = ''; }, 200);
+            }
+            movePixel();
+        } else if (_dpCount === 47) {
+            counter.innerHTML = _pixelTrophySVG();
+            counter.style.display = '';
+            movePixel();
+        } else if (_dpCount === 48) {
+            // Trophy stays — just move pixel
+            movePixel();
+        } else if (_dpCount === 49) {
+            counter.style.display = 'none';
+            movePixel();
+        } else if (_dpCount === 53) {
+            counter.innerHTML = "THAT'S IT.<br>NO MORE TROPHIES.";
+            counter.style.display = '';
+            movePixel();
+        } else if (_dpCount === 54) {
+            // Message stays
+            movePixel();
+        } else if (_dpCount === 55) {
+            counter.style.display = 'none';
+            movePixel();
+        } else if (_dpCount === 71) {
+            counter.style.display = 'none';
+            showBigTrophyScreen();
+        } else if (_dpCount === 72) {
+            // Big trophy stays
+        } else if (_dpCount === 73 && _dpBigTrophyActive) {
+            _dpBigTrophyActive = false;
+            const ts = document.getElementById('dead-pixel-trophy');
+            if (ts) ts.remove();
+            movePixel();
+        } else if (_dpCount === 83) {
+            counter.innerHTML = 'NOTHING HAPPENS<br>WHEN YOU GET TO 100.';
+            counter.style.display = '';
+            movePixel();
+        } else if (_dpCount === 84) {
+            // Message stays
+            movePixel();
+        } else if (_dpCount === 85) {
+            counter.style.display = 'none';
+            movePixel();
+        } else if (_dpCount === 103) {
+            counter.innerHTML = 'SEE? THIS IS 103.';
+            counter.style.display = '';
+            movePixel();
+        } else if (_dpCount === 104) {
+            // Message stays
+            movePixel();
+        } else if (_dpCount === 105) {
+            counter.style.display = 'none';
+            movePixel();
+        } else if (_dpCount === 151) {
+            showFinalScreen();
+        } else {
+            movePixel();
+        }
+    });
+})();
+
 const zoom = d3.zoom()
-    .scaleExtent([0.03, 3])
+    .scaleExtent([0.005, 4])
+    .wheelDelta((event) => {
+        // Default d3 wheelDelta: -event.deltaY * (event.deltaMode === 1 ? 0.05 : event.deltaMode ? 1 : 0.002)
+        // Dampen zoom-in speed at low scales so it matches the steadier zoom-out feel
+        const base = -event.deltaY * (event.deltaMode === 1 ? 0.05 : event.deltaMode ? 1 : 0.002);
+        const currentK = d3.zoomTransform(svg.node()).k;
+        if (currentK < 0.1 && base < 0) {
+            // Zooming out at low scale — dampen to prevent acceleration
+            const dampen = 0.3 + (currentK / 0.1) * 0.7;
+            return base * dampen;
+        }
+        return base;
+    })
     .on('start', (event) => {
         _zoomGestureTransformed = false;
         _gestureStartK = event.transform.k;
@@ -27224,6 +28008,48 @@ const zoom = d3.zoom()
         const t = event.transform;
         if (t.k !== _gestureStartK || t.x !== _gestureStartX || t.y !== _gestureStartY) {
             _zoomGestureTransformed = true;
+        }
+        // Cosmic zoom-out: fade in dark overlay as scale drops
+        if (t.k < _cosmicFadeStart && t.k > _cosmicFadeEnd && !_cosmicActive) {
+            _initCosmicOverlay();
+            // Don't add 'active' class yet — that enables pointer-events which blocks d3 zoom
+            const fadeProgress = 1 - (t.k - _cosmicFadeEnd) / (_cosmicFadeStart - _cosmicFadeEnd);
+            _cosmicOverlay.style.background = `rgba(0, 0, 0, ${Math.min(0.95, fadeProgress)})`;
+            // Stars emerge as it gets darker — brightness scales with darkness
+            // Don't move stars yet — they just fade in statically
+            _cosmicStarBrightness = fadeProgress;
+            _cosmicStars.forEach(s => {
+                const dist = parseFloat(s.dataset.currentDist || s.dataset.startDist);
+                const fadeCentre = 40;
+                const fadeEdge = 85;
+                let o = 1;
+                if (dist < fadeCentre) o = dist / fadeCentre;
+                else if (dist > fadeEdge) o = (100 - dist) / (100 - fadeEdge);
+                s.style.opacity = o * _cosmicStarBrightness;
+            });
+        } else if (_cosmicActive && t.k <= _cosmicFadeStart) {
+            // Drive starfield from d3 zoom events (works for mobile pinch)
+            // Scale changes at this zoom level are tiny; amplify into cosmic progress
+            const kDelta = _gestureStartK - t.k;
+            if (Math.abs(kDelta) > 0.0001) {
+                const step = kDelta > 0 ? _cosmicScrollStep : -_cosmicScrollStep;
+                _cosmicStarStep = step;
+                _cosmicProgress = Math.max(0, Math.min(1, _cosmicProgress + step));
+                _updateCosmicZoom();
+                if (_cosmicProgress <= 0) _exitCosmicZoom();
+            }
+        } else if (t.k <= _cosmicFadeEnd && !_cosmicActive) {
+            // Fully dark — activate starfield mode
+            _cosmicActive = true;
+            _cosmicProgress = 0;
+            _initCosmicOverlay();
+            _cosmicOverlay.classList.add('active');
+            _cosmicOverlay.style.background = 'rgb(0, 0, 0)';
+            _updateCosmicZoom();
+        } else if (t.k >= _cosmicFadeStart && _cosmicOverlay && !_cosmicActive) {
+            // Zoomed back in past the fade threshold — remove overlay
+            _cosmicOverlay.style.background = 'transparent';
+            _cosmicOverlay.classList.remove('active');
         }
     })
     .on('end', () => {
@@ -27270,8 +28096,14 @@ function installOverviewTick() {
         _overviewComputed = true;
         simulation.on('tick.computeOverview', null);
         _overviewTransform = computeOverviewTransform();
-        // Don't interrupt an active node-focus zoom (e.g. vaccination cinematic zoom)
-        if (focusedNode) {
+        // Don't interrupt active zoom states
+        if (focusedNode || _cosmicActive) {
+            preSelectionTransform = _overviewTransform;
+            return;
+        }
+        // Don't snap if user has zoomed far from overview (e.g. zooming out for cosmic)
+        const currentK = d3.zoomTransform(svg.node()).k;
+        if (currentK < 0.1 || currentK > 2) {
             preSelectionTransform = _overviewTransform;
             return;
         }
@@ -27843,6 +28675,188 @@ function deactivateConnectLayout() {
     // Clear connectZonesGroup (reserved for future use)
     connectZonesGroup.selectAll('*').remove();
     svgDefs.selectAll('.venn-clip').remove();
+}
+
+// ── Easter egg: Konami code → egg shape ──────────────────────────────
+const _konamiSequence = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a','Enter'];
+let _konamiIdx = 0;
+document.addEventListener('keydown', e => {
+    if (e.key === _konamiSequence[_konamiIdx]) {
+        _konamiIdx++;
+        if (_konamiIdx === _konamiSequence.length) {
+            _konamiIdx = 0;
+            triggerEggEasterEgg();
+        }
+    } else {
+        _konamiIdx = e.key === _konamiSequence[0] ? 1 : 0;
+    }
+});
+let _eggActive = false;
+function triggerEggEasterEgg() {
+    if (_eggActive) return;
+    _eggActive = true;
+
+    // Close any open panels/selections
+    closeInfo();
+    clearAllSelections();
+    hideAutocomplete();
+    searchBox.value = '';
+    currentSearch = '';
+    updateSearchClearBtn();
+    applyFilters();
+
+    // Get visible nodes (exclude dormant, hidden, easter eggs)
+    const visible = nodes.filter(n =>
+        !n._isDormant && !isHiddenComponent(n.id) && !n.isEasterEgg && !n.isPersonal
+    );
+
+    // Sort by connection count (most connected = biggest = centre)
+    const sorted = [...visible].sort((a, b) => {
+        const ca = links.filter(l => edgeSourceId(l) === a.id || edgeTargetId(l) === a.id).length;
+        const cb = links.filter(l => edgeSourceId(l) === b.id || edgeTargetId(l) === b.id).length;
+        return cb - ca;
+    });
+
+    // Egg shape: parametric equation with pointy top
+    // x = rx * sin(t), y = -ry * cos(t) * (1 + 0.2 * cos(t)) gives a slightly pointy top
+    const cx = width / 2, cy = height / 2;
+    const baseR = Math.min(width, height) * 0.32;
+    const rx = baseR * 0.75;
+    const ry = baseR;
+
+    function eggX(t) { return rx * Math.sin(t); }
+    function eggY(t) { return -ry * Math.cos(t) * (1 + 0.15 * Math.cos(t)); }
+
+    // Distribute in concentric egg-shaped rings
+    // Outer ring: smallest nodes. Inner rings: progressively larger
+    const rings = [];
+    const ringScales = [1.0, 0.72, 0.48, 0.24]; // outer to inner
+    let remaining = sorted.length;
+    const totalCirc = ringScales.reduce((s, sc) => s + sc, 0);
+    ringScales.forEach((sc, ri) => {
+        const count = ri < ringScales.length - 1
+            ? Math.round(sorted.length * sc / totalCirc)
+            : remaining;
+        rings.push(count);
+        remaining -= rings[ri];
+    });
+
+    // Compute target positions (smallest on outside, biggest in centre)
+    const eggTargets = new Map();
+    let nodeIdx = sorted.length - 1;
+    ringScales.forEach((sc, ri) => {
+        const count = rings[ri];
+        if (count <= 0) return;
+        for (let i = 0; i < count && nodeIdx >= 0; i++, nodeIdx--) {
+            const n = sorted[nodeIdx];
+            const t = (2 * Math.PI * i) / count - Math.PI / 2;
+            eggTargets.set(n.id, {
+                x: cx + eggX(t) * sc + (Math.random() - 0.5) * 4,
+                y: cy + eggY(t) * sc + (Math.random() - 0.5) * 4
+            });
+        }
+    });
+    while (nodeIdx >= 0) {
+        const n = sorted[nodeIdx];
+        eggTargets.set(n.id, {
+            x: cx + (Math.random() - 0.5) * rx * 0.3,
+            y: cy + (Math.random() - 0.5) * ry * 0.3
+        });
+        nodeIdx--;
+    }
+
+    // Save original fx/fy so we can restore later
+    const savedFx = new Map();
+    const savedFy = new Map();
+    visible.forEach(n => {
+        savedFx.set(n.id, n.fx);
+        savedFy.set(n.id, n.fy);
+        // Unpin so forces can move them
+        n.fx = undefined;
+        n.fy = undefined;
+    });
+
+    // Apply strong forces pulling nodes to egg positions
+    simulation.force('egg-x', d3.forceX(d => {
+        const t = eggTargets.get(d.id);
+        return t ? t.x : d.x;
+    }).strength(d => eggTargets.has(d.id) ? 0.25 : 0));
+    simulation.force('egg-y', d3.forceY(d => {
+        const t = eggTargets.get(d.id);
+        return t ? t.y : d.y;
+    }).strength(d => eggTargets.has(d.id) ? 0.25 : 0));
+
+    // Suppress normal forces so egg shape wins, keep gentle collision
+    simulation.force('charge', d3.forceManyBody().strength(0));
+    simulation.force('center', null);
+    simulation.force('x', null);
+    simulation.force('y', null);
+    simulation.force('link').strength(0);
+    simulation.force('collision', d3.forceCollide().radius(d =>
+        eggTargets.has(d.id) ? getNodeRadius(d) + 2 : 0
+    ));
+    simulation.alpha(1).restart();
+
+    // Zoom to fit the egg
+    const scale = Math.min(width, height) / (ry * 3.5);
+    const transform = d3.zoomIdentity
+        .translate(width / 2 - cx * scale, height / 2 - cy * scale)
+        .scale(scale);
+    svg.transition().duration(prefersReducedMotion ? 0 : 800).call(zoom.transform, transform);
+
+    // Hold, then release
+    setTimeout(() => {
+        // Remove egg forces
+        simulation.force('egg-x', null);
+        simulation.force('egg-y', null);
+
+        // Restore original fx/fy
+        visible.forEach(n => {
+            const sx = savedFx.get(n.id);
+            const sy = savedFy.get(n.id);
+            n.fx = sx != null ? sx : undefined;
+            n.fy = sy != null ? sy : undefined;
+        });
+        // Re-fix easter egg nodes
+        if (vaccinationNode) {
+            vaccinationNode.fx = width / 2 + 3000;
+            vaccinationNode.fy = height / 2 - 1000;
+        }
+        if (personalNode) {
+            personalNode.fx = width / 2 - 2500;
+            personalNode.fy = height / 2 + 800;
+        }
+        // Re-fix dormant composites
+        nodes.forEach(n => {
+            if (n.isComposite && n._isDormant) {
+                n.fx = width / 2;
+                n.fy = height / 2;
+            }
+        });
+
+        // Restore normal physics
+        simulation.force('center', d3.forceCenter(width / 2, height / 2));
+        simulation.force('charge', d3.forceManyBody().strength(d =>
+            (d._isDormant || isHiddenComponent(d.id)) ? 0 : -300
+        ));
+        const af = getAspectForces();
+        simulation.force('x', d3.forceX(width / 2).strength(af.xStrength));
+        simulation.force('y', d3.forceY(height / 2).strength(af.yStrength));
+        simulation.force('link').strength(linkStrengthFn);
+        simulation.force('collision', d3.forceCollide().radius(d =>
+            (d._isDormant || isHiddenComponent(d.id)) ? 0 : getNodeRadius(d) + 25
+        ));
+        simulation.alpha(0.6).restart();
+
+        // Zoom back to overview after settling
+        setTimeout(() => {
+            if (_overviewTransform) {
+                svg.transition().duration(prefersReducedMotion ? 0 : 600)
+                    .call(zoom.transform, _overviewTransform);
+            }
+            _eggActive = false;
+        }, 2500);
+    }, 4000);
 }
 
 function resetNodeVisuals() {
