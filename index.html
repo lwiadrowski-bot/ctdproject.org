@@ -39902,7 +39902,13 @@ function _cosmicUpdateEnding(dt) {
 
     // Playing
     _cosmicEndingT += dt;
-    if (_cosmicEndingT > 8.4) _cosmicEndingState = 'done';
+    if (_cosmicEndingT > 8.4) {
+        _cosmicEndingState = 'done';
+        // Safety cleanup: ensure the final message is removed even if the
+        // WHOOSH phase missed it (timing edge case)
+        var leftover = _cosmicOverlay ? _cosmicOverlay.querySelector('.cosmic-msg[data-msg-idx="3"]') : null;
+        if (leftover) { leftover.remove(); _cosmicEndingTextTaken = true; }
+    }
 }
 
 function _cosmicDrawEnding(ctx, W, H, time) {
