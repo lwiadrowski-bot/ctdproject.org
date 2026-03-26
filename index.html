@@ -21668,6 +21668,330 @@ const nodes = [
       developmentalTiming: ['childhood', 'adult'], diagnosticTiming: ['dx-childhood', 'dx-adult'], sexLinkedPresentation: ['predominantly-xy'] },
 ];
 
+// ── Co-Presentations (recognised composite conditions) ───────────────
+const coPresentations = [
+    {
+        id: 'audhd',
+        label: 'AuDHD',
+        shortLabel: 'AuDHD',
+        clarifier: 'AuDHD',
+        components: ['autism', 'adhd'],
+        triggerSets: [['autism', 'adhd']],
+        isProfile: true,
+        isComposite: true,
+        description: 'Co-occurring Autism and ADHD',
+        domain: 'Neurodevelopmental',
+        secondary: [],
+        prevalence: {
+            technical: '38–50% of autistic individuals meet ADHD criteria; ~20–50% of ADHD individuals meet autism criteria. Twin studies suggest ~72% shared genetic variance.',
+            lay: 'Between 38 and 50 in every 100 autistic people also have ADHD, and 20 to 50 in every 100 ADHD people are also autistic. Twin studies suggest a large shared genetic basis.',
+            layValidated: false,
+            sources: [
+                { key: '10.1016/j.rasd.2021.101759', claim: '38-50% of autistic individuals meet ADHD criteria (pooled current prevalence 38.5%)' },
+                { key: '10.1016/S2215-0366(19)30289-5', claim: '~20-50% of ADHD individuals meet autism criteria (pooled ADHD prevalence in autism 28%)' },
+                { key: '10.3389/fpsyt.2022.837424', claim: '~72% shared genetic variance from twin studies' }
+            ]
+        },
+        presentation: {
+            technical: 'Executive dysfunction from ADHD interacts with autistic rigidity, may present as intense hyperfocus on special interests followed by paralysis on non-preferred tasks. Emotional dysregulation often more pronounced than in either condition alone. Sensory-seeking and sensory-avoidant patterns may coexist. Masking demands are compounded: suppressing stims while also managing impulsivity. Internal experience often described as "accelerator and brake at the same time."',
+            lay: 'ADHD executive function differences interact with autistic ways of processing; this can look like intense hyperfocus on interests followed by getting stuck on less motivating tasks. Emotions can feel bigger than with either alone. Sensory-seeking and sensory-avoidant patterns may coexist. The effort of masking is doubled: managing stims while also managing impulsivity. Many AuDHD people describe it as having the accelerator and brake on at the same time.',
+            layValidated: false,
+            sources: []
+        },
+        onset: {
+            technical: 'Both present from early development. ADHD symptoms may mask autism (social impulsivity mistaken for social interest) or autism may mask ADHD (structured routines compensate for executive function differences). Late diagnosis of one or both is common, especially in women and AFAB individuals.',
+            lay: 'Both are present from early development. ADHD can mask autism (being socially impulsive may be mistaken for social interest) and autism can mask ADHD (structured routines may compensate for executive function differences). Late diagnosis of one or both is common, especially in women and AFAB individuals.',
+            layValidated: false,
+            sources: []
+        },
+        notes: {
+            technical: 'Stimulant medication for ADHD can unmask or intensify sensory sensitivities. Behavioural interventions designed for single-diagnosis populations may be poorly suited. Burnout risk is significantly elevated. The AuDHD profile is increasingly recognised as qualitatively distinct from either condition alone, not merely additive.',
+            lay: 'Stimulant medication for ADHD can sometimes unmask or intensify sensory sensitivities. Approaches designed for only one condition may not work well. Burnout risk is significantly higher. The AuDHD experience is increasingly understood as its own distinct profile, not simply autism plus ADHD.',
+            layValidated: false,
+            sources: [
+                { key: '10.1089/aut.2019.0079', claim: 'Burnout risk is significantly elevated from compounded masking demands' },
+                { key: '10.3389/fpsyt.2022.837424', claim: 'AuDHD profile increasingly recognised as qualitatively distinct from either condition alone' }
+            ]
+        },
+        developmentalTiming: ['birth'], diagnosticTiming: ['dx-childhood', 'dx-late'], sexLinkedPresentation: [],
+        screeningPrompts: [
+            { condition: 'Sensory Processing Differences', conditionId: 'spd', note: 'Combined sensory-seeking (ADHD novelty drive) and sensory-avoidant (autistic overwhelm) patterns', stats: 'Nearly universal' },
+            { condition: 'Sleep Disturbance / DSPS', conditionId: 'dsps', note: 'Both conditions independently disrupt sleep; combined effect is compounded', stats: '70–80%' },
+            { condition: 'Anxiety', conditionId: 'anxiety', note: 'Intolerance of uncertainty meets impulsivity; heightened anticipatory anxiety', stats: '40–60%' },
+            { condition: 'Depression', conditionId: 'depression', note: 'Burnout from dual masking demands; identity confusion from conflicting neurotypes', stats: '30–50%' },
+            { condition: 'hEDS / Joint Hypermobility', conditionId: 'heds', note: 'Both autism and ADHD independently associated with hypermobility', stats: '~30%' },
+            { condition: 'RSD', conditionId: 'rsd', note: 'ADHD rejection sensitivity compounded by autistic social confusion', stats: '' },
+            { condition: 'Alexithymia', conditionId: 'alexithymia', note: 'Difficulty identifying emotions may be masked by ADHD emotional intensity', stats: '~40–50%' },
+            { condition: 'Migraine', conditionId: 'migraine', note: 'Cortical excitability from autism pathway plus dopaminergic migraine risk from ADHD; compounded risk', stats: '42–61% in autism; OR 1.3–1.8 in ADHD' },
+            { condition: 'CPTSD', conditionId: 'cptsd', note: 'Dual masking dramatically increases trauma exposure; ADHD impulsivity compounds risk', stats: '>40% probable PTSD in trauma-exposed autistic adults' },
+            { condition: 'POTS / Orthostatic Intolerance', conditionId: 'pots', note: 'Screen for orthostatic symptoms, particularly given hEDS association', stats: '' },
+            { condition: 'Insomnia', conditionId: 'insomnia', note: 'ADHD hyperarousal plus autistic difficulty with transitions compounds sleep onset difficulties', stats: '~70% in ADHD' },
+            { condition: 'IBS', conditionId: 'ibs', note: 'GI issues common in autism; stress-gut axis amplified by ADHD emotional dysregulation', stats: '' },
+            { condition: 'ARFID', conditionId: 'arfid', note: 'Autistic sensory food aversion may be complicated by ADHD executive dysfunction around meal planning', stats: '' },
+            { condition: 'OCD', conditionId: 'ocd', note: 'Distinguish autistic routines (ego-syntonic) from OCD compulsions (ego-dystonic); ADHD impulsivity can blur the picture', stats: '~9% in autism' },
+            { condition: 'PMDD', conditionId: 'pmdd', note: 'In menstruating individuals; both autism and ADHD independently associated with cyclical symptom worsening', stats: '' },
+            { condition: 'Epilepsy', conditionId: 'epilepsy', note: 'Shared cortical excitability pathway from autism; higher rates with intellectual disability', stats: '~12% in autism' },
+            { condition: 'Dyslexia', conditionId: 'dyslexia', note: 'ADHD working memory and phonological processing differences increase dyslexia risk', stats: '~40% in ADHD' },
+            { condition: 'ME/CFS', conditionId: 'mecfs', note: 'May be missed due to diagnostic overshadowing by both conditions', stats: '' },
+            { condition: 'Fibromyalgia', conditionId: 'fibromyalgia', note: 'Fibro fog can mimic ADHD inattention; autistic pain processing differences complicate picture', stats: '' },
+            { condition: 'Narcolepsy', conditionId: 'narcolepsy', note: 'Shared dopaminergic pathway with ADHD; excessive daytime sleepiness may be misattributed', stats: '25–33% ADHD in narcolepsy' },
+        ],
+        profileSources: [
+            { key: '10.1016/j.rasd.2021.101759' },
+            { key: '10.1016/S2215-0366(19)30289-5' },
+            { key: '10.3389/fpsyt.2022.837424' },
+        ]
+    },
+    {
+        id: 'hypermobility-pots-mcas',
+        label: 'Hypermobility + POTS + MCAS',
+        shortLabel: 'Trifecta',
+        clarifier: 'hEDS + POTS + MCAS',
+        components: ['heds', 'pots', 'mcas'],
+        triggerSets: [
+            ['heds', 'pots'], ['heds', 'mcas'], ['pots', 'mcas'],
+            ['heds', 'pots', 'mcas']
+        ],
+        isProfile: true,
+        isComposite: true,
+        description: 'The hypermobility trifecta',
+        domain: 'Connective tissue',
+        secondary: ['Autonomic', 'Immune'],
+        prevalence: {
+            technical: '31% of POTS patients meet hEDS criteria; 61% of hEDS patients self-report POTS symptoms. MCAS co-occurs in ~30–65% of EDS specialist cohorts. The full triad is increasingly recognised in specialist clinics, though population prevalence is unknown.',
+            lay: 'About 31 in 100 people with POTS also meet criteria for hEDS, and about 61 in 100 people with hEDS report POTS symptoms. Mast cell activation occurs in roughly 30 to 65 in 100 people seen in EDS specialist clinics. The full triad is increasingly recognised, though how common it is in the general population is not yet known.',
+            layValidated: false,
+            sources: [
+                { key: '10.1016/j.autneu.2020.102637', claim: '31% of POTS patients meet hEDS criteria' },
+                { key: '10.1007/s12026-022-09280-1', claim: 'MCAS co-occurrence in EDS specialist cohorts (~24%)' }
+            ]
+        },
+        presentation: {
+            technical: 'Connective tissue laxity causes venous pooling via lax vessel walls, leading to orthostatic intolerance. Mast cell mediators (histamine, tryptase) may worsen autonomic instability and disrupt collagen matrix integrity. Flushing, urticaria, and anaphylactoid reactions occur alongside joint hypermobility, chronic pain, and haemodynamic instability. Fatigue is compounded from three directions: joint instability pain, autonomic energy cost, and inflammatory mediator load. Oestrogen fluctuations modulate all three axes simultaneously.',
+            lay: 'Loose connective tissue causes blood to pool when standing, leading to dizziness and fainting. Mast cell reactions (flushing, hives, allergy-like episodes) can worsen the autonomic instability and affect connective tissue. Fatigue comes from three directions: pain from unstable joints, the energy cost of an unstable autonomic system, and the load of ongoing inflammation. Hormonal fluctuations can affect all three at the same time.',
+            layValidated: false,
+            sources: []
+        },
+        onset: {
+            technical: 'hEDS features often present from childhood (hypermobility, growing pains, easy bruising). POTS onset commonly in adolescence or early adulthood, often post-viral or peri-pubertal. MCAS symptoms often emerge in adolescence or adulthood after a triggering event. The full triad frequently crystallises after pregnancy, surgery, or viral illness.',
+            lay: 'Hypermobility features often show up in childhood (flexible joints, growing pains, easy bruising). POTS commonly starts in adolescence or early adulthood, often after a virus or around puberty. Mast cell symptoms often emerge in adolescence or adulthood after a triggering event. The full triad frequently becomes clear after pregnancy, surgery, or viral illness.',
+            layValidated: false,
+            sources: []
+        },
+        notes: {
+            technical: 'Management requires coordinated approach across rheumatology, cardiology/autonomic, and immunology. Small fibre neuropathy may contribute independently to all three conditions. The mechanistic link between connective tissue instability and mast cell activation remains contested, TPSAB1 gene variants found in some overlap patients. The clinical triad behaves similarly regardless of where on the hypermobility spectrum the individual falls.',
+            lay: 'Managing this triad needs a coordinated approach across multiple specialties. Small fibre neuropathy may independently contribute to symptoms in all three conditions. The exact link between loose connective tissue and mast cell activation is still debated. The overall picture behaves similarly regardless of where on the hypermobility spectrum someone falls.',
+            layValidated: false,
+            sources: [
+                { key: 'title:lyons-et-al-2016-hereditary-alpha-tryptasemia-nejm', claim: 'TPSAB1 gene variants found in some overlap patients' }
+            ]
+        },
+        diagnosticStatus: 'criteriaContested',
+        developmentalTiming: ['birth', 'childhood', 'puberty', 'adult'], diagnosticTiming: ['dx-adult', 'dx-late'], sexLinkedPresentation: ['hormonal', 'predominantly-xx'],
+        screeningPrompts: [
+            { condition: 'ME/CFS', conditionId: 'mecfs', note: 'Post-exertional malaise and fatigue profiles overlap significantly with the triad', stats: '' },
+            { condition: 'Migraine', conditionId: 'migraine', note: 'Autonomic instability, cervical instability, and histamine-mediated vasodilation all contribute', stats: '' },
+            { condition: 'Fibromyalgia', conditionId: 'fibromyalgia', note: 'Central sensitisation from chronic nociceptive input via hypermobile joints', stats: '~56% in specialist cohorts' },
+            { condition: 'Gastroparesis', conditionId: 'gastroparesis', note: 'Autonomic dysfunction, connective tissue laxity, and mast cell mediators all affect gut function', stats: '' },
+            { condition: 'Small Fibre Neuropathy', conditionId: 'peripheral_sfn', note: 'May be an independent contributor to symptoms across all three conditions', stats: '' },
+            { condition: 'ADHD', conditionId: 'adhd', note: 'hEDS-ADHD association stronger than commonly recognised; POTS cognitive symptoms can mimic inattentive ADHD', stats: 'aOR 4.7–6.9 for hEDS-ADHD' },
+            { condition: 'Autism', conditionId: 'autism', note: 'hEDS-autism association via proposed proprioception pathway; sensory and autonomic symptoms overlap', stats: 'aOR 3.1–4.9 for hEDS-autism' },
+            { condition: 'Anxiety', conditionId: 'anxiety', note: 'POTS somatic symptoms frequently misdiagnosed as anxiety; hEDS anxiety rates also elevated independently', stats: '40–74% in POTS cohorts' },
+            { condition: 'Depression', conditionId: 'depression', note: 'Chronic pain, functional limitation, and diagnostic delay across all three conditions drive depression risk', stats: '' },
+            { condition: 'GORD', conditionId: 'gord', note: 'Lower oesophageal sphincter laxity from connective tissue; mast cell mediators and autonomic dysmotility compound', stats: '' },
+            { condition: 'DSPS', conditionId: 'dsps', note: 'Autonomic dysregulation disrupts circadian signalling; pain and itch from hEDS/MCAS compound sleep onset difficulty', stats: '' },
+            { condition: 'Asthma', conditionId: 'asthma', note: 'Shared mast cell pathways; MCAS can trigger bronchospasm indistinguishable from asthma', stats: '' },
+            { condition: 'IBD', conditionId: 'ibd', note: 'Mast cell-mediated GI inflammation; distinguish from functional GI presentations', stats: '' },
+            { condition: 'PMDD', conditionId: 'pmdd', note: 'In menstruating individuals; progesterone activates mast cells and oestrogen fluctuations affect connective tissue laxity and autonomic stability', stats: '' },
+            { condition: 'PVS', conditionId: 'pvs', note: 'Post-viral onset is a major pathway for both POTS and MCAS; viral infection can trigger mast cell dysregulation', stats: '~50% of POTS is post-infectious' },
+        ],
+        profileSources: [
+            { key: '10.1016/j.autneu.2020.102637' },
+            { key: '10.1016/j.clim.2022.108961' },
+            { key: 'title:kucharik-chang-2020-negative-review-no-evidence-based-common-mechanism' },
+        ]
+    },
+    {
+        id: 'fibro-mecfs',
+        label: 'Fibromyalgia + ME/CFS',
+        shortLabel: 'Fibro + ME/CFS',
+        components: ['fibromyalgia', 'mecfs'],
+        triggerSets: [['fibromyalgia', 'mecfs']],
+        isProfile: true,
+        isComposite: true,
+        description: 'Co-occurring Fibromyalgia and Myalgic Encephalomyelitis / Chronic Fatigue Syndrome',
+        domain: 'Musculoskeletal',
+        secondary: ['Immune'],
+        prevalence: {
+            technical: 'Fibromyalgia occurs in ~45% of ME/CFS patients. Central sensitisation present in 84% of CFS and 95% of FM cases vs 0% in controls.',
+            lay: 'About 45 in every 100 people with ME/CFS also have fibromyalgia. Central sensitisation, where the nervous system amplifies pain signals, is found in the vast majority of people with either condition.',
+            layValidated: false,
+            sources: [
+                { key: '10.1186/s12883-024-03872-0', claim: 'Fibromyalgia in ~45% of ME/CFS patients' },
+                { key: '10.1016/j.jpsychores.2021.110624', claim: 'Central sensitisation in 84% of CFS and 95% of FM cases vs 0% in controls' }
+            ]
+        },
+        presentation: {
+            technical: 'Widespread pain (FM-dominant) and post-exertional malaise (ME/CFS-dominant) create a self-reinforcing feedback loop: pain disrupts sleep, unrefreshing sleep worsens fatigue, fatigue reduces activity tolerance, deconditioning amplifies pain. Cognitive impairment ("fibro fog" / "brain fog") is a shared feature. Both conditions involve heightened central nervous system pain processing.',
+            lay: 'Widespread pain (more typical of fibromyalgia) and post-exertional malaise (more typical of ME/CFS) feed into each other: pain disrupts sleep, poor sleep worsens fatigue, fatigue limits activity, and reduced activity amplifies pain. Brain fog is common to both. Both involve the nervous system processing pain signals more intensely than usual.',
+            layValidated: false,
+            sources: []
+        },
+        onset: {
+            technical: 'Both conditions commonly develop in adulthood, often following viral illness, physical trauma, or sustained psychological stress. Onset may be gradual (FM) or acute post-infectious (ME/CFS). Considerable diagnostic delay for both.',
+            lay: 'Both commonly develop in adulthood, often after viral illness, physical trauma, or prolonged stress. Fibromyalgia may come on gradually, while ME/CFS often starts suddenly after an infection. Both typically involve a long wait for diagnosis.',
+            layValidated: false,
+            sources: []
+        },
+        notes: {
+            technical: 'Distinguishing FM from ME/CFS is clinically important despite overlap: PEM (post-exertional malaise lasting >24h) is hallmark of ME/CFS but not FM. Graded exercise therapy may help FM but can harm ME/CFS, activity management must account for PEM. Both are central sensitisation syndromes but may require different pacing strategies.',
+            lay: 'Telling these two apart matters because they need different approaches. Post-exertional malaise (a crash lasting more than 24 hours after exertion) is the hallmark of ME/CFS but not fibromyalgia. Graded exercise may help fibromyalgia but can cause harm in ME/CFS, any activity plan must account for post-exertional malaise.',
+            layValidated: false,
+            sources: []
+        },
+        developmentalTiming: ['childhood', 'adult'], diagnosticTiming: ['dx-adult', 'dx-late'], sexLinkedPresentation: ['hormonal', 'predominantly-xx'],
+        screeningPrompts: [
+            { condition: 'Sleep Disorders', conditionId: 'insomnia', note: 'Unrefreshing sleep is core to both; screen for primary sleep disorders', stats: '>80%' },
+            { condition: 'Depression', conditionId: 'depression', note: 'High co-occurrence but distinct from primary depression; treat the underlying condition', stats: '30–50%' },
+            { condition: 'POTS', conditionId: 'pots', note: 'Orthostatic intolerance common in both conditions', stats: '' },
+            { condition: 'MCAS', conditionId: 'mcas', note: 'Mast cell activation may contribute to symptom flares', stats: '' },
+            { condition: 'Migraine', conditionId: 'migraine', note: 'Central sensitisation increases migraine susceptibility; one of the highest co-occurrence rates', stats: '84% in ME/CFS' },
+            { condition: 'hEDS / Hypermobility', conditionId: 'heds', note: 'High overlap in specialist clinics for both conditions; connective tissue laxity contributes to chronic pain', stats: '56.5% fibromyalgia in hEDS clinics' },
+            { condition: 'ADHD', conditionId: 'adhd', note: 'Fibro fog and ME/CFS cognitive impairment both mimic inattentive ADHD; confirm childhood onset before diagnosing', stats: '29–45% of FM screen positive' },
+            { condition: 'Autism', conditionId: 'autism', note: 'Substantially underdiagnosed in both conditions; ME/CFS may be missed due to diagnostic overshadowing', stats: '~21% of autistic adults may meet ME/CFS criteria' },
+            { condition: 'TMJ', conditionId: 'tmj', note: 'Shared central sensitisation pathway with fibromyalgia; extremely high co-occurrence', stats: '76.8% in fibromyalgia' },
+            { condition: 'IBS', conditionId: 'ibs', note: 'Gut-brain axis disruption common in both; central sensitisation and autonomic dysfunction compound GI symptoms', stats: '' },
+            { condition: 'PVS', conditionId: 'pvs', note: 'Post-viral onset is the most common pathway to new ME/CFS; viral triggers can also precipitate fibromyalgia', stats: '50–80% post-viral ME/CFS onset' },
+        ],
+        profileSources: [
+            { key: 'title:fall-et-al-2024-fm-and-me-cfs-overlap' },
+            { key: 'title:bourke-et-al-2021-central-sensitisation-in-cfs' },
+        ]
+    },
+    {
+        id: 'depression-anxiety',
+        label: 'Depression + Anxiety',
+        components: ['depression', 'anxiety'],
+        triggerSets: [['depression', 'anxiety']],
+        isProfile: true,
+        isComposite: true,
+        description: 'Co-occurring depressive and anxiety disorders',
+        domain: 'Mental health',
+        secondary: [],
+        prevalence: {
+            technical: '~60% of individuals with depression also meet criteria for an anxiety disorder; ~50% of those with GAD develop major depression.',
+            lay: 'About 60 in every 100 people with depression also meet criteria for an anxiety disorder, and about 50 in every 100 people with generalised anxiety develop depression.',
+            layValidated: false,
+            sources: [
+                { key: '10.1002/da.23113', claim: 'Median OR 6.1 for depression-anxiety co-occurrence across 171 studies; OR for depression-GAD 13.8' }
+            ]
+        },
+        presentation: {
+            technical: 'Anxious depression: persistent low mood combined with excessive worry, restlessness, and somatic tension. Rumination is both depressive (past-focused) and anxious (future-focused). Fatigue from anxiety-driven hyperarousal compounds depressive anhedonia. Treatment response is often slower and remission rates lower than for either condition alone.',
+            lay: 'Persistent low mood combined with excessive worry, restlessness, and physical tension. Rumination goes in both directions, replaying the past (depression) and dreading the future (anxiety). The exhaustion from being constantly on edge makes the depressive loss of interest even worse. Recovery tends to be slower than with either condition alone.',
+            layValidated: false,
+            sources: []
+        },
+        onset: {
+            technical: 'Anxiety often precedes depression, sometimes by years. Combined presentation commonly crystallises in late adolescence or early adulthood.',
+            lay: 'Anxiety often comes first, sometimes years before depression develops. The combined picture commonly becomes clear in late adolescence or early adulthood.',
+            layValidated: false,
+            sources: []
+        },
+        notes: {
+            technical: 'In neurodivergent populations, depression and anxiety are frequently secondary to undiagnosed or unsupported primary conditions (autism, ADHD). Addressing the primary neurodevelopmental condition often improves both.',
+            lay: 'In neurodivergent people, depression and anxiety are often secondary to undiagnosed or unsupported conditions like autism or ADHD. Addressing the underlying neurodevelopmental needs often improves both.',
+            layValidated: false,
+            sources: []
+        },
+        developmentalTiming: ['childhood', 'puberty', 'adult', 'episodic'], diagnosticTiming: ['dx-childhood', 'dx-adult'], sexLinkedPresentation: [],
+        screeningPrompts: [
+            { condition: 'ADHD', conditionId: 'adhd', note: 'ADHD emotional dysregulation can mimic or drive anxiety and depression; emotion dysregulation is a central mediator', stats: '' },
+            { condition: 'Autism', conditionId: 'autism', note: 'Autistic burnout frequently misdiagnosed as depression; standard anxiety tools may miss autism-specific pathways', stats: '' },
+            { condition: 'Insomnia', conditionId: 'insomnia', note: 'Sleep disruption perpetuates both conditions; treat sleep before attributing to primary mood disorder', stats: '' },
+            { condition: 'POTS / Dysautonomia', conditionId: 'pots', note: 'Somatic anxiety symptoms may be POTS, not primary anxiety; consider orthostatic screening', stats: '' },
+            { condition: 'CPTSD', conditionId: 'cptsd', note: 'Persistent negative self-concept drives chronic depression; anxiety may be trauma-driven; ask about trauma history', stats: '' },
+            { condition: 'PTSD', conditionId: 'ptsd', note: 'Particularly relevant in late-diagnosed neurodivergent adults with accumulated social trauma', stats: '' },
+            { condition: 'PMDD', conditionId: 'pmdd', note: 'In menstruating individuals; cyclical depression and anxiety may be PMDD, not primary mood disorder; ask about timing', stats: '' },
+            { condition: 'Bipolar Disorder', conditionId: 'bipolar', note: 'Depressive episodes predominate in Bipolar II; always screen for hypomania history before initiating antidepressants', stats: '' },
+            { condition: 'ND Burnout', conditionId: 'nd_burnout', note: 'Distinguish burnout from primary depression; both require demand reduction but burnout is not a mood disorder', stats: '' },
+            { condition: 'ME/CFS', conditionId: 'mecfs', note: 'Depression predominantly secondary/reactive in ME/CFS (78% onset after ME/CFS); anxiety may reflect autonomic dysfunction', stats: '' },
+            { condition: 'DSPS', conditionId: 'dsps', note: 'Circadian disruption can drive both depression and anxiety; treat the sleep disorder first', stats: '' },
+            { condition: 'Narcolepsy', conditionId: 'narcolepsy', note: 'Depression secondary to functional impact in ~30%; daytime sleepiness may be misattributed to depression', stats: '' },
+            { condition: 'Endometriosis', conditionId: 'endometriosis', note: 'Chronic pain and cyclical worsening pattern; inflammatory pathway contributes to mood symptoms', stats: '' },
+            { condition: 'Dyscalculia', conditionId: 'dyscalculia', note: 'Maths anxiety is near-universal in dyscalculia and mechanistically distinct from generalised anxiety', stats: '' },
+        ],
+        profileSources: [
+            { key: '10.1002/da.23113', claim: 'Meta-analysis of 171 studies from 37 countries, 90 separate meta-analyses: median OR 6.1 for depression-anxiety co-occurrence. Bidirectional temporal risk documented. The co-occurring presentation is associated with greater severity and poorer treatment outcomes than either alone.' },
+            { key: '10.1016/S2215-0366(19)30289-5', claim: 'In autism, both depression (~11%) and anxiety (~20%) are substantially elevated; the combined presentation is common and frequently secondary to undiagnosed neurodevelopmental conditions, masking exhaustion, and chronic social stress.' },
+        ]
+    },
+    {
+        id: 'atopic-triad',
+        label: 'Atopic Triad',
+        components: ['eczema', 'asthma', 'allergic_rhinitis'],
+        triggerSets: [
+            ['eczema', 'asthma'], ['eczema', 'allergic_rhinitis'], ['asthma', 'allergic_rhinitis'],
+            ['eczema', 'asthma', 'allergic_rhinitis']
+        ],
+        isProfile: true,
+        isComposite: true,
+        description: 'Co-occurring Eczema, Asthma, and Allergic Rhinitis',
+        domain: 'Immune',
+        secondary: [],
+        prevalence: {
+            technical: 'Full triad co-occurrence: approximately 0.22% of children (11 times expected by chance); ~2% of adults with any atopic condition have all three. Individual pairwise co-occurrence is much higher: 30–50% of eczema patients develop asthma, 45% develop allergic rhinitis. The atopic triad represents the most common co-presentation pattern within the Immune domain.',
+            lay: 'Having all three atopic conditions together is relatively uncommon (roughly 1 in 500 children), but it occurs 11 times more often than would be expected by chance. Having two of the three is much more common: 30 to 50 in every 100 people with eczema develop asthma, and 45 in 100 develop hay fever. The atopic triad is the most common pattern of co-occurring conditions within the immune group.',
+            layValidated: false,
+            sources: [
+                { key: '10.1016/j.jaci.2003.09.033', claim: 'Longitudinal data: 30-50% of AD patients develop asthma, 45% develop allergic rhinitis' }
+            ]
+        },
+        presentation: {
+            technical: 'Shared epithelial barrier dysfunction and Th2-skewed immune response drive sequential and concurrent allergic disease across skin (eczema), airways (asthma), and nasal mucosa (allergic rhinitis). The clinical picture often involves year-round symptom burden across multiple organ systems, with seasonal exacerbations. Mast cell activation and IgE sensitisation are common to all three. TSLP (thymic stromal lymphopoietin) has emerged as a key systemic mediator linking epithelial barrier breach to downstream allergic sensitisation across organs.',
+            lay: 'A shared pattern of immune system activation drives allergic disease across the skin (eczema), airways (asthma), and nose (hay fever). People with the full triad often experience year-round symptoms across multiple body systems, with seasonal flare-ups. All three conditions share the same underlying immune pathway: mast cell activation and IgE antibody sensitisation. A chemical signal called TSLP has been identified as a key link, when the skin barrier is damaged (as in eczema), TSLP signals the immune system to develop allergic responses elsewhere in the body.',
+            layValidated: false,
+            sources: [
+                { key: '10.1016/S0140-6736(15)00149-X', claim: 'Shared epithelial barrier dysfunction and Th2/IgE pathway drives sequential allergic disease across skin, airways, and nasal mucosa' },
+                { key: '10.1007/s12016-018-8720-1', claim: 'Mast cell activation and IgE sensitisation as shared effector pathway across atopic conditions' }
+            ]
+        },
+        onset: {
+            technical: 'Eczema is most often the first manifestation, typically presenting in infancy (60% by age 1, 90% by age 5). The traditional "atopic march" model proposes a sequential progression: eczema → food allergy → asthma → allergic rhinitis. However, strict linear progression occurs in only 3–10% of atopic individuals. The field is moving toward an "atopic multimorbidity" model recognising multiple trajectories. Dupilumab (anti-IL-4/IL-13) has been shown to reduce atopic march progression, supporting the shared mechanistic pathway.',
+            lay: 'Eczema usually appears first, typically in infancy. The traditional view is a sequential "atopic march": eczema, then food allergy, then asthma, then hay fever. In reality, this strict sequence only happens in about 3 to 10 in every 100 people with atopic conditions. The pattern is more variable than originally thought, and the field now talks about "atopic multimorbidity" rather than a fixed march. A biologic medication (dupilumab) that blocks key immune signals has been shown to reduce progression from eczema to other atopic conditions, supporting the idea that they share a common underlying pathway.',
+            layValidated: false,
+            sources: [
+                { key: '10.1016/j.jaci.2003.09.033', claim: 'AD is most often the first manifestation of this atopic triad; eczema presents in 60% by age 1, 90% by age 5' },
+                { key: '10.1016/S0140-6736(15)00149-X', claim: 'Atopic march sequential progression model; strict linear march in 3-10% of atopic individuals' }
+            ]
+        },
+        notes: {
+            technical: 'The atopic triad has been treated as an established clinical entity since at least 2003. The shared mechanism is epithelial barrier dysfunction (particularly filaggrin mutations in eczema) leading to allergen penetration, TSLP/IL-25/IL-33 alarmin release, Th2 polarisation, and systemic IgE sensitisation. Food allergy is increasingly considered the "second step" between eczema and respiratory allergies, and anaphylactic allergy may represent a related but distinct condition within the broader atopic cluster. The triad components also individually connect to MCAS and mastocytosis through shared mast cell effector pathways.',
+            lay: 'The atopic triad has been recognised as a clinical pattern for decades. The shared underlying mechanism involves skin barrier damage (particularly a gene variant affecting a protein called filaggrin) allowing allergens to penetrate, which triggers the immune system to develop allergic responses elsewhere in the body. Food allergy is increasingly recognised as part of this sequence, sitting between eczema and respiratory allergies. The three triad conditions also individually connect to mast cell conditions (MCAS and mastocytosis) through shared immune pathways.',
+            layValidated: false,
+            sources: [
+                { key: '10.1016/j.jaci.2003.09.033', claim: 'Establishes atopic triad as clinical entity; filaggrin-driven barrier dysfunction and epicutaneous sensitisation' },
+                { key: '10.1016/S0140-6736(15)00149-X', claim: 'TSLP/IL-25/IL-33 alarmin cascade from epithelial barrier breach to systemic IgE sensitisation' }
+            ]
+        },
+        developmentalTiming: ['birth', 'childhood'], diagnosticTiming: ['dx-childhood', 'dx-adult'], sexLinkedPresentation: [],
+        screeningPrompts: [
+            { condition: 'MCAS', conditionId: 'mcas', note: 'Shared mast cell effector pathways across all three triad components', stats: '' },
+            { condition: 'Anaphylactic Allergy', conditionId: 'anaphylactic_allergy', note: 'Food allergy often follows eczema in the atopic sequence', stats: '' },
+            { condition: 'EoE', conditionId: 'eoe', note: 'Eosinophilic oesophagitis shares atopic/eosinophilic pathway', stats: '' },
+            { condition: 'Sleep Disorders', conditionId: 'insomnia', note: 'Itch-scratch cycle (eczema), nocturnal cough (asthma), and nasal congestion (rhinitis) all disrupt sleep', stats: '33–87% sleep disturbance in eczema' },
+            { condition: 'ADHD', conditionId: 'adhd', note: 'Eczema-ADHD association persists after controlling for sleep disturbance, suggesting systemic inflammation contributes independently', stats: '1.3–1.6x risk from eczema' },
+            { condition: 'Anxiety', conditionId: 'anxiety', note: 'Chronic itch, sleep disruption, and systemic Th2 inflammation across all three conditions compound anxiety risk', stats: '1.6x risk from eczema' },
+            { condition: 'Depression', conditionId: 'depression', note: 'Chronic relapsing nature, visible skin changes, and systemic inflammation drive depression risk', stats: '1.6x risk from eczema' },
+            { condition: 'GORD', conditionId: 'gord', note: 'Shared inflammatory pathways; GORD is common in asthma populations', stats: '' },
+        ],
+        profileSources: [
+            { key: '10.1016/j.jaci.2003.09.033', claim: 'Establishes the atopic triad as a clinical entity: "AD is most often the first manifestation of this atopic triad." Longitudinal data showing 30-50% of AD patients develop asthma, 45% develop allergic rhinitis.' },
+            { key: '10.1016/S0140-6736(15)00149-X', claim: 'Comprehensive review establishing the atopic march (eczema → asthma → allergic rhinitis) as a well-documented developmental sequence driven by shared IgE-mediated immune activation and epithelial barrier dysfunction.' },
+        ]
+    },
+];
+
 // ── Edge data ────────────────────────────────────────────────────────
 // Pure data arrays (links + dedicatedCompositeEdges), extracted from data.js.
 // Load order: sources.js → lens-data.js → data-nodes.js → data-edges.js → data.js
@@ -26304,331 +26628,7 @@ const constellationMechGroups = [
 ];
 
 // combinedProfiles removed in v17 (dead code - data lives in coPresentations)
-
-// ── Co-Presentations (recognised composite conditions) ───────────────
-const coPresentations = [
-    {
-        id: 'audhd',
-        label: 'AuDHD',
-        shortLabel: 'AuDHD',
-        clarifier: 'AuDHD',
-        components: ['autism', 'adhd'],
-        triggerSets: [['autism', 'adhd']],
-        isProfile: true,
-        isComposite: true,
-        description: 'Co-occurring Autism and ADHD',
-        domain: 'Neurodevelopmental',
-        secondary: [],
-        prevalence: {
-            technical: '38–50% of autistic individuals meet ADHD criteria; ~20–50% of ADHD individuals meet autism criteria. Twin studies suggest ~72% shared genetic variance.',
-            lay: 'Between 38 and 50 in every 100 autistic people also have ADHD, and 20 to 50 in every 100 ADHD people are also autistic. Twin studies suggest a large shared genetic basis.',
-            layValidated: false,
-            sources: [
-                { key: '10.1016/j.rasd.2021.101759', claim: '38-50% of autistic individuals meet ADHD criteria (pooled current prevalence 38.5%)' },
-                { key: '10.1016/S2215-0366(19)30289-5', claim: '~20-50% of ADHD individuals meet autism criteria (pooled ADHD prevalence in autism 28%)' },
-                { key: '10.3389/fpsyt.2022.837424', claim: '~72% shared genetic variance from twin studies' }
-            ]
-        },
-        presentation: {
-            technical: 'Executive dysfunction from ADHD interacts with autistic rigidity, may present as intense hyperfocus on special interests followed by paralysis on non-preferred tasks. Emotional dysregulation often more pronounced than in either condition alone. Sensory-seeking and sensory-avoidant patterns may coexist. Masking demands are compounded: suppressing stims while also managing impulsivity. Internal experience often described as "accelerator and brake at the same time."',
-            lay: 'ADHD executive function differences interact with autistic ways of processing; this can look like intense hyperfocus on interests followed by getting stuck on less motivating tasks. Emotions can feel bigger than with either alone. Sensory-seeking and sensory-avoidant patterns may coexist. The effort of masking is doubled: managing stims while also managing impulsivity. Many AuDHD people describe it as having the accelerator and brake on at the same time.',
-            layValidated: false,
-            sources: []
-        },
-        onset: {
-            technical: 'Both present from early development. ADHD symptoms may mask autism (social impulsivity mistaken for social interest) or autism may mask ADHD (structured routines compensate for executive function differences). Late diagnosis of one or both is common, especially in women and AFAB individuals.',
-            lay: 'Both are present from early development. ADHD can mask autism (being socially impulsive may be mistaken for social interest) and autism can mask ADHD (structured routines may compensate for executive function differences). Late diagnosis of one or both is common, especially in women and AFAB individuals.',
-            layValidated: false,
-            sources: []
-        },
-        notes: {
-            technical: 'Stimulant medication for ADHD can unmask or intensify sensory sensitivities. Behavioural interventions designed for single-diagnosis populations may be poorly suited. Burnout risk is significantly elevated. The AuDHD profile is increasingly recognised as qualitatively distinct from either condition alone, not merely additive.',
-            lay: 'Stimulant medication for ADHD can sometimes unmask or intensify sensory sensitivities. Approaches designed for only one condition may not work well. Burnout risk is significantly higher. The AuDHD experience is increasingly understood as its own distinct profile, not simply autism plus ADHD.',
-            layValidated: false,
-            sources: [
-                { key: '10.1089/aut.2019.0079', claim: 'Burnout risk is significantly elevated from compounded masking demands' },
-                { key: '10.3389/fpsyt.2022.837424', claim: 'AuDHD profile increasingly recognised as qualitatively distinct from either condition alone' }
-            ]
-        },
-        developmentalTiming: ['birth'], diagnosticTiming: ['dx-childhood', 'dx-late'], sexLinkedPresentation: [],
-        screeningPrompts: [
-            { condition: 'Sensory Processing Differences', conditionId: 'spd', note: 'Combined sensory-seeking (ADHD novelty drive) and sensory-avoidant (autistic overwhelm) patterns', stats: 'Nearly universal' },
-            { condition: 'Sleep Disturbance / DSPS', conditionId: 'dsps', note: 'Both conditions independently disrupt sleep; combined effect is compounded', stats: '70–80%' },
-            { condition: 'Anxiety', conditionId: 'anxiety', note: 'Intolerance of uncertainty meets impulsivity; heightened anticipatory anxiety', stats: '40–60%' },
-            { condition: 'Depression', conditionId: 'depression', note: 'Burnout from dual masking demands; identity confusion from conflicting neurotypes', stats: '30–50%' },
-            { condition: 'hEDS / Joint Hypermobility', conditionId: 'heds', note: 'Both autism and ADHD independently associated with hypermobility', stats: '~30%' },
-            { condition: 'RSD', conditionId: 'rsd', note: 'ADHD rejection sensitivity compounded by autistic social confusion', stats: '' },
-            { condition: 'Alexithymia', conditionId: 'alexithymia', note: 'Difficulty identifying emotions may be masked by ADHD emotional intensity', stats: '~40–50%' },
-            { condition: 'Migraine', conditionId: 'migraine', note: 'Cortical excitability from autism pathway plus dopaminergic migraine risk from ADHD; compounded risk', stats: '42–61% in autism; OR 1.3–1.8 in ADHD' },
-            { condition: 'CPTSD', conditionId: 'cptsd', note: 'Dual masking dramatically increases trauma exposure; ADHD impulsivity compounds risk', stats: '>40% probable PTSD in trauma-exposed autistic adults' },
-            { condition: 'POTS / Orthostatic Intolerance', conditionId: 'pots', note: 'Screen for orthostatic symptoms, particularly given hEDS association', stats: '' },
-            { condition: 'Insomnia', conditionId: 'insomnia', note: 'ADHD hyperarousal plus autistic difficulty with transitions compounds sleep onset difficulties', stats: '~70% in ADHD' },
-            { condition: 'IBS', conditionId: 'ibs', note: 'GI issues common in autism; stress-gut axis amplified by ADHD emotional dysregulation', stats: '' },
-            { condition: 'ARFID', conditionId: 'arfid', note: 'Autistic sensory food aversion may be complicated by ADHD executive dysfunction around meal planning', stats: '' },
-            { condition: 'OCD', conditionId: 'ocd', note: 'Distinguish autistic routines (ego-syntonic) from OCD compulsions (ego-dystonic); ADHD impulsivity can blur the picture', stats: '~9% in autism' },
-            { condition: 'PMDD', conditionId: 'pmdd', note: 'In menstruating individuals; both autism and ADHD independently associated with cyclical symptom worsening', stats: '' },
-            { condition: 'Epilepsy', conditionId: 'epilepsy', note: 'Shared cortical excitability pathway from autism; higher rates with intellectual disability', stats: '~12% in autism' },
-            { condition: 'Dyslexia', conditionId: 'dyslexia', note: 'ADHD working memory and phonological processing differences increase dyslexia risk', stats: '~40% in ADHD' },
-            { condition: 'ME/CFS', conditionId: 'mecfs', note: 'May be missed due to diagnostic overshadowing by both conditions', stats: '' },
-            { condition: 'Fibromyalgia', conditionId: 'fibromyalgia', note: 'Fibro fog can mimic ADHD inattention; autistic pain processing differences complicate picture', stats: '' },
-            { condition: 'Narcolepsy', conditionId: 'narcolepsy', note: 'Shared dopaminergic pathway with ADHD; excessive daytime sleepiness may be misattributed', stats: '25–33% ADHD in narcolepsy' },
-        ],
-        profileSources: [
-            { key: '10.1016/j.rasd.2021.101759' },
-            { key: '10.1016/S2215-0366(19)30289-5' },
-            { key: '10.3389/fpsyt.2022.837424' },
-        ]
-    },
-    {
-        id: 'hypermobility-pots-mcas',
-        label: 'Hypermobility + POTS + MCAS',
-        shortLabel: 'Trifecta',
-        clarifier: 'hEDS + POTS + MCAS',
-        components: ['heds', 'pots', 'mcas'],
-        triggerSets: [
-            ['heds', 'pots'], ['heds', 'mcas'], ['pots', 'mcas'],
-            ['heds', 'pots', 'mcas']
-        ],
-        isProfile: true,
-        isComposite: true,
-        description: 'The hypermobility trifecta',
-        domain: 'Connective tissue',
-        secondary: ['Autonomic', 'Immune'],
-        prevalence: {
-            technical: '31% of POTS patients meet hEDS criteria; 61% of hEDS patients self-report POTS symptoms. MCAS co-occurs in ~30–65% of EDS specialist cohorts. The full triad is increasingly recognised in specialist clinics, though population prevalence is unknown.',
-            lay: 'About 31 in 100 people with POTS also meet criteria for hEDS, and about 61 in 100 people with hEDS report POTS symptoms. Mast cell activation occurs in roughly 30 to 65 in 100 people seen in EDS specialist clinics. The full triad is increasingly recognised, though how common it is in the general population is not yet known.',
-            layValidated: false,
-            sources: [
-                { key: '10.1016/j.autneu.2020.102637', claim: '31% of POTS patients meet hEDS criteria' },
-                { key: '10.1007/s12026-022-09280-1', claim: 'MCAS co-occurrence in EDS specialist cohorts (~24%)' }
-            ]
-        },
-        presentation: {
-            technical: 'Connective tissue laxity causes venous pooling via lax vessel walls, leading to orthostatic intolerance. Mast cell mediators (histamine, tryptase) may worsen autonomic instability and disrupt collagen matrix integrity. Flushing, urticaria, and anaphylactoid reactions occur alongside joint hypermobility, chronic pain, and haemodynamic instability. Fatigue is compounded from three directions: joint instability pain, autonomic energy cost, and inflammatory mediator load. Oestrogen fluctuations modulate all three axes simultaneously.',
-            lay: 'Loose connective tissue causes blood to pool when standing, leading to dizziness and fainting. Mast cell reactions (flushing, hives, allergy-like episodes) can worsen the autonomic instability and affect connective tissue. Fatigue comes from three directions: pain from unstable joints, the energy cost of an unstable autonomic system, and the load of ongoing inflammation. Hormonal fluctuations can affect all three at the same time.',
-            layValidated: false,
-            sources: []
-        },
-        onset: {
-            technical: 'hEDS features often present from childhood (hypermobility, growing pains, easy bruising). POTS onset commonly in adolescence or early adulthood, often post-viral or peri-pubertal. MCAS symptoms often emerge in adolescence or adulthood after a triggering event. The full triad frequently crystallises after pregnancy, surgery, or viral illness.',
-            lay: 'Hypermobility features often show up in childhood (flexible joints, growing pains, easy bruising). POTS commonly starts in adolescence or early adulthood, often after a virus or around puberty. Mast cell symptoms often emerge in adolescence or adulthood after a triggering event. The full triad frequently becomes clear after pregnancy, surgery, or viral illness.',
-            layValidated: false,
-            sources: []
-        },
-        notes: {
-            technical: 'Management requires coordinated approach across rheumatology, cardiology/autonomic, and immunology. Small fibre neuropathy may contribute independently to all three conditions. The mechanistic link between connective tissue instability and mast cell activation remains contested, TPSAB1 gene variants found in some overlap patients. The clinical triad behaves similarly regardless of where on the hypermobility spectrum the individual falls.',
-            lay: 'Managing this triad needs a coordinated approach across multiple specialties. Small fibre neuropathy may independently contribute to symptoms in all three conditions. The exact link between loose connective tissue and mast cell activation is still debated. The overall picture behaves similarly regardless of where on the hypermobility spectrum someone falls.',
-            layValidated: false,
-            sources: [
-                { key: 'title:lyons-et-al-2016-hereditary-alpha-tryptasemia-nejm', claim: 'TPSAB1 gene variants found in some overlap patients' }
-            ]
-        },
-        diagnosticStatus: 'criteriaContested',
-        developmentalTiming: ['birth', 'childhood', 'puberty', 'adult'], diagnosticTiming: ['dx-adult', 'dx-late'], sexLinkedPresentation: ['hormonal', 'predominantly-xx'],
-        screeningPrompts: [
-            { condition: 'ME/CFS', conditionId: 'mecfs', note: 'Post-exertional malaise and fatigue profiles overlap significantly with the triad', stats: '' },
-            { condition: 'Migraine', conditionId: 'migraine', note: 'Autonomic instability, cervical instability, and histamine-mediated vasodilation all contribute', stats: '' },
-            { condition: 'Fibromyalgia', conditionId: 'fibromyalgia', note: 'Central sensitisation from chronic nociceptive input via hypermobile joints', stats: '~56% in specialist cohorts' },
-            { condition: 'Gastroparesis', conditionId: 'gastroparesis', note: 'Autonomic dysfunction, connective tissue laxity, and mast cell mediators all affect gut function', stats: '' },
-            { condition: 'Small Fibre Neuropathy', conditionId: 'peripheral_sfn', note: 'May be an independent contributor to symptoms across all three conditions', stats: '' },
-            { condition: 'ADHD', conditionId: 'adhd', note: 'hEDS-ADHD association stronger than commonly recognised; POTS cognitive symptoms can mimic inattentive ADHD', stats: 'aOR 4.7–6.9 for hEDS-ADHD' },
-            { condition: 'Autism', conditionId: 'autism', note: 'hEDS-autism association via proposed proprioception pathway; sensory and autonomic symptoms overlap', stats: 'aOR 3.1–4.9 for hEDS-autism' },
-            { condition: 'Anxiety', conditionId: 'anxiety', note: 'POTS somatic symptoms frequently misdiagnosed as anxiety; hEDS anxiety rates also elevated independently', stats: '40–74% in POTS cohorts' },
-            { condition: 'Depression', conditionId: 'depression', note: 'Chronic pain, functional limitation, and diagnostic delay across all three conditions drive depression risk', stats: '' },
-            { condition: 'GORD', conditionId: 'gord', note: 'Lower oesophageal sphincter laxity from connective tissue; mast cell mediators and autonomic dysmotility compound', stats: '' },
-            { condition: 'DSPS', conditionId: 'dsps', note: 'Autonomic dysregulation disrupts circadian signalling; pain and itch from hEDS/MCAS compound sleep onset difficulty', stats: '' },
-            { condition: 'Asthma', conditionId: 'asthma', note: 'Shared mast cell pathways; MCAS can trigger bronchospasm indistinguishable from asthma', stats: '' },
-            { condition: 'IBD', conditionId: 'ibd', note: 'Mast cell-mediated GI inflammation; distinguish from functional GI presentations', stats: '' },
-            { condition: 'PMDD', conditionId: 'pmdd', note: 'In menstruating individuals; progesterone activates mast cells and oestrogen fluctuations affect connective tissue laxity and autonomic stability', stats: '' },
-            { condition: 'PVS', conditionId: 'pvs', note: 'Post-viral onset is a major pathway for both POTS and MCAS; viral infection can trigger mast cell dysregulation', stats: '~50% of POTS is post-infectious' },
-        ],
-        profileSources: [
-            { key: '10.1016/j.autneu.2020.102637' },
-            { key: '10.1016/j.clim.2022.108961' },
-            { key: 'title:kucharik-chang-2020-negative-review-no-evidence-based-common-mechanism' },
-        ]
-    },
-    {
-        id: 'fibro-mecfs',
-        label: 'Fibromyalgia + ME/CFS',
-        shortLabel: 'Fibro + ME/CFS',
-        components: ['fibromyalgia', 'mecfs'],
-        triggerSets: [['fibromyalgia', 'mecfs']],
-        isProfile: true,
-        isComposite: true,
-        description: 'Co-occurring Fibromyalgia and Myalgic Encephalomyelitis / Chronic Fatigue Syndrome',
-        domain: 'Musculoskeletal',
-        secondary: ['Immune'],
-        prevalence: {
-            technical: 'Fibromyalgia occurs in ~45% of ME/CFS patients. Central sensitisation present in 84% of CFS and 95% of FM cases vs 0% in controls.',
-            lay: 'About 45 in every 100 people with ME/CFS also have fibromyalgia. Central sensitisation, where the nervous system amplifies pain signals, is found in the vast majority of people with either condition.',
-            layValidated: false,
-            sources: [
-                { key: '10.1186/s12883-024-03872-0', claim: 'Fibromyalgia in ~45% of ME/CFS patients' },
-                { key: '10.1016/j.jpsychores.2021.110624', claim: 'Central sensitisation in 84% of CFS and 95% of FM cases vs 0% in controls' }
-            ]
-        },
-        presentation: {
-            technical: 'Widespread pain (FM-dominant) and post-exertional malaise (ME/CFS-dominant) create a self-reinforcing feedback loop: pain disrupts sleep, unrefreshing sleep worsens fatigue, fatigue reduces activity tolerance, deconditioning amplifies pain. Cognitive impairment ("fibro fog" / "brain fog") is a shared feature. Both conditions involve heightened central nervous system pain processing.',
-            lay: 'Widespread pain (more typical of fibromyalgia) and post-exertional malaise (more typical of ME/CFS) feed into each other: pain disrupts sleep, poor sleep worsens fatigue, fatigue limits activity, and reduced activity amplifies pain. Brain fog is common to both. Both involve the nervous system processing pain signals more intensely than usual.',
-            layValidated: false,
-            sources: []
-        },
-        onset: {
-            technical: 'Both conditions commonly develop in adulthood, often following viral illness, physical trauma, or sustained psychological stress. Onset may be gradual (FM) or acute post-infectious (ME/CFS). Considerable diagnostic delay for both.',
-            lay: 'Both commonly develop in adulthood, often after viral illness, physical trauma, or prolonged stress. Fibromyalgia may come on gradually, while ME/CFS often starts suddenly after an infection. Both typically involve a long wait for diagnosis.',
-            layValidated: false,
-            sources: []
-        },
-        notes: {
-            technical: 'Distinguishing FM from ME/CFS is clinically important despite overlap: PEM (post-exertional malaise lasting >24h) is hallmark of ME/CFS but not FM. Graded exercise therapy may help FM but can harm ME/CFS, activity management must account for PEM. Both are central sensitisation syndromes but may require different pacing strategies.',
-            lay: 'Telling these two apart matters because they need different approaches. Post-exertional malaise (a crash lasting more than 24 hours after exertion) is the hallmark of ME/CFS but not fibromyalgia. Graded exercise may help fibromyalgia but can cause harm in ME/CFS, any activity plan must account for post-exertional malaise.',
-            layValidated: false,
-            sources: []
-        },
-        developmentalTiming: ['childhood', 'adult'], diagnosticTiming: ['dx-adult', 'dx-late'], sexLinkedPresentation: ['hormonal', 'predominantly-xx'],
-        screeningPrompts: [
-            { condition: 'Sleep Disorders', conditionId: 'insomnia', note: 'Unrefreshing sleep is core to both; screen for primary sleep disorders', stats: '>80%' },
-            { condition: 'Depression', conditionId: 'depression', note: 'High co-occurrence but distinct from primary depression; treat the underlying condition', stats: '30–50%' },
-            { condition: 'POTS', conditionId: 'pots', note: 'Orthostatic intolerance common in both conditions', stats: '' },
-            { condition: 'MCAS', conditionId: 'mcas', note: 'Mast cell activation may contribute to symptom flares', stats: '' },
-            { condition: 'Migraine', conditionId: 'migraine', note: 'Central sensitisation increases migraine susceptibility; one of the highest co-occurrence rates', stats: '84% in ME/CFS' },
-            { condition: 'hEDS / Hypermobility', conditionId: 'heds', note: 'High overlap in specialist clinics for both conditions; connective tissue laxity contributes to chronic pain', stats: '56.5% fibromyalgia in hEDS clinics' },
-            { condition: 'ADHD', conditionId: 'adhd', note: 'Fibro fog and ME/CFS cognitive impairment both mimic inattentive ADHD; confirm childhood onset before diagnosing', stats: '29–45% of FM screen positive' },
-            { condition: 'Autism', conditionId: 'autism', note: 'Substantially underdiagnosed in both conditions; ME/CFS may be missed due to diagnostic overshadowing', stats: '~21% of autistic adults may meet ME/CFS criteria' },
-            { condition: 'TMJ', conditionId: 'tmj', note: 'Shared central sensitisation pathway with fibromyalgia; extremely high co-occurrence', stats: '76.8% in fibromyalgia' },
-            { condition: 'IBS', conditionId: 'ibs', note: 'Gut-brain axis disruption common in both; central sensitisation and autonomic dysfunction compound GI symptoms', stats: '' },
-            { condition: 'PVS', conditionId: 'pvs', note: 'Post-viral onset is the most common pathway to new ME/CFS; viral triggers can also precipitate fibromyalgia', stats: '50–80% post-viral ME/CFS onset' },
-        ],
-        profileSources: [
-            { key: 'title:fall-et-al-2024-fm-and-me-cfs-overlap' },
-            { key: 'title:bourke-et-al-2021-central-sensitisation-in-cfs' },
-        ]
-    },
-    {
-        id: 'depression-anxiety',
-        label: 'Depression + Anxiety',
-        components: ['depression', 'anxiety'],
-        triggerSets: [['depression', 'anxiety']],
-        isProfile: true,
-        isComposite: true,
-        description: 'Co-occurring depressive and anxiety disorders',
-        domain: 'Mental health',
-        secondary: [],
-        prevalence: {
-            technical: '~60% of individuals with depression also meet criteria for an anxiety disorder; ~50% of those with GAD develop major depression.',
-            lay: 'About 60 in every 100 people with depression also meet criteria for an anxiety disorder, and about 50 in every 100 people with generalised anxiety develop depression.',
-            layValidated: false,
-            sources: [
-                { key: '10.1002/da.23113', claim: 'Median OR 6.1 for depression-anxiety co-occurrence across 171 studies; OR for depression-GAD 13.8' }
-            ]
-        },
-        presentation: {
-            technical: 'Anxious depression: persistent low mood combined with excessive worry, restlessness, and somatic tension. Rumination is both depressive (past-focused) and anxious (future-focused). Fatigue from anxiety-driven hyperarousal compounds depressive anhedonia. Treatment response is often slower and remission rates lower than for either condition alone.',
-            lay: 'Persistent low mood combined with excessive worry, restlessness, and physical tension. Rumination goes in both directions, replaying the past (depression) and dreading the future (anxiety). The exhaustion from being constantly on edge makes the depressive loss of interest even worse. Recovery tends to be slower than with either condition alone.',
-            layValidated: false,
-            sources: []
-        },
-        onset: {
-            technical: 'Anxiety often precedes depression, sometimes by years. Combined presentation commonly crystallises in late adolescence or early adulthood.',
-            lay: 'Anxiety often comes first, sometimes years before depression develops. The combined picture commonly becomes clear in late adolescence or early adulthood.',
-            layValidated: false,
-            sources: []
-        },
-        notes: {
-            technical: 'In neurodivergent populations, depression and anxiety are frequently secondary to undiagnosed or unsupported primary conditions (autism, ADHD). Addressing the primary neurodevelopmental condition often improves both.',
-            lay: 'In neurodivergent people, depression and anxiety are often secondary to undiagnosed or unsupported conditions like autism or ADHD. Addressing the underlying neurodevelopmental needs often improves both.',
-            layValidated: false,
-            sources: []
-        },
-        developmentalTiming: ['childhood', 'puberty', 'adult', 'episodic'], diagnosticTiming: ['dx-childhood', 'dx-adult'], sexLinkedPresentation: [],
-        screeningPrompts: [
-            { condition: 'ADHD', conditionId: 'adhd', note: 'ADHD emotional dysregulation can mimic or drive anxiety and depression; emotion dysregulation is a central mediator', stats: '' },
-            { condition: 'Autism', conditionId: 'autism', note: 'Autistic burnout frequently misdiagnosed as depression; standard anxiety tools may miss autism-specific pathways', stats: '' },
-            { condition: 'Insomnia', conditionId: 'insomnia', note: 'Sleep disruption perpetuates both conditions; treat sleep before attributing to primary mood disorder', stats: '' },
-            { condition: 'POTS / Dysautonomia', conditionId: 'pots', note: 'Somatic anxiety symptoms may be POTS, not primary anxiety; consider orthostatic screening', stats: '' },
-            { condition: 'CPTSD', conditionId: 'cptsd', note: 'Persistent negative self-concept drives chronic depression; anxiety may be trauma-driven; ask about trauma history', stats: '' },
-            { condition: 'PTSD', conditionId: 'ptsd', note: 'Particularly relevant in late-diagnosed neurodivergent adults with accumulated social trauma', stats: '' },
-            { condition: 'PMDD', conditionId: 'pmdd', note: 'In menstruating individuals; cyclical depression and anxiety may be PMDD, not primary mood disorder; ask about timing', stats: '' },
-            { condition: 'Bipolar Disorder', conditionId: 'bipolar', note: 'Depressive episodes predominate in Bipolar II; always screen for hypomania history before initiating antidepressants', stats: '' },
-            { condition: 'ND Burnout', conditionId: 'nd_burnout', note: 'Distinguish burnout from primary depression; both require demand reduction but burnout is not a mood disorder', stats: '' },
-            { condition: 'ME/CFS', conditionId: 'mecfs', note: 'Depression predominantly secondary/reactive in ME/CFS (78% onset after ME/CFS); anxiety may reflect autonomic dysfunction', stats: '' },
-            { condition: 'DSPS', conditionId: 'dsps', note: 'Circadian disruption can drive both depression and anxiety; treat the sleep disorder first', stats: '' },
-            { condition: 'Narcolepsy', conditionId: 'narcolepsy', note: 'Depression secondary to functional impact in ~30%; daytime sleepiness may be misattributed to depression', stats: '' },
-            { condition: 'Endometriosis', conditionId: 'endometriosis', note: 'Chronic pain and cyclical worsening pattern; inflammatory pathway contributes to mood symptoms', stats: '' },
-            { condition: 'Dyscalculia', conditionId: 'dyscalculia', note: 'Maths anxiety is near-universal in dyscalculia and mechanistically distinct from generalised anxiety', stats: '' },
-        ],
-        profileSources: [
-            { key: '10.1002/da.23113', claim: 'Meta-analysis of 171 studies from 37 countries, 90 separate meta-analyses: median OR 6.1 for depression-anxiety co-occurrence. Bidirectional temporal risk documented. The co-occurring presentation is associated with greater severity and poorer treatment outcomes than either alone.' },
-            { key: '10.1016/S2215-0366(19)30289-5', claim: 'In autism, both depression (~11%) and anxiety (~20%) are substantially elevated; the combined presentation is common and frequently secondary to undiagnosed neurodevelopmental conditions, masking exhaustion, and chronic social stress.' },
-        ]
-    },
-    {
-        id: 'atopic-triad',
-        label: 'Atopic Triad',
-        components: ['eczema', 'asthma', 'allergic_rhinitis'],
-        triggerSets: [
-            ['eczema', 'asthma'], ['eczema', 'allergic_rhinitis'], ['asthma', 'allergic_rhinitis'],
-            ['eczema', 'asthma', 'allergic_rhinitis']
-        ],
-        isProfile: true,
-        isComposite: true,
-        description: 'Co-occurring Eczema, Asthma, and Allergic Rhinitis',
-        domain: 'Immune',
-        secondary: [],
-        prevalence: {
-            technical: 'Full triad co-occurrence: approximately 0.22% of children (11 times expected by chance); ~2% of adults with any atopic condition have all three. Individual pairwise co-occurrence is much higher: 30–50% of eczema patients develop asthma, 45% develop allergic rhinitis. The atopic triad represents the most common co-presentation pattern within the Immune domain.',
-            lay: 'Having all three atopic conditions together is relatively uncommon (roughly 1 in 500 children), but it occurs 11 times more often than would be expected by chance. Having two of the three is much more common: 30 to 50 in every 100 people with eczema develop asthma, and 45 in 100 develop hay fever. The atopic triad is the most common pattern of co-occurring conditions within the immune group.',
-            layValidated: false,
-            sources: [
-                { key: '10.1016/j.jaci.2003.09.033', claim: 'Longitudinal data: 30-50% of AD patients develop asthma, 45% develop allergic rhinitis' }
-            ]
-        },
-        presentation: {
-            technical: 'Shared epithelial barrier dysfunction and Th2-skewed immune response drive sequential and concurrent allergic disease across skin (eczema), airways (asthma), and nasal mucosa (allergic rhinitis). The clinical picture often involves year-round symptom burden across multiple organ systems, with seasonal exacerbations. Mast cell activation and IgE sensitisation are common to all three. TSLP (thymic stromal lymphopoietin) has emerged as a key systemic mediator linking epithelial barrier breach to downstream allergic sensitisation across organs.',
-            lay: 'A shared pattern of immune system activation drives allergic disease across the skin (eczema), airways (asthma), and nose (hay fever). People with the full triad often experience year-round symptoms across multiple body systems, with seasonal flare-ups. All three conditions share the same underlying immune pathway: mast cell activation and IgE antibody sensitisation. A chemical signal called TSLP has been identified as a key link, when the skin barrier is damaged (as in eczema), TSLP signals the immune system to develop allergic responses elsewhere in the body.',
-            layValidated: false,
-            sources: [
-                { key: '10.1016/S0140-6736(15)00149-X', claim: 'Shared epithelial barrier dysfunction and Th2/IgE pathway drives sequential allergic disease across skin, airways, and nasal mucosa' },
-                { key: '10.1007/s12016-018-8720-1', claim: 'Mast cell activation and IgE sensitisation as shared effector pathway across atopic conditions' }
-            ]
-        },
-        onset: {
-            technical: 'Eczema is most often the first manifestation, typically presenting in infancy (60% by age 1, 90% by age 5). The traditional "atopic march" model proposes a sequential progression: eczema → food allergy → asthma → allergic rhinitis. However, strict linear progression occurs in only 3–10% of atopic individuals. The field is moving toward an "atopic multimorbidity" model recognising multiple trajectories. Dupilumab (anti-IL-4/IL-13) has been shown to reduce atopic march progression, supporting the shared mechanistic pathway.',
-            lay: 'Eczema usually appears first, typically in infancy. The traditional view is a sequential "atopic march": eczema, then food allergy, then asthma, then hay fever. In reality, this strict sequence only happens in about 3 to 10 in every 100 people with atopic conditions. The pattern is more variable than originally thought, and the field now talks about "atopic multimorbidity" rather than a fixed march. A biologic medication (dupilumab) that blocks key immune signals has been shown to reduce progression from eczema to other atopic conditions, supporting the idea that they share a common underlying pathway.',
-            layValidated: false,
-            sources: [
-                { key: '10.1016/j.jaci.2003.09.033', claim: 'AD is most often the first manifestation of this atopic triad; eczema presents in 60% by age 1, 90% by age 5' },
-                { key: '10.1016/S0140-6736(15)00149-X', claim: 'Atopic march sequential progression model; strict linear march in 3-10% of atopic individuals' }
-            ]
-        },
-        notes: {
-            technical: 'The atopic triad has been treated as an established clinical entity since at least 2003. The shared mechanism is epithelial barrier dysfunction (particularly filaggrin mutations in eczema) leading to allergen penetration, TSLP/IL-25/IL-33 alarmin release, Th2 polarisation, and systemic IgE sensitisation. Food allergy is increasingly considered the "second step" between eczema and respiratory allergies, and anaphylactic allergy may represent a related but distinct condition within the broader atopic cluster. The triad components also individually connect to MCAS and mastocytosis through shared mast cell effector pathways.',
-            lay: 'The atopic triad has been recognised as a clinical pattern for decades. The shared underlying mechanism involves skin barrier damage (particularly a gene variant affecting a protein called filaggrin) allowing allergens to penetrate, which triggers the immune system to develop allergic responses elsewhere in the body. Food allergy is increasingly recognised as part of this sequence, sitting between eczema and respiratory allergies. The three triad conditions also individually connect to mast cell conditions (MCAS and mastocytosis) through shared immune pathways.',
-            layValidated: false,
-            sources: [
-                { key: '10.1016/j.jaci.2003.09.033', claim: 'Establishes atopic triad as clinical entity; filaggrin-driven barrier dysfunction and epicutaneous sensitisation' },
-                { key: '10.1016/S0140-6736(15)00149-X', claim: 'TSLP/IL-25/IL-33 alarmin cascade from epithelial barrier breach to systemic IgE sensitisation' }
-            ]
-        },
-        developmentalTiming: ['birth', 'childhood'], diagnosticTiming: ['dx-childhood', 'dx-adult'], sexLinkedPresentation: [],
-        screeningPrompts: [
-            { condition: 'MCAS', conditionId: 'mcas', note: 'Shared mast cell effector pathways across all three triad components', stats: '' },
-            { condition: 'Anaphylactic Allergy', conditionId: 'anaphylactic_allergy', note: 'Food allergy often follows eczema in the atopic sequence', stats: '' },
-            { condition: 'EoE', conditionId: 'eoe', note: 'Eosinophilic oesophagitis shares atopic/eosinophilic pathway', stats: '' },
-            { condition: 'Sleep Disorders', conditionId: 'insomnia', note: 'Itch-scratch cycle (eczema), nocturnal cough (asthma), and nasal congestion (rhinitis) all disrupt sleep', stats: '33–87% sleep disturbance in eczema' },
-            { condition: 'ADHD', conditionId: 'adhd', note: 'Eczema-ADHD association persists after controlling for sleep disturbance, suggesting systemic inflammation contributes independently', stats: '1.3–1.6x risk from eczema' },
-            { condition: 'Anxiety', conditionId: 'anxiety', note: 'Chronic itch, sleep disruption, and systemic Th2 inflammation across all three conditions compound anxiety risk', stats: '1.6x risk from eczema' },
-            { condition: 'Depression', conditionId: 'depression', note: 'Chronic relapsing nature, visible skin changes, and systemic inflammation drive depression risk', stats: '1.6x risk from eczema' },
-            { condition: 'GORD', conditionId: 'gord', note: 'Shared inflammatory pathways; GORD is common in asthma populations', stats: '' },
-        ],
-        profileSources: [
-            { key: '10.1016/j.jaci.2003.09.033', claim: 'Establishes the atopic triad as a clinical entity: "AD is most often the first manifestation of this atopic triad." Longitudinal data showing 30-50% of AD patients develop asthma, 45% develop allergic rhinitis.' },
-            { key: '10.1016/S0140-6736(15)00149-X', claim: 'Comprehensive review establishing the atopic march (eczema → asthma → allergic rhinitis) as a well-documented developmental sequence driven by shared IgE-mediated immune activation and epithelial barrier dysfunction.' },
-        ]
-    },
-];
-
+// coPresentations moved to data-nodes.js in March 2026
 // D3 force simulation replaces edge source/target strings with object refs.
 // These helpers safely extract the ID regardless of current state.
 function edgeSourceId(e) { return typeof e.source === 'object' ? e.source.id : e.source; }
